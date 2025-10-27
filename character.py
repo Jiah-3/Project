@@ -7,7 +7,7 @@ class Idle:
         self.char = char
 
     def enter(self, event):
-        pass
+        self.char.frame = 0
 
     def exit(self, event):
         pass
@@ -19,14 +19,14 @@ class Idle:
         if self.char.face_dir == 1:
             self.char.image.clip_draw(self.char.frame * 100, 0, 100, 100, self.char.x, self.char.y)
         else:
-            self.char.image.clip_draw(self.char.frame * 100, 0, 100, 100, self.char.x, self.char.y)
+            self.char.image.clip_draw(self.char.frame * 100, 200, 100, 100, self.char.x, self.char.y)
 
 class Char:
     def __init__(self):
         self.x, self.y = 400, 300
         self.frame = 0
         self.face_dir = 1
-        self.image = load_image('tuar03_01.png')
+        self.image = load_image('char_image.png')
 
         self.IDLE = Idle(self)
         self.MOVE = Move(self)
@@ -61,7 +61,7 @@ class Move:
         pass
 
     def do(self):
-        #self.char.frame = (self.char.frame + 1) % 8
+        self.char.frame = (self.char.frame + 1) % 3
         self.char.x += self.char.face_dir * 5
         if self.char.x < 20:
             self.char.x = 20
@@ -72,8 +72,23 @@ class Move:
         if self.char.face_dir == 1:
             self.char.image.clip_draw(self.char.frame * 100, 0, 100, 100, self.char.x, self.char.y)
         else:
-            self.char.image.clip_draw(self.char.frame * 100, 0, 100, 100, self.char.x, self.char.y)
+            self.char.image.clip_draw(self.char.frame * 100, 200, 100, 100, self.char.x, self.char.y)
 
+class Attack:
+    def __init__(self, char):
+        self.char = char
+
+    def enter(self, e):
+        self.char.frame = 0
+
+    def exit(self, e):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
