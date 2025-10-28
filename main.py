@@ -1,10 +1,10 @@
 from pico2d import *
 
 from character import Char
+from ground import stage1_1
 
 
 #class
-
 
 def handle_events():
     global start
@@ -26,6 +26,10 @@ def reset_world():
 
     char = Char()
     world.append(char)
+
+    if char.stage == '1_1':
+        grounds = stage1_1()
+        world.extend(grounds)
 
 def update_world():
     for o in world:
