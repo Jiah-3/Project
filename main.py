@@ -25,7 +25,7 @@ def reset_world():
     stage1_1()
 
     char = Char()
-    game_world.add_object(char, 1)
+    game_world.add_object(char, 2)
 
 def update_world():
     game_world.update()

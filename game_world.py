@@ -1,6 +1,6 @@
 # world[0] : 가장 낮은 계층
 # world[1] : 그 위의 계층
-world = [[], []]
+world = [[], [], []]
 
 def add_object(o, depth=0):
     world[depth].append(o)
