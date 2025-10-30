@@ -1,5 +1,6 @@
 from pico2d import *
 
+import game_world
 from character import Char
 from ground import stage1_1
 
@@ -19,27 +20,19 @@ def handle_events():
             char.handle_event(event)
 
 def reset_world():
-    global world
     global char
 
-    world = []
+    stage1_1()
 
     char = Char()
-    world.append(char)
-
-    if char.stage == '1_1':
-        grounds = stage1_1()
-        world.extend(grounds)
+    game_world.add_object(char, 1)
 
 def update_world():
-    for o in world:
-        o.update()
-    pass
+    game_world.update()
 
 def render_world():
     clear_canvas()
-    for o in world:
-        o.draw()
+    game_world.render()
     update_canvas()
 
 start = True

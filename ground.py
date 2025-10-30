@@ -1,4 +1,5 @@
 from pico2d import load_image
+import game_world
 
 class Ground:
     def __init__(self):
@@ -20,4 +21,4 @@ def stage1_1():
     for ground, (x, y) in zip(grounds, positions):
         ground.x = x
         ground.y = y
-    return grounds
+        game_world.add_object(ground, 1)
