@@ -8,7 +8,7 @@ def falling(char):
     if char.jump == 0:
         for pos in get_ground_positions():
             x, y = pos[0], pos[1]
-            if char.x >= x - 50 and char.x <= x + 50 and char.y == y + 60:
+            if char.x >= x - 60 and char.x <= x + 60 and char.y == y + 60:
                 return
             else:
                 continue
