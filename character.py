@@ -1,6 +1,18 @@
 from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE
 from state_machine import StateMachine
+from ground import get_ground_positions
+import game_world
+
+def falling(char):
+    if char.jump == 0:
+        for pos in get_ground_positions():
+            x, y = pos[0], pos[1]
+            if char.x >= x - 50 and char.x <= x + 50 and char.y == y + 60:
+                return
+            else:
+                continue
+        char.y -= 5
 
 class Idle:
     def __init__(self, char):
@@ -18,6 +30,7 @@ class Idle:
         if self.char.jump > 0:
             self.char.y += 5
             self.char.jump -= 1
+        falling(self.char)
 
     def draw(self):
         if self.char.face_dir == 1:
@@ -78,6 +91,7 @@ class Move:
         if self.char.jump > 0:
             self.char.y += 5
             self.char.jump -= 1
+        falling(self.char)
 
     def draw(self):
         if self.char.face_dir == 1:
