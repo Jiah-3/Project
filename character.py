@@ -1,19 +1,23 @@
 from pico2d import load_image
-from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a
+from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE
 from state_machine import StateMachine
 
 class Idle:
     def __init__(self, char):
         self.char = char
 
-    def enter(self, event):
+    def enter(self, e):
         self.char.frame = 0
+        if space_down(e):
+            self.char.jump = 20
 
     def exit(self, event):
         pass
 
     def do(self):
-        pass
+        if self.char.jump > 0:
+            self.char.y += 5
+            self.char.jump -= 1
 
     def draw(self):
         if self.char.face_dir == 1:
@@ -27,6 +31,7 @@ class Char:
         self.x, self.y = 400, 90
         self.frame = 0
         self.face_dir = 1
+        self.jump = 0
         self.image = load_image('char_image.png')
 
         self.IDLE = Idle(self)
@@ -34,8 +39,8 @@ class Char:
         self.state_machine = StateMachine(
             self.IDLE,
             {
-                self.IDLE : {left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
-                self.MOVE: {right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
+                self.IDLE : {space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
+                self.MOVE: {space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
             }
         )
 
@@ -57,6 +62,8 @@ class Move:
             self.char.face_dir = 1
         elif left_down(e) or right_up(e):
             self.char.face_dir = -1
+        if space_down(e):
+            self.char.jump = 20
 
     def exit(self, e):
         pass
@@ -68,6 +75,9 @@ class Move:
             self.char.x = 20
         elif self.char.x > 780:
             self.char.x = 780
+        if self.char.jump > 0:
+            self.char.y += 5
+            self.char.jump -= 1
 
     def draw(self):
         if self.char.face_dir == 1:
@@ -103,3 +113,5 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a
 
+def space_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
