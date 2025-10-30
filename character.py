@@ -21,7 +21,10 @@ class Idle:
     def enter(self, e):
         self.char.frame = 0
         if space_down(e):
-            self.char.jump = 20
+            for pos in get_ground_positions():
+                x, y = pos[0], pos[1]
+                if self.char.y == y + 60:
+                    self.char.jump = 20
 
     def exit(self, event):
         pass
@@ -76,7 +79,10 @@ class Move:
         elif left_down(e) or right_up(e):
             self.char.face_dir = -1
         if space_down(e):
-            self.char.jump = 20
+            for pos in get_ground_positions():
+                x, y = pos[0], pos[1]
+                if self.char.y == y + 60:
+                    self.char.jump = 20
 
     def exit(self, e):
         pass
