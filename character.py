@@ -12,7 +12,7 @@ def falling(char):
                 return
             else:
                 continue
-        char.y -= 5
+        char.y -= 10
 
 class Idle:
     def __init__(self, char):
@@ -24,14 +24,14 @@ class Idle:
             for pos in get_ground_positions():
                 x, y = pos[0], pos[1]
                 if self.char.y == y + 60:
-                    self.char.jump = 20
+                    self.char.jump = 15
 
     def exit(self, event):
         pass
 
     def do(self):
         if self.char.jump > 0:
-            self.char.y += 5
+            self.char.y += 10
             self.char.jump -= 1
         falling(self.char)
 
@@ -82,7 +82,7 @@ class Move:
             for pos in get_ground_positions():
                 x, y = pos[0], pos[1]
                 if self.char.y == y + 60:
-                    self.char.jump = 20
+                    self.char.jump = 15
 
     def exit(self, e):
         pass
@@ -95,7 +95,7 @@ class Move:
         elif self.char.x > 780:
             self.char.x = 780
         if self.char.jump > 0:
-            self.char.y += 5
+            self.char.y += 10
             self.char.jump -= 1
         falling(self.char)
 
