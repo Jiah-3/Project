@@ -3,7 +3,7 @@ from pico2d import *
 import game_framework
 import game_world
 from character import Char
-from ground import stage1_1
+from stage import stage1_1
 
 
 #class

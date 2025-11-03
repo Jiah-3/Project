@@ -1,7 +1,7 @@
 from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE
 from state_machine import StateMachine
-from ground import get_ground_positions
+from stage import get_ground_positions
 import game_world
 
 def falling(char):
@@ -89,7 +89,7 @@ class Move:
 
     def do(self):
         self.char.frame = (self.char.frame + 1) % 3
-        self.char.x += self.char.face_dir * 5
+        self.char.x += self.char.face_dir * 3
         if self.char.x < 20:
             self.char.x = 20
         elif self.char.x > 780:
