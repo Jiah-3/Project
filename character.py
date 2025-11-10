@@ -3,16 +3,20 @@ from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE
 from state_machine import StateMachine
 from stage import get_ground_positions
 import game_world
+import game_framework
+import math
 
-def falling(char):
-    if char.jump == 0:
-        for pos in get_ground_positions():
-            x, y = pos[0], pos[1]
-            if char.x >= x - 60 and char.x <= x + 60 and char.y == y + 60:
-                return
-            else:
-                continue
-        char.y -= 10
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 36.0
+RUN_SPEED_MPH = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPH / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+GRAVITY = 9.8  # 중력 가속도 (m/s²)
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
+FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 class Idle:
     def __init__(self, char):
@@ -24,16 +28,14 @@ class Idle:
             for pos in get_ground_positions():
                 x, y = pos[0], pos[1]
                 if self.char.y == y + 60:
-                    self.char.jump = 15
+                    self.char.jumping = 1
+                    self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
 
     def exit(self, event):
         pass
 
     def do(self):
-        if self.char.jump > 0:
-            self.char.y += 10
-            self.char.jump -= 1
-        falling(self.char)
+        pass
 
     def draw(self):
         if self.char.face_dir == 1:
@@ -47,7 +49,10 @@ class Char:
         self.x, self.y = 400, 90
         self.frame = 0
         self.face_dir = 1
-        self.jump = 0
+        self.falling_speed = 12
+        self.jumping = 0
+
+        self.yv = 0 # m/s
         self.image = load_image('char_image.png')
 
         self.IDLE = Idle(self)
@@ -62,6 +67,10 @@ class Char:
 
     def update(self):
         self.state_machine.update()
+        self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
+
+        if self.jumping == 1:
+            self.yv -= GRAVITY * game_framework.frame_time
 
     def draw(self):
         self.state_machine.draw()
@@ -82,28 +91,25 @@ class Move:
             for pos in get_ground_positions():
                 x, y = pos[0], pos[1]
                 if self.char.y == y + 60:
-                    self.char.jump = 15
+                    self.char.jumping = 1
+                    self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
 
     def exit(self, e):
         pass
 
     def do(self):
-        self.char.frame = (self.char.frame + 1) % 3
-        self.char.x += self.char.face_dir * 3
+        self.char.frame = (self.char.frame + FRAMES_PER_SEC * game_framework.frame_time) % 3
+        self.char.x += self.char.face_dir * RUN_SPEED_PPS * game_framework.frame_time
         if self.char.x < 20:
             self.char.x = 20
         elif self.char.x > 780:
             self.char.x = 780
-        if self.char.jump > 0:
-            self.char.y += 10
-            self.char.jump -= 1
-        falling(self.char)
 
     def draw(self):
         if self.char.face_dir == 1:
-            self.char.image.clip_draw(self.char.frame * 100, 0, 100, 100, self.char.x, self.char.y)
+            self.char.image.clip_draw(int(self.char.frame) * 100, 0, 100, 100, self.char.x, self.char.y)
         else:
-            self.char.image.clip_draw(self.char.frame * 100, 200, 100, 100, self.char.x, self.char.y)
+            self.char.image.clip_draw(int(self.char.frame) * 100, 200, 100, 100, self.char.x, self.char.y)
 
 class Attack:
     def __init__(self, char):
