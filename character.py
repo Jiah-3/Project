@@ -1,4 +1,4 @@
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE
 from state_machine import StateMachine
 from stage import get_ground_positions
@@ -25,11 +25,9 @@ class Idle:
     def enter(self, e):
         self.char.frame = 0
         if space_down(e):
-            for pos in get_ground_positions():
-                x, y = pos[0], pos[1]
-                if self.char.y == y + 60:
-                    self.char.jumping = 1
-                    self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
+            if self.char.jumping == 0:
+                self.char.jumping = 1
+                self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
 
     def exit(self, event):
         pass
@@ -74,9 +72,24 @@ class Char:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
+
+    def get_bb(self):
+        if self.face_dir == 1:
+            return self.x - 30, self.y - 50, self.x + 10, self.y + 10
+        else:
+            return self.x - 10, self.y - 50, self.x + 30, self.y + 10
+
+    def handle_collision(self, group, other):
+        if group == 'char:ground':
+            if self.jumping == 1:
+                if self.yv < 0:
+                    self.jumping = 0
+                    self.yv = 0
+
 
 class Move:
     def __init__(self, char):
@@ -88,11 +101,9 @@ class Move:
         elif left_down(e) or right_up(e):
             self.char.face_dir = -1
         if space_down(e):
-            for pos in get_ground_positions():
-                x, y = pos[0], pos[1]
-                if self.char.y == y + 60:
-                    self.char.jumping = 1
-                    self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
+            if self.char.jumping == 0:
+                self.char.jumping = 1
+                self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
 
     def exit(self, e):
         pass
@@ -110,6 +121,7 @@ class Move:
             self.char.image.clip_draw(int(self.char.frame) * 100, 0, 100, 100, self.char.x, self.char.y)
         else:
             self.char.image.clip_draw(int(self.char.frame) * 100, 200, 100, 100, self.char.x, self.char.y)
+
 
 class Attack:
     def __init__(self, char):

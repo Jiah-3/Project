@@ -1,4 +1,4 @@
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 
 import game_world
 from background import Bg
@@ -15,6 +15,14 @@ class Ground:
 
     def draw(self):
         self.image.draw(self.x, self.y)
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return self.x - 50, self.y + 9.9, self.x + 50, self.y + 10
+
+    def handle_collision(self, group, other):
+        if group == 'char:ground':
+            pass
 
 positions = []
 
@@ -31,6 +39,7 @@ def stage1_1():
         ground.x = x
         ground.y = y
         game_world.add_object(ground, 1)
+        game_world.add_collision_pair('char:ground', None, ground)
     bg = Bg()
     bg.set_bg(1)
     game_world.add_object(bg, 0)

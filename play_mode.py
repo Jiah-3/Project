@@ -28,9 +28,11 @@ def init():
 
     char = Char()
     game_world.add_object(char, 2)
+    game_world.add_collision_pair('char:ground', char, None)
 
 def update():
     game_world.update()
+    game_world.handle_collisions()
 
 def draw():
     clear_canvas()
