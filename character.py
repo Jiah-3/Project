@@ -25,8 +25,8 @@ class Idle:
     def enter(self, e):
         self.char.frame = 0
         if space_down(e):
-            if self.char.jumping == 0:
-                self.char.jumping = 1
+            if self.char.jumping:
+                #self.char.jumping = False
                 self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
 
     def exit(self, event):
@@ -48,7 +48,7 @@ class Char:
         self.frame = 0
         self.face_dir = 1
         self.falling_speed = 12
-        self.jumping = 0
+        self.jumping = True
 
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
@@ -67,7 +67,7 @@ class Char:
         self.state_machine.update()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 
-        if self.jumping == 1:
+        if self.jumping:
             self.yv -= GRAVITY * game_framework.frame_time
 
     def draw(self):
@@ -85,11 +85,9 @@ class Char:
 
     def handle_collision(self, group, other):
         if group == 'char:ground':
-            if self.jumping == 1:
-                if self.yv < 0:
-                    self.jumping = 0
-                    self.yv = 0
-
+            if self.yv < 0:
+                self.jumping = True
+                self.yv = 0
 
 class Move:
     def __init__(self, char):
@@ -101,8 +99,8 @@ class Move:
         elif left_down(e) or right_up(e):
             self.char.face_dir = -1
         if space_down(e):
-            if self.char.jumping == 0:
-                self.char.jumping = 1
+            if self.char.jumping:
+                #self.char.jumping = False
                 self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
 
     def exit(self, e):
