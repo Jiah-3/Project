@@ -70,6 +70,10 @@ class Char:
         if self.jumping:
             self.yv -= GRAVITY * game_framework.frame_time
 
+        if self.y < 89:
+            self.y = 89
+            self.yv = 0
+
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())
