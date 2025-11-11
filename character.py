@@ -44,7 +44,7 @@ class Idle:
 class Char:
     def __init__(self):
         self.stage = '1_1'
-        self.x, self.y = 400, 90
+        self.x, self.y = 400, 89
         self.frame = 0
         self.face_dir = 1
         self.falling_speed = 12
@@ -86,8 +86,13 @@ class Char:
     def handle_collision(self, group, other):
         if group == 'char:ground':
             if self.yv < 0:
-                self.jumping = True
-                self.yv = 0
+                    #self.jumping = True
+                    dummy = self.yv
+                    self.yv = 0
+                    self.y = int(self.y)
+                    if self.y % 100 != 89:
+                        self.yv = dummy
+
 
 class Move:
     def __init__(self, char):
