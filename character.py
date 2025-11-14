@@ -29,6 +29,13 @@ class Char:
         self.jumping = True
         self.attack = False
 
+        self.hp = 100
+        self.damage = 2
+        self.attack = 100
+        self.defense = 0
+        self.speed = 100
+        self.crit_chance = 0
+
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
 
@@ -146,7 +153,7 @@ class Move:
 
     def do(self):
         self.char.frame = (self.char.frame + FRAMES_PER_SEC * game_framework.frame_time) % 4
-        self.char.x += self.char.face_dir * RUN_SPEED_PPS * game_framework.frame_time
+        self.char.x += self.char.face_dir * RUN_SPEED_PPS * game_framework.frame_time * self.char.speed / 100
         if self.char.x < 20:
             self.char.x = 20
         elif self.char.x > 780:
