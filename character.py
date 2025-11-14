@@ -18,28 +18,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
-class Idle:
-    def __init__(self, char):
-        self.char = char
-
-    def enter(self, e):
-        self.char.frame = 0
-        if space_down(e):
-            if self.char.jumping:
-                if self.char.yv == 0:
-                    #self.char.jumping = False
-                    self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
-    def exit(self, event):
-        pass
-
-    def do(self):
-        pass
-
-    def draw(self):
-        if self.char.face_dir == 1:
-            self.char.image.clip_draw(self.char.frame * 100, 0, 100, 100, self.char.x, self.char.y)
-        else:
-            self.char.image.clip_draw(self.char.frame * 100, 200, 100, 100, self.char.x, self.char.y)
+attack = None
 
 class Char:
     def __init__(self):
@@ -49,19 +28,18 @@ class Char:
         self.face_dir = 1
         self.falling_speed = 12
         self.jumping = True
+        self.attack = False
 
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
 
         self.IDLE = Idle(self)
         self.MOVE = Move(self)
-        self.ATTACK = Attack(self)
         self.state_machine = StateMachine(
             self.IDLE,
             {
-                self.IDLE : {mouse_L_down: self.ATTACK, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
-                self.MOVE: {mouse_L_down: self.ATTACK, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
-                self.ATTACK: {time_out: self.IDLE}
+                self.IDLE : {mouse_L_down: self.IDLE, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
+                self.MOVE: {mouse_L_down: self.MOVE, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
             }
         )
 
@@ -99,6 +77,48 @@ class Char:
                     if self.y % 100 != 89:
                         self.yv = dummy
 
+class Idle:
+    def __init__(self, char):
+        self.char = char
+
+    def enter(self, e):
+        self.char.frame = 0
+        if space_down(e):
+            if self.char.jumping:
+                if self.char.yv == 0:
+                    #self.char.jumping = False
+                    self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
+        if mouse_L_down(e) and not self.char.attack:
+            self.char.flame = 0
+            self.char.attack = True
+            global attack
+            attack = Attack(self.char)
+            game_world.add_object(attack, 0)
+            game_world.add_collision_pair('attack:monster', attack, None)
+
+    def exit(self, event):
+        pass
+
+    def do(self):
+        self.char.frame = (self.char.frame + FRAMES_PER_SEC * game_framework.frame_time) % 4
+        if self.char.attack:
+            if int(self.char.frame) == 3:
+                self.char.attack = False
+                self.char.frame = 0
+                game_world.remove_object(attack)
+
+    def draw(self):
+        if not self.char.attack:
+            if self.char.face_dir == 1:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 0, 100, 100, self.char.x, self.char.y)
+            else:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 200, 100, 100, self.char.x, self.char.y)
+        else:
+            if self.char.face_dir == 1:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 100, 100, 100, self.char.x, self.char.y)
+            else:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 300, 100, 100, self.char.x, self.char.y)
+
 
 class Move:
     def __init__(self, char):
@@ -114,6 +134,13 @@ class Move:
                 if self.char.yv == 0:
                     #self.char.jumping = False
                     self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
+        if mouse_L_down(e) and not self.char.attack:
+            self.char.flame = 0
+            self.char.attack = True
+            global attack
+            attack = Attack(self.char)
+            game_world.add_object(attack, 1)
+            game_world.add_collision_pair('attack:monster', attack, None)
 
     def exit(self, e):
         pass
@@ -125,31 +152,34 @@ class Move:
             self.char.x = 20
         elif self.char.x > 780:
             self.char.x = 780
+        if self.char.attack:
+            if int(self.char.frame) == 3:
+                self.char.attack = False
+                self.char.frame = 0
+                game_world.remove_object(attack)
 
     def draw(self):
-        if self.char.face_dir == 1:
-            self.char.image.clip_draw(int(self.char.frame) * 100, 0, 100, 100, self.char.x, self.char.y)
+        if not self.char.attack:
+            if self.char.face_dir == 1:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 0, 100, 100, self.char.x, self.char.y)
+            else:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 200, 100, 100, self.char.x, self.char.y)
         else:
-            self.char.image.clip_draw(int(self.char.frame) * 100, 200, 100, 100, self.char.x, self.char.y)
+            global attack
+            if self.char.face_dir == 1:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 100, 100, 100, self.char.x, self.char.y)
+                draw_rectangle(self.char.x + 10, self.char.y - 50, self.char.x + 35, self.char.y + 5)
+            else:
+                self.char.image.clip_draw(int(self.char.frame) * 100, 300, 100, 100, self.char.x, self.char.y)
+                draw_rectangle(self.char.x - 10, self.char.y - 50, self.char.x - 35, self.char.y + 5)
 
 
 class Attack:
     def __init__(self, char):
         self.char = char
 
-    def enter(self, e):
-        self.char.wait_time = get_time()
-        self.char.frame = 0
-        game_world.add_object(self, 2)
-        game_world.add_collision_pair('attack:monster', self, None)
-
-    def exit(self, e):
-        game_world.remove_object(self)
-
     def do(self):
-        self.char.frame = (self.char.frame + FRAMES_PER_SEC * game_framework.frame_time) % 4
-        if get_time() - self.char.wait_time > 0.25:
-            self.char.state_machine.handle_state_event(('TIME_OUT', None))
+        pass
 
     def get_bb(self):
         if self.char.face_dir == 1:
@@ -159,10 +189,6 @@ class Attack:
 
     def draw(self):
         draw_rectangle(*self.get_bb())
-        if self.char.face_dir == 1:
-            self.char.image.clip_draw(int(self.char.frame) * 100, 100, 100, 100, self.char.x, self.char.y)
-        else:
-            self.char.image.clip_draw(int(self.char.frame) * 100, 300, 100, 100, self.char.x, self.char.y)
 
     def update(self):
         pass
