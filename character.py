@@ -22,8 +22,7 @@ attack = None
 
 class Char:
     def __init__(self):
-        self.stage = '1_1'
-        self.x, self.y = 400, 89
+        self.x, self.y = 30, 89
         self.frame = 0
         self.face_dir = 1
         self.falling_speed = 12
