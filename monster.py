@@ -18,10 +18,10 @@ FRAMES_PER_ACTION = 8
 FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 class Monster:
-    def __init__(self, x, y):
+    def __init__(self):
         self.moving = 300
         self.image = load_image('monster.png')
-        self.x, self.y = x, y
+        self.x, self.y = 0, 0
         self.frame = 0
         self.direction = 1
         self.move = 0
@@ -41,7 +41,7 @@ class Monster:
         #self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time) % 2
         if self.moving == 0:
             self.move = random.randint(-1, 1)
-            self.moving = 0
+            self.moving = 300
 
         if self.move == 1:
             self.direction = 1

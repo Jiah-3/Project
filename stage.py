@@ -2,6 +2,7 @@ from pico2d import load_image, draw_rectangle
 
 import game_world
 from background import Bg
+from monster import Monster
 
 
 class Ground:
@@ -41,6 +42,15 @@ def set_stage1_1():
     bg = Bg()
     bg.set_bg(1)
     game_world.add_object(bg, 0)
+
+    monster_positions = [(400, 90),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+
 
 def set_stage1_2():
     global positions
