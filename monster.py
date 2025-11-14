@@ -1,3 +1,5 @@
+import random
+
 from pico2d import load_image, draw_rectangle
 
 import game_framework
@@ -17,10 +19,12 @@ FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 class Monster:
     def __init__(self, x, y):
+        self.moving = 300
         self.image = load_image('monster.png')
         self.x, self.y = x, y
         self.frame = 0
         self.direction = 1
+        self.move = 0
         self.size_x1 = 0
         self.size_y1 = 0
         self.size_x2 = 0
@@ -35,7 +39,25 @@ class Monster:
 
     def update(self):
         #self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time) % 2
-        pass
+        if self.moving == 0:
+            self.move = random.randint(-1, 1)
+            self.moving = 0
+
+        if self.move == 1:
+            self.direction = 1
+            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
+            self.moving -= 1
+        elif self.move == -1:
+            self.direction = -1
+            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
+            self.moving -= 1
+        else:
+            self.moving -= 1
+
+        if self.x < 20:
+            self.x = 20
+        elif self.x > 780:
+            self.x = 780
 
     def draw(self):
         self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
@@ -49,7 +71,8 @@ class Monster:
 
     def handle_collision(self, group, other):
         if group == 'attack:monster':
-            game_world.remove_object(self)
+            #game_world.remove_object(self)
+            print('monster hit')
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1
@@ -64,3 +87,6 @@ class Monster:
         self.speed = speed
         self.gold = gold
         self.exp = exp
+
+    def set_image(self, image):
+        self.image = load_image(image)
