@@ -164,13 +164,10 @@ class Move:
             else:
                 self.char.image.clip_draw(int(self.char.frame) * 100, 200, 100, 100, self.char.x, self.char.y)
         else:
-            global attack
             if self.char.face_dir == 1:
                 self.char.image.clip_draw(int(self.char.frame) * 100, 100, 100, 100, self.char.x, self.char.y)
-                draw_rectangle(self.char.x + 10, self.char.y - 50, self.char.x + 35, self.char.y + 5)
             else:
                 self.char.image.clip_draw(int(self.char.frame) * 100, 300, 100, 100, self.char.x, self.char.y)
-                draw_rectangle(self.char.x - 10, self.char.y - 50, self.char.x - 35, self.char.y + 5)
 
 
 class Attack:
@@ -182,9 +179,9 @@ class Attack:
 
     def get_bb(self):
         if self.char.face_dir == 1:
-            return self.char.x + 10, self.char.y - 50, self.char.x + 35, self.char.y + 5
+            return self.char.x + 10, self.char.y - 40, self.char.x + 35, self.char.y + 5
         else:
-            return self.char.x - 10, self.char.y - 50, self.char.x - 35, self.char.y + 5
+            return self.char.x - 10, self.char.y - 40, self.char.x - 35, self.char.y + 5
 
     def draw(self):
         draw_rectangle(*self.get_bb())
