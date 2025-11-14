@@ -181,7 +181,7 @@ class Attack:
         if self.char.face_dir == 1:
             return self.char.x + 10, self.char.y - 40, self.char.x + 35, self.char.y + 5
         else:
-            return self.char.x - 10, self.char.y - 40, self.char.x - 35, self.char.y + 5
+            return self.char.x - 35, self.char.y - 40, self.char.x - 10, self.char.y + 5
 
     def draw(self):
         draw_rectangle(*self.get_bb())
