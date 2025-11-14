@@ -3,7 +3,7 @@ from pico2d import *
 import game_framework
 import game_world
 from character import Char
-from stage import stage1_1
+from stage import set_stage1_2
 
 
 #class
@@ -24,7 +24,7 @@ def finish():
 def init():
     global char
 
-    stage1_1()
+    set_stage1_2()
 
     char = Char()
     game_world.add_object(char, 2)
@@ -33,6 +33,7 @@ def init():
 def update():
     game_world.update()
     game_world.handle_collisions()
+    #print(char.y)
 
 def draw():
     clear_canvas()
