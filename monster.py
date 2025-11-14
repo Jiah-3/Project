@@ -1,6 +1,7 @@
 from pico2d import load_image, draw_rectangle
 
 import game_framework
+import game_world
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -20,6 +21,10 @@ class Monster:
         self.x, self.y = x, y
         self.frame = 0
         self.direction = 1
+        self.size_x1 = 0
+        self.size_y1 = 0
+        self.size_x2 = 0
+        self.size_y2 = 0
 
         self.hp = 0
         self.attack = 0
@@ -29,6 +34,7 @@ class Monster:
         self.exp = 0
 
     def update(self):
+        #self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time) % 2
         pass
 
     def draw(self):
@@ -36,14 +42,20 @@ class Monster:
         draw_rectangle(*self.get_bb())
 
     def do(self):
-        #self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time) % 4
         pass
 
     def get_bb(self):
-        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+        return self.x - self.size_x1, self.y - self.size_y1, self.x + self.size_x2, self.y + self.size_y2
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'attack:monster':
+            game_world.remove_object(self)
+
+    def set_size(self, size_x1, size_y1, size_x2, size_y2):
+        self.size_x1 = size_x1
+        self.size_y1 = size_y1
+        self.size_x2 = size_x2
+        self.size_y2 = size_y2
 
     def set_stat(self, hp, attack, defense, speed, gold, exp):
         self.hp = hp
