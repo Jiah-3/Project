@@ -30,6 +30,7 @@ class Monster:
         self.size_x2 = 0
         self.size_y2 = 0
 
+        self.max_hp = 0
         self.hp = 0
         self.attack = 0
         self.defense = 0
@@ -37,7 +38,14 @@ class Monster:
         self.gold = 0
         self.exp = 0
 
+        self.immune_time = 0
+
     def update(self):
+        if self.immune_time > 0.0:
+            self.immune_time -= game_framework.frame_time
+            if self.immune_time < 0.0:
+                self.immune_time = 0.0
+
         #self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time) % 2
         if self.moving == 0:
             self.move = random.randint(-1, 1)
@@ -72,7 +80,9 @@ class Monster:
     def handle_collision(self, group, other):
         if group == 'attack:monster':
             #game_world.remove_object(self)
-            print('monster hit')
+            if self.immune_time == 0:
+                self.immune_time = 0.5
+                print('monster hit')
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1
@@ -81,6 +91,7 @@ class Monster:
         self.size_y2 = size_y2
 
     def set_stat(self, hp, attack, defense, speed, gold, exp):
+        self.max_hp = hp
         self.hp = hp
         self.attack = attack
         self.defense = defense
