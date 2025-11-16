@@ -81,8 +81,13 @@ class Monster:
         if group == 'attack:monster':
             #game_world.remove_object(self)
             if self.immune_time == 0:
-                self.immune_time = 0.5
+                self.immune_time = 0.3
                 print('monster hit')
+                damage = other.damage * ((100 - self.defense) / 100)
+                self.hp -= damage
+                print(f'monster hp: {self.hp}/{self.max_hp}')
+                if self.hp <= 0:
+                    game_world.remove_object(self)
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1

@@ -29,6 +29,7 @@ class Char:
         self.jumping = True
         self.attack = False
 
+        self.max_hp = 100
         self.hp = 100
         self.damage = 2
         self.attack = 100
@@ -180,6 +181,8 @@ class Move:
 class Attack:
     def __init__(self, char):
         self.char = char
+        self.damage = char.damage
+        self.attack = char.attack
 
     def do(self):
         pass

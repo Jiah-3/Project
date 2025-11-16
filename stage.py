@@ -49,7 +49,10 @@ def set_stage1_1():
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
+        monster.set_size(45, 47, 45, 35)
+        monster.set_stat(40, 5, 3, 100, 20, 0.35)
         game_world.add_collision_pair('attack:monster', None, monster)
+
 
 
 def set_stage1_2():
