@@ -3,11 +3,9 @@ from pico2d import *
 import character_state
 import game_framework
 import game_world
+import stage
 from character import Char
-from stage import set_stage1_2
 
-
-#class
 
 def handle_events():
     events = get_events()
@@ -16,6 +14,9 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
+            if stage.monster_count == 0:
+                game_framework.quit()
         else:
             char.handle_event(event)
 
@@ -27,9 +28,12 @@ def finish():
 def init():
     global char
 
-    set_stage1_2()
-
-    char = character_state.char
+    stage.set_stage1_2()
+    stage.monster_count = 5
+    if character_state.char is None:
+        char = Char()
+    else:
+        char = character_state.char
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)
     game_world.add_collision_pair('char:monster', char, None)

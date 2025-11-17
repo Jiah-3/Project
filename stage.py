@@ -4,6 +4,7 @@ import game_world
 from background import Bg
 from monster import Monster
 
+monster_count = 0
 
 class Ground:
     def __init__(self):
@@ -43,14 +44,16 @@ def set_stage1_1():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
-    monster_positions = [(400, 90),]
+    monster_positions = [(300, 90), (400, 90), (500, 90)]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
-        monster.set_size(45, 47, 45, 35)
-        monster.set_stat(40, 5, 3, 100, 20, 0.35)
+        monster.set_size(35, 50, 35, 16)
+        monster.set_stat(20, 3, 0, 60, 10, 0.1)
+        monster.set_image('snake.png')
+        monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
 
@@ -74,6 +77,19 @@ def set_stage1_2():
     bg = Bg()
     bg.set_bg(1)
     game_world.add_object(bg, 0)
+
+    monster_positions = [(300, 90), (200, 190), (500, 90), (600, 190), (350, 90)]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(35, 50, 35, 16)
+        monster.set_stat(20, 3, 0, 60, 10, 0.1)
+        monster.set_image('snake.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
 
 def set_stage1_3():
     global positions

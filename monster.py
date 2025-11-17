@@ -4,6 +4,7 @@ from pico2d import load_image, draw_rectangle
 
 import game_framework
 import game_world
+import stage
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -20,9 +21,10 @@ FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 class Monster:
     def __init__(self):
         self.moving = 300
-        self.image = load_image('monster.png')
+        self.image = load_image('test.png')
         self.x, self.y = 0, 0
         self.frame = 0
+        self.max_frame = 0
         self.direction = 1
         self.move = 0
         self.size_x1 = 0
@@ -46,7 +48,7 @@ class Monster:
             if self.immune_time < 0.0:
                 self.immune_time = 0.0
 
-        #self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time) % 2
+        self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time / 3) % self.max_frame
         if self.moving == 0:
             self.move = random.randint(-1, 1)
             self.moving = 300
@@ -70,7 +72,10 @@ class Monster:
             self.move = -1
 
     def draw(self):
-        self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        if self.direction == 1:
+            self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        else:
+            self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
         draw_rectangle(*self.get_bb())
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10)
@@ -94,6 +99,7 @@ class Monster:
                     game_world.remove_object(self)
                     other.char.gold += self.gold
                     other.char.exp += self.exp
+                    stage.monster_count -= 1
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1
@@ -112,3 +118,6 @@ class Monster:
 
     def set_image(self, image):
         self.image = load_image(image)
+
+    def set_max_frame(self, frame):
+        self.max_frame = frame
