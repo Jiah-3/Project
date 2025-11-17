@@ -68,6 +68,16 @@ class Char:
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())
+        self.draw_hp_bar()
+
+    def draw_hp_bar(self):
+        draw_rectangle(10, 20, 10 + 100 * self.hp / self.max_hp, 21)
+        draw_rectangle(10, 22, 10 + 100 * self.hp / self.max_hp, 23)
+        draw_rectangle(10, 24, 10 + 100 * self.hp / self.max_hp, 25)
+        draw_rectangle(10, 26, 10 + 100 * self.hp / self.max_hp, 27)
+        draw_rectangle(10, 28, 10 + 100 * self.hp / self.max_hp, 29)
+
+        draw_rectangle(9, 19, 110, 30)
 
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
