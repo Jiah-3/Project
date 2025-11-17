@@ -1,5 +1,6 @@
 from pico2d import *
 
+import character_state
 import game_framework
 import game_world
 import stage1_2
@@ -16,12 +17,13 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        # event.type == SDL_KEYDOWN and event.key == SDLK_w:
-        #    game_framework.change_mode(stage1_2)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
+            game_framework.change_mode(stage1_2)
         else:
             char.handle_event(event)
 
 def finish():
+    character_state.char = char
     game_world.clear()
 
 def init():
