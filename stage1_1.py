@@ -24,6 +24,7 @@ def handle_events():
 
 def finish():
     character_state.char = char
+    game_world.collision_pairs.clear()
     game_world.clear()
 
 def init():

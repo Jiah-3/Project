@@ -1,5 +1,6 @@
 from pico2d import *
 
+import character_state
 import game_framework
 import game_world
 from character import Char
@@ -19,6 +20,8 @@ def handle_events():
             char.handle_event(event)
 
 def finish():
+    character_state.char = char
+    game_world.collision_pairs.clear()
     game_world.clear()
 
 def init():
@@ -26,9 +29,10 @@ def init():
 
     set_stage1_2()
 
-    char = Char()
+    char = character_state.char
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)
+    game_world.add_collision_pair('char:monster', char, None)
 
 def update():
     game_world.update()
