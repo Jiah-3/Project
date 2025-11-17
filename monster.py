@@ -62,10 +62,12 @@ class Monster:
         else:
             self.moving -= 1
 
-        if self.x < 20:
-            self.x = 20
-        elif self.x > 780:
-            self.x = 780
+        if self.x - self.size_x1 < 0:
+            self.x = self.size_x1 + 20
+            self.move = 1
+        elif self.x + self.size_x2 > 800:
+            self.x = 800 - self.size_x2 - 20
+            self.move = -1
 
     def draw(self):
         self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
