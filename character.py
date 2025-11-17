@@ -36,6 +36,10 @@ class Char:
         self.speed = 100
         self.crit_chance = 0
 
+        self.gold = 0
+        self.exp = 0
+        self.next_level_exp = 1
+
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
 
@@ -68,8 +72,12 @@ class Char:
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())
+        #체력 바
         draw_rectangle(10, 20, 10 + 100 * self.hp / self.max_hp, 29, 255, 0, 0, filled=True)
         draw_rectangle(9, 19, 110, 30)
+        #경험치 바
+        draw_rectangle(10, 8, 10 + 100 * self.exp / self.next_level_exp, 18, 255, 255, 0, filled=True)
+        draw_rectangle(10, 8, 110, 18, 255, 255, 0)
 
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
