@@ -18,16 +18,15 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
-attack = None
-
 class Char:
     def __init__(self):
+        self.immune_time = 0
         self.x, self.y = 30, 89
         self.frame = 0
         self.face_dir = 1
         self.falling_speed = 12
         self.jumping = True
-        self.attack = False
+        self.attacking = False
 
         self.max_hp = 100
         self.hp = 100
@@ -61,6 +60,11 @@ class Char:
             self.y = 89
             self.yv = 0
 
+        if self.immune_time > 0.0:
+            self.immune_time -= game_framework.frame_time
+            if self.immune_time < 0.0:
+                self.immune_time = 0.0
+
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())
@@ -84,6 +88,14 @@ class Char:
                     if self.y % 100 != 89:
                         self.yv = dummy
 
+        if group == 'char:monster':
+            if self.immune_time == 0:
+                self.immune_time = 0.5
+                print('player hit')
+                damage = other.attack * ((100 - self.defense) / 100)
+                self.hp -= damage
+                print(f'player hp: {self.hp}/{self.max_hp}')
+
 class Idle:
     def __init__(self, char):
         self.char = char
@@ -95,9 +107,9 @@ class Idle:
                 if self.char.yv == 0:
                     #self.char.jumping = False
                     self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
-        if mouse_L_down(e) and not self.char.attack:
+        if mouse_L_down(e) and not self.char.attacking:
             self.char.flame = 0
-            self.char.attack = True
+            self.char.attacking = True
             global attack
             attack = Attack(self.char)
             game_world.add_object(attack, 0)
@@ -108,14 +120,14 @@ class Idle:
 
     def do(self):
         self.char.frame = (self.char.frame + FRAMES_PER_SEC * game_framework.frame_time) % 4
-        if self.char.attack:
+        if self.char.attacking:
             if int(self.char.frame) == 3:
-                self.char.attack = False
+                self.char.attacking = False
                 self.char.frame = 0
                 game_world.remove_object(attack)
 
     def draw(self):
-        if not self.char.attack:
+        if not self.char.attacking:
             if self.char.face_dir == 1:
                 self.char.image.clip_draw(int(self.char.frame) * 100, 0, 100, 100, self.char.x, self.char.y)
             else:
@@ -141,9 +153,9 @@ class Move:
                 if self.char.yv == 0:
                     #self.char.jumping = False
                     self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
-        if mouse_L_down(e) and not self.char.attack:
+        if mouse_L_down(e) and not self.char.attacking:
             self.char.flame = 0
-            self.char.attack = True
+            self.char.attacking = True
             global attack
             attack = Attack(self.char)
             game_world.add_object(attack, 1)
@@ -159,14 +171,14 @@ class Move:
             self.char.x = 20
         elif self.char.x > 780:
             self.char.x = 780
-        if self.char.attack:
+        if self.char.attacking:
             if int(self.char.frame) == 3:
-                self.char.attack = False
+                self.char.attacking = False
                 self.char.frame = 0
                 game_world.remove_object(attack)
 
     def draw(self):
-        if not self.char.attack:
+        if not self.char.attacking:
             if self.char.face_dir == 1:
                 self.char.image.clip_draw(int(self.char.frame) * 100, 0, 100, 100, self.char.x, self.char.y)
             else:

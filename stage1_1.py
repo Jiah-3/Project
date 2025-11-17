@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import stage1_2
 from character import Char
 from stage import set_stage1_1
 
@@ -15,6 +16,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        # event.type == SDL_KEYDOWN and event.key == SDLK_w:
+        #    game_framework.change_mode(stage1_2)
         else:
             char.handle_event(event)
 
@@ -29,6 +32,7 @@ def init():
     char = Char()
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)
+    game_world.add_collision_pair('char:monster', char, None)
 
 def update():
     game_world.update()
