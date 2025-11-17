@@ -90,6 +90,8 @@ class Monster:
                 print(f'monster hp: {self.hp}/{self.max_hp}')
                 if self.hp <= 0:
                     game_world.remove_object(self)
+                    other.char.money += self.gold
+                    other.char.exp += self.exp
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1
