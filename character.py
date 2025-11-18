@@ -1,7 +1,6 @@
-from pico2d import load_image, draw_rectangle, get_time
+from pico2d import load_image, draw_rectangle, get_time, load_font
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT
 from state_machine import StateMachine
-from stage import get_ground_positions
 import game_world
 import game_framework
 import math
@@ -27,6 +26,8 @@ class Char:
         self.falling_speed = 12
         self.jumping = True
         self.attacking = False
+        self.level_image = load_image('level.png')
+        self.font = load_font('ENCR10B.TTF', 10)
 
         self.max_hp = 100
         self.hp = 100
@@ -39,6 +40,7 @@ class Char:
         self.gold = 0
         self.exp = 0
         self.next_level_exp = 1
+        self.level = 0
 
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
@@ -73,11 +75,15 @@ class Char:
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())
         #체력 바
-        draw_rectangle(10, 20, 10 + 100 * self.hp / self.max_hp, 29, 255, 0, 0, filled=True)
-        draw_rectangle(9, 19, 110, 30)
+        draw_rectangle(37, 20, 37 + 100 * self.hp / self.max_hp, 30, 255, 0, 0, filled=True)
+        draw_rectangle(36, 19, 138, 31)
         #경험치 바
-        draw_rectangle(10, 8, 10 + 100 * self.exp / self.next_level_exp, 18, 255, 255, 0, filled=True)
-        draw_rectangle(10, 8, 110, 18, 255, 255, 0)
+        draw_rectangle(37, 7, 37 + 100 * self.exp / self.next_level_exp, 17, 255, 255, 0, filled=True)
+        draw_rectangle(36, 6, 138, 18, 255, 255, 0)
+        # 레벨 표시
+        self.level_image.clip_draw(0, 0, 35, 35, 20, 19)
+        # 레벨 숫자 표시
+        self.font.draw(8, 20, f'{self.level}', (0, 0, 0))
 
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
