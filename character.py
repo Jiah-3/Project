@@ -1,5 +1,8 @@
 from pico2d import load_image, draw_rectangle, get_time, load_font
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT
+
+import character_state
+import stage1_1
 from state_machine import StateMachine
 import game_world
 import game_framework
@@ -28,27 +31,45 @@ class Char:
         self.attacking = False
         self.level_image = load_image('level.png')
         self.font = load_font('ENCR10B.TTF', 10)
+        if character_state.char is None:
+            self.stat_points = 0
+            self.stat_hp = 0
+            self.stat_attack = 0
+            self.stat_defense = 0
+            self.stat_agility = 0
+            self.stat_luck = 0
 
-        self.max_hp = 100
-        self.hp = 100
-        self.damage = 2
-        self.attack = 100
-        self.defense = 0
-        self.speed = 100
-        self.crit_chance = 0
+            self.gold = 0
+            self.exp = 0
+            self.prev_level_exp = 1
+            self.next_level_exp = 1
+            self.level = 0
 
-        self.gold = 0
-        self.exp = 0
-        self.prev_level_exp = 1
-        self.next_level_exp = 1
-        self.level = 0
+            self.max_hp = 100
+            self.hp = 100
+            self.damage = 20
+            self.attack = 100
+            self.defense = 0
+            self.speed = 100
+            self.crit_chance = 0
+        else:
+            self.char = character_state.char
 
-        self.stat_points = 0
-        self.stat_hp = 0
-        self.stat_attack = 0
-        self.stat_defense = 0
-        self.stat_agility = 0
-        self.stat_luck = 0
+            self.gold = 0
+            self.max_hp = 100 + self.stat_hp * 1
+            self.hp = 100 + self.stat_hp * 1
+            self.damage = 2 + self.stat_attack * 0.05
+            self.attack = 100
+            self.defense = 0 + self.stat_defense * 0.5
+            self.speed = 100 + self.stat_agility * 1
+            self.crit_chance = 0 + self.stat_luck * 1
+
+        #아이템 초기화
+        self.item = {
+            None, None, None,
+            None, None, None,
+            None, None, None
+        }
 
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
@@ -121,10 +142,12 @@ class Char:
         if group == 'char:monster':
             if self.immune_time == 0:
                 self.immune_time = 0.5
-                print('player hit')
+                #print('player hit')
                 damage = other.attack * ((100 - self.defense) / 100)
                 self.hp -= damage
-                print(f'player hp: {self.hp}/{self.max_hp}')
+                #print(f'player hp: {self.hp}/{self.max_hp}')
+                if self.hp <= 0:
+                    game_framework.change_mode(stage1_1)
 
 class Idle:
     def __init__(self, char):
