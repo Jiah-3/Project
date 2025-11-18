@@ -30,8 +30,10 @@ def init():
 
     stage.set_stage1_2()
     stage.monster_count = 5
-
-    char = Char()
+    if character_state.char is None:
+        char = Char()
+    else:
+        char = character_state.char
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)
     game_world.add_collision_pair('char:monster', char, None)

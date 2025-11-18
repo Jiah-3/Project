@@ -4,8 +4,8 @@ import character_state
 import game_framework
 import game_world
 import stage
-import stage1_2
 from character import Char
+
 
 def handle_events():
     events = get_events()
@@ -16,7 +16,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
             if stage.monster_count == 0:
-                game_framework.change_mode(stage1_2)
+                #game_framework.change_mode(stage1_4)
+                pass
         else:
             char.handle_event(event)
 
@@ -28,8 +29,8 @@ def finish():
 def init():
     global char
 
-    stage.set_stage1_1()
-    stage.monster_count = 3
+    stage.set_stage1_3()
+    stage.monster_count = 5
 
     if character_state.char is None:
         char = Char()
