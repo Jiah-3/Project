@@ -91,10 +91,14 @@ class Monster:
             #game_world.remove_object(self)
             if self.immune_time == 0:
                 self.immune_time = 0.5
-                print('monster hit')
-                damage = other.damage * (other.attack / 100) * ((100 - self.defense) / 100)
+                #print('monster hit')
+                if other.char.crit_chance >= random.randint(1, 100):
+                    damage = other.char.damage * 1.5 * (other.char.attack / 100) * ((100 - self.defense) / 100)
+                    print('critical hit')
+                else:
+                    damage = other.char.damage * (other.char.attack / 100) * ((100 - self.defense) / 100)
                 self.hp -= damage
-                print(f'monster hp: {self.hp}/{self.max_hp}')
+                #print(f'monster hp: {self.hp}/{self.max_hp}')
                 if self.hp <= 0:
                     game_world.remove_object(self)
                     other.char.gold += self.gold

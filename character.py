@@ -223,8 +223,6 @@ class Move:
 class Attack:
     def __init__(self, char):
         self.char = char
-        self.damage = char.damage
-        self.attack = char.attack
 
     def do(self):
         pass
