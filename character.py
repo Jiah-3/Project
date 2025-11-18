@@ -39,8 +39,16 @@ class Char:
 
         self.gold = 0
         self.exp = 0
+        self.prev_level_exp = 1
         self.next_level_exp = 1
         self.level = 0
+
+        self.stat_points = 0
+        self.stat_hp = 0
+        self.stat_attack = 0
+        self.stat_defense = 0
+        self.stat_agility = 0
+        self.stat_luck = 0
 
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
@@ -70,6 +78,12 @@ class Char:
             self.immune_time -= game_framework.frame_time
             if self.immune_time < 0.0:
                 self.immune_time = 0.0
+
+        if self.next_level_exp <= self.exp:
+            self.level += 1
+            self.stat_points += 4
+            self.exp -= self.next_level_exp
+            self.prev_level_exp, self.next_level_exp = self.next_level_exp, self.prev_level_exp + self.next_level_exp
 
     def draw(self):
         self.state_machine.draw()
