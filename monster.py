@@ -40,7 +40,7 @@ class Monster:
         self.gold = 0
         self.exp = 0
 
-        self.immune_time = 0
+        self.immune_time = 0.0
 
     def update(self):
         if self.immune_time > 0.0:
@@ -78,7 +78,7 @@ class Monster:
             self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
         draw_rectangle(*self.get_bb())
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
-        draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10)
+        draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
 
     def do(self):
         pass
