@@ -104,6 +104,9 @@ class Monster:
                     other.char.gold += self.gold
                     other.char.exp += self.exp
                     stage.monster_count -= 1
+        if group == 'monster:block':
+            self.direction = self.direction
+            self.move = self.move * -1
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1

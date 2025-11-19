@@ -26,6 +26,24 @@ class Ground:
         if group == 'char:ground':
             pass
 
+class Block:
+    def __init__(self):
+        self.x = 50
+        self.y = 50
+
+    def update(self):
+        pass
+
+    def draw(self):
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
+
+    def handle_collision(self, group, other):
+        if group == 'monster:block':
+            pass
+
 positions = []
 
 def set_stage1_1():
@@ -44,6 +62,7 @@ def set_stage1_1():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
+    #뱀 소환
     monster_positions = [(300, 90), (400, 90), (500, 90)]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
@@ -56,6 +75,15 @@ def set_stage1_1():
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    #벽 생성
+    block_position = []
+    blocks = [Block() for _ in block_position]
+    for block, (x, y) in zip(blocks, block_position):
+        block.x = x
+        block.y = y
+        game_world.add_object(block, 0)
+        game_world.add_collision_pair('monster:block', None, block)
 
 
 
@@ -78,6 +106,7 @@ def set_stage1_2():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
+    # 뱀 소환
     monster_positions = [(300, 90), (200, 190), (500, 90), (600, 190), (350, 90)]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
@@ -90,6 +119,15 @@ def set_stage1_2():
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    #벽 생성
+    block_position = [(70, 190), (330, 190), (470, 190), (730, 190)]
+    blocks = [Block() for _ in block_position]
+    for block, (x, y) in zip(blocks, block_position):
+        block.x = x
+        block.y = y
+        game_world.add_object(block, 0)
+        game_world.add_collision_pair('monster:block', None, block)
 
 def set_stage1_3():
     global positions
