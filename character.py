@@ -216,8 +216,8 @@ class Move:
             attack = Attack(self.char)
             game_world.add_object(attack, 1)
             game_world.add_collision_pair('attack:monster', attack, None)
-        # if e_down(e):
-        #     game_framework.push_mode(inventory_mode)
+        if e_down(e):
+            game_framework.push_mode(inventory_mode)
 
     def exit(self, e):
         pass
