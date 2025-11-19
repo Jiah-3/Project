@@ -34,7 +34,7 @@ class Char:
         if character_state.char is None:
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 0
+            self.stat_attack = 100
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -45,13 +45,13 @@ class Char:
             self.next_level_exp = 1
             self.level = 0
 
-            self.max_hp = 100
-            self.hp = 100
-            self.damage = 2
+            self.max_hp = 100 + self.stat_hp * 1
+            self.hp = 100 + self.stat_hp * 1
+            self.damage = 2 + self.stat_attack * 0.05
             self.attack = 100
-            self.defense = 0
-            self.speed = 100
-            self.crit_chance = 0
+            self.defense = 0 + self.stat_defense * 0.5
+            self.speed = 100 + self.stat_agility * 1
+            self.crit_chance = 0 + self.stat_luck * 1
         else:
             self.char = character_state.char
 
