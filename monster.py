@@ -105,8 +105,9 @@ class Monster:
                     other.char.exp += self.exp
                     stage.monster_count -= 1
         if group == 'monster:block':
-            self.direction = self.direction
+            self.direction = self.direction * -1
             self.move = self.move * -1
+            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1
