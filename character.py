@@ -1,8 +1,8 @@
-from pico2d import load_image, draw_rectangle, get_time, load_font
-from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT
+from pico2d import load_image, draw_rectangle, load_font
+from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e
 
 import character_state
-import stage1_1
+import inventory_mode
 from state_machine import StateMachine
 import game_world
 import game_framework
@@ -46,7 +46,7 @@ class Char:
             self.level = 0
 
             self.max_hp = 100
-            self.hp = 100
+            self.hp = 10
             self.damage = 20
             self.attack = 100
             self.defense = 0
@@ -79,8 +79,8 @@ class Char:
         self.state_machine = StateMachine(
             self.IDLE,
             {
-                self.IDLE : {mouse_L_down: self.IDLE, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
-                self.MOVE: {mouse_L_down: self.MOVE, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
+                self.IDLE : {e_down: self.IDLE, mouse_L_down: self.IDLE, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
+                self.MOVE: {e_down: self.MOVE, mouse_L_down: self.MOVE, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
             }
         )
 
@@ -147,6 +147,7 @@ class Char:
                 self.hp -= damage
                 #print(f'player hp: {self.hp}/{self.max_hp}')
                 if self.hp <= 0:
+                    import stage1_1
                     game_framework.change_mode(stage1_1)
 
 class Idle:
@@ -167,6 +168,8 @@ class Idle:
             attack = Attack(self.char)
             game_world.add_object(attack, 0)
             game_world.add_collision_pair('attack:monster', attack, None)
+        if e_down(e):
+               game_framework.push_mode(inventory_mode)
 
     def exit(self, event):
         pass
@@ -213,6 +216,8 @@ class Move:
             attack = Attack(self.char)
             game_world.add_object(attack, 1)
             game_world.add_collision_pair('attack:monster', attack, None)
+        # if e_down(e):
+        #     game_framework.push_mode(inventory_mode)
 
     def exit(self, e):
         pass
@@ -280,6 +285,9 @@ def left_up(e):
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+
+def e_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_e
 
 def mouse_L_down(e):
     if e[0] != 'INPUT' or e[1].type != SDL_MOUSEBUTTONDOWN:
