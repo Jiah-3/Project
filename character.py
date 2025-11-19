@@ -46,8 +46,8 @@ class Char:
             self.level = 0
 
             self.max_hp = 100
-            self.hp = 10
-            self.damage = 20
+            self.hp = 100
+            self.damage = 2
             self.attack = 100
             self.defense = 0
             self.speed = 100
@@ -63,6 +63,7 @@ class Char:
             self.defense = 0 + self.stat_defense * 0.5
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
+            self.x, self.y = 30, 89
 
         #아이템 초기화
         self.item = {
@@ -147,6 +148,19 @@ class Char:
                 self.hp -= damage
                 #print(f'player hp: {self.hp}/{self.max_hp}')
                 if self.hp <= 0:
+                    self.char = character_state.char
+
+                    self.gold = 0
+                    self.max_hp = 100 + self.stat_hp * 1
+                    self.hp = 100 + self.stat_hp * 1
+                    self.damage = 2 + self.stat_attack * 0.05
+                    self.attack = 100
+                    self.defense = 0 + self.stat_defense * 0.5
+                    self.speed = 100 + self.stat_agility * 1
+                    self.crit_chance = 0 + self.stat_luck * 1
+
+                    self.x, self.y = 30, 89
+
                     import stage1_1
                     game_framework.change_mode(stage1_1)
 
