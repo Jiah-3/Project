@@ -14,6 +14,8 @@ def handle_events():
     for event in events:
         if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.pop_mode()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_e:
+            game_framework.pop_mode()
 
 def finish():
     global inventory
