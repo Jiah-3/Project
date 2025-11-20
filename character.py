@@ -98,7 +98,7 @@ class Char:
         )
 
     def update(self):
-        print(f'{self.y}')
+        # print(f'{self.y}')
         self.state_machine.update()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 
@@ -115,6 +115,9 @@ class Char:
             self.stat_points += 4
             self.exp -= self.next_level_exp
             self.prev_level_exp, self.next_level_exp = self.next_level_exp, self.prev_level_exp + self.next_level_exp
+
+        if self.y <= -100:
+            self.y = 900
 
     def draw(self):
         self.state_machine.draw()
