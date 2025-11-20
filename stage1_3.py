@@ -30,7 +30,7 @@ def init():
     global char
 
     stage.set_stage1_3()
-    stage.monster_count = 5
+    stage.monster_count = 8
 
     char = Char()
     game_world.add_object(char, 2)
