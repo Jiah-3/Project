@@ -1,8 +1,9 @@
 from pico2d import load_image, draw_rectangle, load_font
-from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e
+from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e, SDLK_s
 
 import character_state
 import inventory_mode
+import drawing_bb
 from state_machine import StateMachine
 import game_world
 import game_framework
@@ -91,8 +92,8 @@ class Char:
         self.state_machine = StateMachine(
             self.IDLE,
             {
-                self.IDLE : {e_down: self.IDLE, mouse_L_down: self.IDLE, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
-                self.MOVE: {e_down: self.MOVE, mouse_L_down: self.MOVE, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
+                self.IDLE : {s_down: self.IDLE, e_down: self.IDLE, mouse_L_down: self.IDLE, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
+                self.MOVE: {s_down: self.MOVE, e_down: self.MOVE, mouse_L_down: self.MOVE, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
             }
         )
 
@@ -117,7 +118,8 @@ class Char:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+        if drawing_bb.draw_bb:
+            draw_rectangle(*self.get_bb())
         #체력 바
         draw_rectangle(37, 20, 37 + 100 * self.hp / self.max_hp, 30, 255, 0, 0, filled=True)
         draw_rectangle(36, 19, 138, 31)
@@ -193,6 +195,8 @@ class Idle:
             game_world.add_collision_pair('attack:monster', attack, None)
         if e_down(e):
                game_framework.push_mode(inventory_mode)
+        if s_down(e):
+            drawing_bb.draw_bb = not drawing_bb.draw_bb
 
     def exit(self, event):
         pass
@@ -241,6 +245,8 @@ class Move:
             game_world.add_collision_pair('attack:monster', attack, None)
         if e_down(e):
             game_framework.push_mode(inventory_mode)
+        if s_down(e):
+            drawing_bb.draw_bb = not drawing_bb.draw_bb
 
     def exit(self, e):
         pass
@@ -285,7 +291,8 @@ class Attack:
             return self.char.x - 42, self.char.y - 40, self.char.x - 10, self.char.y + 5
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        if drawing_bb.draw_bb:
+            draw_rectangle(*self.get_bb())
 
     def update(self):
         pass
@@ -311,6 +318,9 @@ def space_down(e):
 
 def e_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_e
+
+def s_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_s
 
 def mouse_L_down(e):
     if e[0] != 'INPUT' or e[1].type != SDL_MOUSEBUTTONDOWN:

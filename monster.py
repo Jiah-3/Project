@@ -5,6 +5,7 @@ from pico2d import load_image, draw_rectangle
 import game_framework
 import game_world
 import stage
+import drawing_bb
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -76,7 +77,8 @@ class Monster:
             self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
         else:
             self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
-        draw_rectangle(*self.get_bb())
+        if drawing_bb.draw_bb:
+            draw_rectangle(*self.get_bb())
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
 

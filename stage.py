@@ -2,6 +2,7 @@ from pico2d import load_image, draw_rectangle
 
 import game_world
 from background import Bg
+import drawing_bb
 from monster import Monster
 
 monster_count = 0
@@ -17,7 +18,8 @@ class Ground:
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        if drawing_bb.draw_bb:
+            draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 50, self.y - 30, self.x + 50, self.y + 10
@@ -35,7 +37,8 @@ class Block:
         pass
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        if drawing_bb.draw_bb:
+            draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
