@@ -55,15 +55,26 @@ class Char:
         else:
             self.char = character_state.char
 
-            self.gold = 0
-            self.max_hp = 100 + self.stat_hp * 1
-            self.hp = 100 + self.stat_hp * 1
-            self.damage = 2 + self.stat_attack * 0.05
-            self.attack = 100
-            self.defense = 0 + self.stat_defense * 0.5
-            self.speed = 100 + self.stat_agility * 1
-            self.crit_chance = 0 + self.stat_luck * 1
-            self.x, self.y = 30, 89
+            self.stat_points = character_state.char.stat_points
+            self.stat_hp = character_state.char.stat_hp
+            self.stat_attack = character_state.char.stat_attack
+            self.stat_defense = character_state.char.stat_defense
+            self.stat_agility = character_state.char.stat_agility
+            self.stat_luck = character_state.char.stat_luck
+
+            self.gold = character_state.char.gold
+            self.exp = character_state.char.exp
+            self.prev_level_exp = character_state.char.prev_level_exp
+            self.next_level_exp = character_state.char.next_level_exp
+            self.level = character_state.char.level
+
+            self.max_hp = character_state.char.max_hp
+            self.hp = character_state.char.hp
+            self.damage = character_state.char.damage
+            self.attack = character_state.char.attack
+            self.defense = character_state.char.defense
+            self.speed = character_state.char.speed
+            self.crit_chance = character_state.char.crit_chance
 
         #아이템 초기화
         self.item = {
