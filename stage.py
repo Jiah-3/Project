@@ -227,6 +227,21 @@ def set_stage1_4():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
+    # 테스트 소환
+    monster_positions = [(400, 90),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(30, 30, 30, 30)
+        monster.set_stat(1, 0, 100, 0, 0, 0)
+        monster.set_image('test.png')
+        monster.set_max_frame(1)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+
 def set_stage1_5():
     global positions
     positions = [(0, 30), (50, 30), (250, 30), (300, 30),
@@ -244,14 +259,26 @@ def set_stage1_5():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
+    # 테스트 소환
+    monster_positions = [(400, 90),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(30, 30, 30, 30)
+        monster.set_stat(1, 0, 100, 0, 0, 0)
+        monster.set_image('test.png')
+        monster.set_max_frame(1)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+
 def set_stage1_6():
     global positions
     positions = [(0, 30), (100, 30), (200, 30),
                  (300, 30), (400, 30), (500, 30),
                  (600, 30), (700, 30), (800, 30),
-
-                 (250, 130), (350, 130), (450, 130), (550, 130),
-                 (150, 230), (250, 230), (550, 230), (650, 230),
                  ]
     grounds = [Ground() for _ in positions]
     for ground, (x, y) in zip(grounds, positions):
@@ -262,6 +289,21 @@ def set_stage1_6():
     bg = Bg()
     bg.set_bg(1)
     game_world.add_object(bg, 0)
+
+    # 테스트 소환
+    monster_positions = [(400, 90),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(30, 30, 30, 30)
+        monster.set_stat(1, 0, 100, 0, 0, 0)
+        monster.set_image('test.png')
+        monster.set_max_frame(1)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
 
 
 def get_ground_positions():
