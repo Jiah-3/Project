@@ -15,9 +15,13 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
             if stage.monster_count == 0:
-                import stage1_4
-                game_framework.change_mode(stage1_4)
-                pass
+                if char.stage == '1_3':
+                    import stage1_4
+                    game_framework.change_mode(stage1_4)
+                elif char.stage == '1_6':
+                    #import stage1_7
+                    #game_framework.change_mode(stage1_7)
+                    pass
         else:
             char.handle_event(event)
 

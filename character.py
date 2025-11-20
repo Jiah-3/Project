@@ -33,6 +33,7 @@ class Char:
         self.level_image = load_image('level.png')
         self.font = load_font('ENCR10B.TTF', 10)
         if character_state.char is None:
+            self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 100
             self.stat_attack = 100
@@ -55,6 +56,7 @@ class Char:
             self.crit_chance = 0 + self.stat_luck * 1
         else:
             self.char = character_state.char
+            self.stage = character_state.char.stage
 
             self.stat_points = character_state.char.stat_points
             self.stat_hp = character_state.char.stat_hp
