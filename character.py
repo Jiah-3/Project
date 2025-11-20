@@ -23,7 +23,7 @@ FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 class Char:
     def __init__(self):
         self.immune_time = 0
-        self.x, self.y = 30, 89
+        self.x, self.y = 30, 90
         self.frame = 0
         self.face_dir = 1
         self.falling_speed = 12
@@ -33,7 +33,7 @@ class Char:
         self.font = load_font('ENCR10B.TTF', 10)
         if character_state.char is None:
             self.stat_points = 0
-            self.stat_hp = 0
+            self.stat_hp = 100
             self.stat_attack = 100
             self.stat_defense = 0
             self.stat_agility = 0
@@ -97,15 +97,12 @@ class Char:
         )
 
     def update(self):
+        print(f'{self.y}')
         self.state_machine.update()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 
         if self.jumping:
             self.yv -= GRAVITY * game_framework.frame_time
-
-        if self.y < 89:
-            self.y = 89
-            self.yv = 0
 
         if self.immune_time > 0.0:
             self.immune_time -= game_framework.frame_time
@@ -145,11 +142,12 @@ class Char:
         if group == 'char:ground':
             if self.yv < 0:
                     #self.jumping = True
-                    dummy = self.yv
-                    self.yv = 0
                     self.y = int(self.y)
-                    if self.y % 100 != 89:
-                        self.yv = dummy
+                    if self.y >= other.y + 50:
+                        self.y = other.y + 60
+                        self.yv = 0
+                    else:
+                        pass
 
         if group == 'char:monster':
             if self.immune_time == 0:
