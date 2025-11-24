@@ -1,3 +1,5 @@
+import random
+
 from pico2d import load_image, draw_rectangle, load_font
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e, SDLK_s
 
@@ -35,8 +37,8 @@ class Char:
         if character_state.char is None:
             self.stage = '1_1'
             self.stat_points = 0
-            self.stat_hp = 100
-            self.stat_attack = 100
+            self.stat_hp = 0
+            self.stat_attack = 500
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -54,6 +56,7 @@ class Char:
             self.defense = 0 + self.stat_defense * 0.5
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
+            self.dodge = 0 + self.stat_agility * 0.1
         else:
             self.char = character_state.char
             self.stage = character_state.char.stage
@@ -78,6 +81,7 @@ class Char:
             self.defense = character_state.char.defense
             self.speed = character_state.char.speed
             self.crit_chance = character_state.char.crit_chance
+            self.dodge = 0 + self.stat_agility * 0.1
 
         #아이템 초기화
         self.item = {
@@ -161,8 +165,12 @@ class Char:
                 self.immune_time = 0.5
                 #print('player hit')
                 damage = other.attack * ((100 - self.defense) / 100)
-                self.hp -= damage
-                #print(f'player hp: {self.hp}/{self.max_hp}')
+                if self.dodge >= random.randint(1, 100):
+                    #print('dodge')
+                    pass
+                else:
+                    self.hp -= damage
+                    #print(f'player hp: {self.hp}/{self.max_hp}')
                 if self.hp <= 0:
                     self.char = character_state.char
 
