@@ -21,13 +21,13 @@ class Inventory:
         self.font.draw(30, 200, f'SP:{self.char.stat_points}', (0, 0, 0))
         self.font.draw(30, 150, f'Gold:{self.char.gold}', (255, 200, 0))
 
-        self.font.draw(580, 500, f'Health:{self.char.hp}/{self.char.max_hp}', (102, 255, 102))
-        self.font.draw(580, 480, f'Damage:{self.char.damage}', (255, 70, 70))
-        self.font.draw(580, 460, f'Attack:{self.char.attack}%', (255, 70, 70))
-        self.font.draw(580, 440, f'Defense:{self.char.defense}%', (51, 153, 255))
-        self.font.draw(580, 420, f'Speed:{self.char.speed}%', (255, 255, 255))
-        self.font.draw(580, 400, f'Dodge:{self.char.dodge}%', (255, 255, 255))
-        self.font.draw(580, 380, f'Crit Chance:{self.char.crit_chance}', (255, 255, 102))
+        self.font.draw(560, 500, f'Health:{self.char.hp:.1f}/{self.char.max_hp:.1f}', (102, 255, 102))
+        self.font.draw(560, 480, f'Damage:{self.char.damage:.2f}', (255, 70, 70))
+        self.font.draw(560, 460, f'Attack:{self.char.attack:.1f}%', (255, 70, 70))
+        self.font.draw(560, 440, f'Defense:{self.char.defense:.1f}%', (51, 153, 255))
+        self.font.draw(560, 420, f'Speed:{self.char.speed:.1f}%', (255, 255, 255))
+        self.font.draw(560, 400, f'Dodge:{self.char.dodge:.1f}%', (255, 255, 255))
+        self.font.draw(560, 380, f'Crit Chance:{self.char.crit_chance}', (255, 255, 102))
 
 
     def update(self):
