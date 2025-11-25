@@ -30,7 +30,7 @@ def init():
     global char
 
     stage.set_stage1_4()
-    stage.monster_count = 0
+    stage.monster_count = 8
 
     char = Char()
     char.stage = '1_4'
