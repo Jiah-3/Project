@@ -21,7 +21,7 @@ class Inventory:
         self.font.draw(30, 200, f'SP:{self.char.stat_points}', (0, 0, 0))
         self.font.draw(30, 150, f'Gold:{self.char.gold}', (255, 200, 0))
 
-        self.font.draw(580, 500, f'Health:{self.char.max_hp}/{self.char.hp}', (102, 255, 102))
+        self.font.draw(580, 500, f'Health:{self.char.hp}/{self.char.max_hp}', (102, 255, 102))
         self.font.draw(580, 480, f'Damage:{self.char.damage}', (255, 70, 70))
         self.font.draw(580, 460, f'Attack:{self.char.attack}%', (255, 70, 70))
         self.font.draw(580, 440, f'Defense:{self.char.defense}%', (51, 153, 255))
