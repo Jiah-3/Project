@@ -227,21 +227,28 @@ def set_stage1_4():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
-    # 테스트 소환
-    monster_positions = [(400, 90),]
+    # 늑대 소환
+    monster_positions = [(200, 390), (320, 390), (400, 390), (50, 290), (650, 190), (270, 90), (390, 90), (500, 90),]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
-        monster.set_size(30, 30, 30, 30)
-        monster.set_stat(1, 0, 100, 0, 0, 0)
-        monster.set_image('test.png')
-        monster.set_max_frame(1)
+        monster.set_size(45, 50, 45, 16)
+        monster.set_stat(25, 5, 2, 70, 15, 0.25)
+        monster.set_image('wolf.png')
+        monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)
-
+    #벽 생성
+    block_position = [(40, 390), (760, 390), (230, 290), (570, 290), (230, 190), (570, 190)]
+    blocks = [Block() for _ in block_position]
+    for block, (x, y) in zip(blocks, block_position):
+        block.x = x
+        block.y = y
+        game_world.add_object(block, 0)
+        game_world.add_collision_pair('monster:block', None, block)
 def set_stage1_5():
     global positions
     positions = [(0, 30), (50, 30), (250, 30), (300, 30),
