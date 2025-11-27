@@ -282,8 +282,26 @@ def set_stage1_5():
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)
+    # 엔트 소환
+    monster_positions = [(300, 490), (370, 490), (520, 490), (400, 290), (275, 90)]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(45, 50, 45, 16)
+        monster.set_stat(50, 4, 5, 30, 18, 0.3)
+        monster.set_image('ent.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
     #벽 생성
-    block_position = [(130, 90), (170, 90), (380, 90), (420, 90), (630, 90), (670, 90)]
+    block_position = [
+        (130, 90), (170, 90), (380, 90), (420, 90), (630, 90), (670, 90),
+        (230, 290), (270, 290), (530, 290), (570, 290),
+        (120, 490), (680, 490)
+                      ]
     blocks = [Block() for _ in block_position]
     for block, (x, y) in zip(blocks, block_position):
         block.x = x
