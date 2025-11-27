@@ -289,7 +289,7 @@ def set_stage1_5():
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
-        monster.set_size(45, 50, 45, 16)
+        monster.set_size(45, 50, 45, 36)
         monster.set_stat(50, 4, 5, 30, 18, 0.3)
         monster.set_image('ent.png')
         monster.set_max_frame(2)
