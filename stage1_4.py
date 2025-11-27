@@ -33,6 +33,10 @@ def init():
     stage.monster_count = 8
 
     char = Char()
+    if character_state.char != None:
+        char = character_state.char
+        char.x = 30
+        char.y = 90
     char.stage = '1_4'
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)

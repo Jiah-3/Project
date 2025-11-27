@@ -254,7 +254,9 @@ def set_stage1_5():
     positions = [(0, 30), (50, 30), (250, 30), (300, 30),
                  (500, 30), (550, 30), (750, 30),
 
-                 (50, 330), (150, 330), (350, 330), (450, 330), (650, 330), (750, 330),
+                 (50, 230), (150, 230), (350, 230), (450, 230), (650, 230), (750, 230),
+
+                 (200, 430), (300, 430), (400, 430), (500, 430), (600, 430),
                  ]
     grounds = [Ground() for _ in positions]
     for ground, (x, y) in zip(grounds, positions):
@@ -266,21 +268,28 @@ def set_stage1_5():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
-    # 테스트 소환
-    monster_positions = [(400, 90),]
+    # 늑대 소환
+    monster_positions = [(90, 290), (110, 290), (690, 290), (710, 290), (500, 90)]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
-        monster.set_size(30, 30, 30, 30)
-        monster.set_stat(1, 0, 100, 0, 0, 0)
-        monster.set_image('test.png')
-        monster.set_max_frame(1)
+        monster.set_size(45, 50, 45, 16)
+        monster.set_stat(25, 5, 2, 70, 15, 0.25)
+        monster.set_image('wolf.png')
+        monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)
-
+    #벽 생성
+    block_position = [(130, 90), (170, 90), (380, 90), (420, 90), (630, 90), (670, 90)]
+    blocks = [Block() for _ in block_position]
+    for block, (x, y) in zip(blocks, block_position):
+        block.x = x
+        block.y = y
+        game_world.add_object(block, 0)
+        game_world.add_collision_pair('monster:block', None, block)
 def set_stage1_6():
     global positions
     positions = [(0, 30), (100, 30), (200, 30),

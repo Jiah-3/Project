@@ -30,9 +30,13 @@ def init():
     global char
 
     stage.set_stage1_5()
-    stage.monster_count = 0
+    stage.monster_count = 10
 
     char = Char()
+    if character_state.char != None:
+        char = character_state.char
+        char.x = 30
+        char.y = 90
     char.stage = '1_5'
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)
