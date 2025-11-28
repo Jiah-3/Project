@@ -29,7 +29,7 @@ def init():
     global char
 
     stage.set_stage1_6()
-    stage.monster_count = 0
+    stage.monster_count = 1
 
     char = Char()
     if character_state.char != None:

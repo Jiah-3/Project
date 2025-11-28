@@ -1,6 +1,6 @@
 import random
 
-from pico2d import load_image, draw_rectangle, load_font
+from pico2d import load_image, draw_rectangle, load_font, get_time
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e, SDLK_s
 
 import character_state
@@ -22,6 +22,9 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
+
+grey_bear_skill1 = 0
+grey_bear_skill2 = 0
 
 class Char:
     def __init__(self):
@@ -53,7 +56,7 @@ class Char:
             self.hp = 100 + self.stat_hp * 1
             self.damage = 2 + self.stat_attack * 0.05
             self.attack = 100
-            self.defense = 0 + self.stat_defense * 0.5
+            self.defense = 100 + self.stat_defense * 0.5
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
             self.dodge = 0 + self.stat_agility * 0.1
@@ -104,7 +107,7 @@ class Char:
         )
 
     def update(self):
-        # print(f'{self.y}')
+        # print(f'{self.max_hp}')
         self.state_machine.update()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 
@@ -125,6 +128,14 @@ class Char:
         if self.y <= -100:
             self.y = 900
 
+        global grey_bear_skill1
+        if grey_bear_skill1 != 0 and get_time() - grey_bear_skill1 >= 0.25:
+            grey_bear_skill1 = 0
+
+        global grey_bear_skill2
+        if grey_bear_skill2 != 0 and get_time() - grey_bear_skill2 >= 0.25:
+            grey_bear_skill2 = 0
+
     def draw(self):
         self.state_machine.draw()
         if drawing_bb.draw_bb:
@@ -139,6 +150,17 @@ class Char:
         self.level_image.clip_draw(0, 0, 35, 35, 20, 19)
         # 레벨 숫자 표시
         self.font.draw(8, 20, f'{self.level}', (0, 0, 0))
+        # 회색곰 스킬1
+        if grey_bear_skill1 != 0:
+            image1 = load_image('grey_bear_skill1.png')
+            image1.clip_draw(0, 0, 91, 70, self.x, self.y-30)
+        # 회색곰 스킬2
+        if grey_bear_skill2 != 0:
+            image2 = load_image('grey_bear_skill2.png')
+            if self.face_dir == 1:
+                image2.clip_composite_draw(0, 0, 33, 98, 0, 'h', self.x + 10, self.y)
+            else:
+                image2.clip_draw(0, 0, 33, 98, self.x - 10, self.y)
 
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
@@ -171,6 +193,24 @@ class Char:
                 else:
                     self.hp -= damage
                     #print(f'player hp: {self.hp}/{self.max_hp}')
+
+                if other.name == 'grey_bear':
+                    chance1 = random.randint(1, 100)
+                    chance2 = random.randint(1, 100)
+                    global grey_bear_skill1
+                    global grey_bear_skill2
+                    if chance1 <= 10 and grey_bear_skill1 == 0:
+                        self.hp -= 3 * ((100 - self.defense) / 100)
+                        grey_bear_skill1 = get_time()
+                        # print('1')
+                    if chance2 <= 5:
+                        self.hp -= 1 * ((100 - self.defense) / 100)
+                        other.hp += 10
+                        if other.hp > 300:
+                            other.hp = 300
+                        grey_bear_skill2 = get_time()
+                        # print('2')
+
                 if self.hp <= 0:
                     self.char = character_state.char
 

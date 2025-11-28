@@ -324,21 +324,21 @@ def set_stage1_6():
     bg.set_bg(1)
     game_world.add_object(bg, 0)
 
-    # 테스트 소환
-    monster_positions = [(400, 90),]
+    # 회색곰 소환
+    monster_positions = [(300, 90),]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
-        monster.set_size(30, 30, 30, 30)
-        monster.set_stat(1, 0, 100, 0, 0, 0)
-        monster.set_image('test.png')
-        monster.set_max_frame(1)
+        monster.set_size(45, 50, 45, 40)
+        monster.set_stat(300, 10, 10, 75, 300, 5)
+        monster.set_image('grey_bear.png')
+        monster.set_max_frame(2)
+        monster.set_name('grey_bear')
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)
-
 
 def get_ground_positions():
     return positions

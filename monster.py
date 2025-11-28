@@ -32,6 +32,7 @@ class Monster:
         self.size_y1 = 0
         self.size_x2 = 0
         self.size_y2 = 0
+        self.name = None
 
         self.max_hp = 0
         self.hp = 0
@@ -96,11 +97,14 @@ class Monster:
                 #print('monster hit')
                 if other.char.crit_chance >= random.randint(1, 100):
                     damage = other.char.damage * 1.5 * (other.char.attack / 100) * ((100 - self.defense) / 100)
-                    print('critical hit')
+                    #print('critical hit')
                 else:
                     damage = other.char.damage * (other.char.attack / 100) * ((100 - self.defense) / 100)
                 self.hp -= damage
                 #print(f'monster hp: {self.hp}/{self.max_hp}')
+
+                if self.name == 'grey_bear':
+                    pass
                 if self.hp <= 0:
                     game_world.remove_object(self)
                     other.char.gold += self.gold
@@ -125,6 +129,9 @@ class Monster:
         self.speed = speed
         self.gold = gold
         self.exp = exp
+
+    def set_name(self, name):
+        self.name = name
 
     def set_image(self, image):
         self.image = load_image(image)
