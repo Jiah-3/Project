@@ -3,6 +3,7 @@ from pico2d import *
 import character_state
 import game_framework
 import game_world
+import reward
 import stage
 from character import Char
 
@@ -15,8 +16,7 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
             if stage.monster_count == 0:
-                import stage1_3
-                game_framework.change_mode(stage1_3)
+                game_framework.push_mode(reward)
         else:
             char.handle_event(event)
 
@@ -36,6 +36,7 @@ def init():
         char = character_state.char
         char.x = 30
         char.y = 90
+        char.yv = 0
     char.stage = '1_2'
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)
@@ -44,7 +45,9 @@ def init():
 def update():
     game_world.update()
     game_world.handle_collisions()
-    #print(char.y)
+    if stage.monster_count == -1:
+        import stage1_3
+        game_framework.change_mode(stage1_3)
 
 def draw():
     clear_canvas()
