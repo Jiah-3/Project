@@ -128,6 +128,8 @@ class Char:
         if self.y <= -100:
             self.y = 900
 
+        character_state.char = self
+
         global grey_bear_skill1
         if grey_bear_skill1 != 0 and get_time() - grey_bear_skill1 >= 0.25:
             grey_bear_skill1 = 0

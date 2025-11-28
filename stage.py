@@ -332,7 +332,7 @@ def set_stage1_6():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 40)
-        monster.set_stat(300, 10, 10, 75, 300, 5)
+        monster.set_stat(300, 10, 10, 70, 300, 5)
         monster.set_image('grey_bear.png')
         monster.set_max_frame(2)
         monster.set_name('grey_bear')

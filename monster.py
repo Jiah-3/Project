@@ -73,6 +73,17 @@ class Monster:
             self.x = 800 - self.size_x2 - 20
             self.move = -1
 
+        if self.name == 'grey_bear':
+            import character_state
+            if not character_state.char == None:
+                char = character_state.char
+                if char.x < self.x:
+                    self.direction = -1
+                    self.move = -1
+                else:
+                    self.direction = 1
+                    self.move = 1
+
     def draw(self):
         if self.direction == 1:
             self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
