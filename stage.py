@@ -386,7 +386,7 @@ def set_stage1_7():
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)
     #벽 생성
-    block_position = []
+    block_position = [(20, 190), (280, 190), (520, 190), (780, 190), (320, 290), (580, 290), (120, 390), (480, 390)]
     blocks = [Block() for _ in block_position]
     for block, (x, y) in zip(blocks, block_position):
         block.x = x
