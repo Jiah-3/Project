@@ -91,6 +91,10 @@ def set_tier():
         tier = 1
         image = load_image("tier1.png")
 
+    if character_state.char.stage == '1_6' or character_state.char.stage == '1_10':
+        tier = 1
+        image = load_image("tier1.png")
+
 def set_item():
     if tier == 1: # 10% rare ~ mythic
         item_rate = randint(1, 19)

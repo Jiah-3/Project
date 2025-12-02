@@ -19,6 +19,10 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
+slime_skill3_cooldown = 3.0
+slime_skill3_active = 0.0
+slime_skill3_frame = 0
+
 class Monster:
     def __init__(self):
         self.moving = 300
@@ -84,21 +88,48 @@ class Monster:
                     self.direction = 1
                     self.move = 1
 
+        if self.name == 'big_slime':
+            global slime_skill3_cooldown, slime_skill3_active, slime_skill3_frame
+            if slime_skill3_cooldown > 0.0:
+                slime_skill3_cooldown -= game_framework.frame_time
+                if slime_skill3_active > 0.0:
+                    slime_skill3_active -= game_framework.frame_time
+                    slime_skill3_frame = (slime_skill3_frame + FRAMES_PER_SEC * game_framework.frame_time / 3) % 3
+
+                if slime_skill3_cooldown < 0.0:
+                    self.hp += (self.max_hp - self. hp) * 0.2
+                    slime_skill3_active = 1.0
+                    slime_skill3_cooldown = 150.0
+
     def draw(self):
-        if not self.name == 'big_slime':
-            if self.direction == 1:
-                self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
-            else:
-                self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
-        else:
+        if self.name == 'big_slime':
+            global slime_skill3_active, slime_skill3_frame
+            if slime_skill3_active > 0:
+                image = load_image('slime_skill3_effect.png')
+                image.clip_draw(int(slime_skill3_frame) * 200, 0, 200, 200, self.x - 20, self.y - 10, 240, 240)
+
+        if self.name == 'big_slime':
             if self.direction == 1:
                 self.image.clip_draw(int(self.frame) * 200, 0, 200, 200, self.x, self.y)
             else:
                 self.image.clip_composite_draw(int(self.frame) * 200, 0, 200, 200, 0, 'h', self.x, self.y, 200, 200)
+        elif self.name == 'small_slime':
+            if self.direction == 1:
+                self.image.clip_draw(int(self.frame) * 50, 0, 50, 50, self.x, self.y)
+            else:
+                self.image.clip_composite_draw(int(self.frame) * 50, 0, 50, 50, 0, 'h', self.x, self.y, 50, 50)
+        else:
+            if self.direction == 1:
+                self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            else:
+                self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
+
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
+
+
 
     def do(self):
         pass
@@ -117,11 +148,31 @@ class Monster:
                     #print('critical hit')
                 else:
                     damage = other.char.damage * (other.char.attack / 100) * ((100 - self.defense) / 100)
+                if self.name == 'small_slime':
+                    damage = 1
                 self.hp -= damage
                 #print(f'monster hp: {self.hp}/{self.max_hp}')
 
                 if self.name == 'grey_bear':
                     pass
+
+                if self.name == 'big_slime':
+                    chance2 = random.randint(1, 100)
+                    if chance2 <= 10:
+                        _monster = Monster()
+                        _monster.x = self.x
+                        _monster.y = self.y - 75
+                        game_world.add_object(_monster, 2)
+                        _monster.set_size(25, 25, 25, 10)
+                        _monster.set_stat(4, 1, 0, 50, 0, 0)
+                        _monster.set_image('small_slime.png')
+                        _monster.set_max_frame(2)
+                        _monster.set_name('small_slime')
+                        stage.monster_count += 1
+                        game_world.add_collision_pair('attack:monster', None, _monster)
+                        game_world.add_collision_pair('char:monster', None, _monster)
+                        game_world.add_collision_pair('monster:block', _monster, None)
+
                 if self.hp <= 0:
                     game_world.remove_object(self)
                     other.char.gold += self.gold

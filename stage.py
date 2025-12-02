@@ -528,7 +528,7 @@ def set_stage1_10():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(100, 100, 100, 30)
-        monster.set_stat(550, 8, 15, 85, 500, 10)
+        monster.set_stat(500, 3, 15, 85, 500, 10)
         monster.set_image('big_slime.png')
         monster.set_max_frame(3)
         monster.set_name('big_slime')

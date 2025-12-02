@@ -26,6 +26,9 @@ FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 grey_bear_skill1 = 0
 grey_bear_skill2 = 0
 
+current_time = 0
+past_time = 0
+
 class Char:
     def __init__(self):
         self.immune_time = 0
@@ -33,6 +36,8 @@ class Char:
         self.frame = 0
         self.face_dir = 1
         self.falling_speed = 12
+        self.poisoned = 0.0
+        self.poison_acc = 0.0
         self.jumping = True
         self.attacking = False
         self.level_image = load_image('level.png')
@@ -41,7 +46,7 @@ class Char:
             self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 500
+            self.stat_attack = 10000
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -56,7 +61,7 @@ class Char:
             self.hp = 100 + self.stat_hp * 1
             self.damage = 2 + self.stat_attack * 0.05
             self.attack = 100
-            self.defense = 100 + self.stat_defense * 0.5
+            self.defense = 0 + self.stat_defense * 0.5
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
             self.dodge = 0 + self.stat_agility * 0.1
@@ -107,7 +112,7 @@ class Char:
         )
 
     def update(self):
-        # print(f'{self.max_hp}')
+        print(f'{self.hp}')
         self.state_machine.update()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 
@@ -128,6 +133,9 @@ class Char:
         if self.y <= -100:
             self.y = 900
 
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp
+
         character_state.char = self
 
         global grey_bear_skill1
@@ -138,13 +146,33 @@ class Char:
         if grey_bear_skill2 != 0 and get_time() - grey_bear_skill2 >= 0.25:
             grey_bear_skill2 = 0
 
+        if self.poisoned > 0.0:
+            self.poisoned -= game_framework.frame_time
+            if self.poisoned < 0.0:
+                self.poisoned = 0.0
+
+            self.poison_acc += game_framework.frame_time
+            while self.poison_acc >= 0.1:
+                self.hp -= 0.5
+                self.poison_acc -= 0.1
+
+            if self.poisoned == 0.0:
+                self.poison_acc = 0.0
+
+            if self.hp < 0:
+                self.hp = 0
+
     def draw(self):
         self.state_machine.draw()
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
         #체력 바
-        draw_rectangle(37, 20, 37 + 100 * self.hp / self.max_hp, 30, 255, 0, 0, filled=True)
-        draw_rectangle(36, 19, 138, 31)
+        if self.poisoned == 0:
+            draw_rectangle(37, 20, 37 + 100 * self.hp / self.max_hp, 30, 255, 0, 0, filled=True)
+            draw_rectangle(36, 19, 138, 31)
+        else:
+            draw_rectangle(37, 20, 37 + 100 * self.hp / self.max_hp, 30, 0, 255, 0, filled=True)
+            draw_rectangle(36, 19, 138, 31)
         #경험치 바
         draw_rectangle(37, 7, 37 + 100 * self.exp / self.next_level_exp, 17, 255, 255, 0, filled=True)
         draw_rectangle(36, 6, 138, 18, 255, 255, 0)
@@ -212,6 +240,11 @@ class Char:
                             other.hp = 300
                         grey_bear_skill2 = get_time()
                         # print('2')
+
+                if other.name == 'big_slime':
+                    chance = random.randint(1, 100)
+                    if chance <= 25 and self.poisoned == 0:
+                        self.poisoned = 3.0
 
                 if self.hp <= 0:
                     self.char = character_state.char
