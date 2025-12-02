@@ -464,6 +464,45 @@ def set_stage1_8():
         block.y = y
         game_world.add_object(block, 0)
         game_world.add_collision_pair('monster:block', None, block)
+def set_stage1_9():
+    global positions
+    positions = [
+        (0, 30), (100, 30), (200, 30), (300, 30),
+        (500, 30), (600, 30), (700, 30), (800, 30),
 
+        (0, 230), (100, 230), (200, 230), (300, 230),
+        (500, 230), (600, 230), (700, 230), (800, 230),
+                 ]
+    grounds = [Ground() for _ in positions]
+    for ground, (x, y) in zip(grounds, positions):
+        ground.x = x
+        ground.y = y
+        game_world.add_object(ground, 1)
+        game_world.add_collision_pair('char:ground', None, ground)
+    bg = Bg()
+    bg.set_bg(1)
+    game_world.add_object(bg, 0)
+    # 슬라임 소환
+    monster_positions = [(250, 90), (50, 290), (150, 290), (250, 290), (550, 90), (650, 90), (750, 90), (550, 290), (650, 290), (750, 290)]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(45, 50, 45, 30)
+        monster.set_stat(40, 5, 3, 80, 20, 0.35)
+        monster.set_image('slime.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    #벽 생성
+    block_position = [(380, 90), (420, 90), (380, 290), (420, 290)]
+    blocks = [Block() for _ in block_position]
+    for block, (x, y) in zip(blocks, block_position):
+        block.x = x
+        block.y = y
+        game_world.add_object(block, 0)
+        game_world.add_collision_pair('monster:block', None, block)
 def get_ground_positions():
     return positions
