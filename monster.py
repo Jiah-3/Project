@@ -19,7 +19,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
-slime_skill3_cooldown = 3.0
+slime_skill3_cooldown = 150.0
 slime_skill3_active = 0.0
 slime_skill3_frame = 0
 
@@ -144,7 +144,11 @@ class Monster:
                 self.immune_time = 0.5
                 #print('monster hit')
                 if other.char.crit_chance >= random.randint(1, 100):
-                    damage = other.char.damage * 1.5 * (other.char.attack / 100) * ((100 - self.defense) / 100)
+                    if other.char.crit_chance > 100:
+                        crit_damage = (other.char.crit_chance - 100) / 100
+                    else:
+                        crit_damage = 0
+                    damage = other.char.damage * 1.5 + (crit_damage) * (other.char.attack / 100) * ((100 - self.defense) / 100)
                     #print('critical hit')
                 else:
                     damage = other.char.damage * (other.char.attack / 100) * ((100 - self.defense) / 100)
