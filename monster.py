@@ -73,7 +73,7 @@ class Monster:
             self.x = 800 - self.size_x2 - 20
             self.move = -1
 
-        if self.name == 'grey_bear':
+        if self.name == 'grey_bear' or self.name == 'big_slime':
             import character_state
             if not character_state.char == None:
                 char = character_state.char
@@ -85,10 +85,16 @@ class Monster:
                     self.move = 1
 
     def draw(self):
-        if self.direction == 1:
-            self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        if not self.name == 'big_slime':
+            if self.direction == 1:
+                self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            else:
+                self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
         else:
-            self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
+            if self.direction == 1:
+                self.image.clip_draw(int(self.frame) * 200, 0, 200, 200, self.x, self.y)
+            else:
+                self.image.clip_composite_draw(int(self.frame) * 200, 0, 200, 200, 0, 'h', self.x, self.y, 200, 200)
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
         draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
