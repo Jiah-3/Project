@@ -2,6 +2,7 @@ from random import randint
 
 from pico2d import *
 
+import character
 import character_state
 import game_framework
 import game_world
@@ -24,6 +25,7 @@ image = None
 frame = 0
 tier = 0
 item = []
+font = None
 
 def handle_events():
     events = get_events()
@@ -44,13 +46,11 @@ def finish():
     game_world.clear()
 
 def init():
-    global char
-    global tier
-    global image
-    global frame
+    global char, image, frame, tier, font
 
     frame = 0
     set_tier()
+    font = load_font('ENCR10B.TTF', 20)
 
     char = Char()
     if character_state.char != None:
@@ -66,16 +66,18 @@ def update():
     elif int(frame) == 9 and stage.monster_count == 0:
         stage.monster_count -= 1
         set_item()
+        character.update_items()
 
 def draw():
     clear_canvas()
     game_world.render()
     image.clip_draw(int(frame) * 120, 0, 120, 100, 400, 300)
     if stage.monster_count == -1:
-        global item
+        global item, font
         if item[8] is not None:
             item_image = load_image(item[8])
             item_image.draw(400, 350)
+            font.draw(350, 380, f'{item[9]}!', (0, 0, 0))
     update_canvas()
 
 def pause():
@@ -128,7 +130,7 @@ def set_item():
 
     elif tier == 3: # 60% common ~ mythic
         item_rate = randint(1, 100)
-        if item_rate <= 100: # common
+        if item_rate <= 51: # common
             from item import common
             global item
             item = common[randint(0, len(common)-1)]

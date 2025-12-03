@@ -65,6 +65,14 @@ class Char:
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
             self.dodge = 0 + self.stat_agility * 0.1
+
+            self.item_max_hp = 0
+            self.item_damage = 0
+            self.item_attack = 0
+            self.item_defense = 0
+            self.item_speed = 0
+            self.item_crit_chance = 0
+            self.item_dodge = 0
         else:
             self.char = character_state.char
             self.stage = character_state.char.stage
@@ -91,6 +99,14 @@ class Char:
             self.crit_chance = character_state.char.crit_chance
             self.dodge = 0 + self.stat_agility * 0.1
 
+            self.item_max_hp = 0
+            self.item_damage = 0
+            self.item_attack = 0
+            self.item_defense = 0
+            self.item_speed = 0
+            self.item_crit_chance = 0
+            self.item_dodge = 0
+
         #아이템 초기화
         self.item = [
             None, None, None,
@@ -112,10 +128,6 @@ class Char:
         )
 
     def update(self):
-        for i in range(0, 9):
-            if self.item[i] is not None:
-                # print(self.item[i])
-                pass
         self.state_machine.update()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 
@@ -162,8 +174,26 @@ class Char:
             if self.poisoned == 0.0:
                 self.poison_acc = 0.0
 
-            if self.hp < 0:
-                self.hp = 0
+            if self.hp <= 0:
+                self.char = character_state.char
+
+                self.gold = 0
+                self.max_hp = 100 + self.stat_hp * 1
+                self.hp = 100 + self.stat_hp * 1
+                self.damage = 2 + self.stat_attack * 0.05
+                self.attack = 100
+                self.defense = 0 + self.stat_defense * 0.5
+                self.speed = 100 + self.stat_agility * 1
+                self.crit_chance = 0 + self.stat_luck * 1
+                self.item = [
+                    None, None, None,
+                    None, None, None,
+                    None, None, None,
+                ]
+                self.x, self.y = 30, 89
+
+                import stage1_1
+                game_framework.change_mode(stage1_1)
 
     def draw(self):
         self.state_machine.draw()
@@ -249,22 +279,35 @@ class Char:
                     if chance <= 25 and self.poisoned == 0:
                         self.poisoned = 3.0
 
-                if self.hp <= 0:
-                    self.char = character_state.char
+def update_items():
+    char = character_state.char
 
-                    self.gold = 0
-                    self.max_hp = 100 + self.stat_hp * 1
-                    self.hp = 100 + self.stat_hp * 1
-                    self.damage = 2 + self.stat_attack * 0.05
-                    self.attack = 100
-                    self.defense = 0 + self.stat_defense * 0.5
-                    self.speed = 100 + self.stat_agility * 1
-                    self.crit_chance = 0 + self.stat_luck * 1
+    char.item_max_hp = 0
+    char.item_damage = 0
+    char.item_attack = 0
+    char.item_defense = 0
+    char.item_speed = 0
+    char.item_crit_chance = 0
+    char.item_dodge = 0
 
-                    self.x, self.y = 30, 89
+    for i in range(0, 9):
+        if char.item[i] is not None:
+            char.item_max_hp += char.item[i][1]
+            char.item_damage += char.item[i][2]
+            char.item_attack += char.item[i][3]
+            char.item_defense += char.item[i][4]
+            char.item_speed += char.item[i][5]
+            char.item_dodge += char.item[i][6]
+            char.item_crit_chance += char.item[i][7]
 
-                    import stage1_1
-                    game_framework.change_mode(stage1_1)
+    char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
+    char.damage = 2 + char.stat_attack * 0.05 + char.item_damage
+    char.attack = 100 + char.item_attack
+    char.defense = 0 + char.stat_defense * 0.5 + char.item_defense
+    char.speed = 100 + char.stat_agility * 1 + char.item_speed
+    char.dodge = 0 + char.stat_agility * 0.1 + char.item_dodge
+    char.crit_chance = 0 + char.stat_luck * 1 + char.item_crit_chance
+
 
 class Idle:
     def __init__(self, char):
