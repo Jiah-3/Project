@@ -46,7 +46,7 @@ class Char:
             self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 10000
+            self.stat_attack = 1000
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -92,11 +92,11 @@ class Char:
             self.dodge = 0 + self.stat_agility * 0.1
 
         #아이템 초기화
-        self.item = {
+        self.item = [
             None, None, None,
             None, None, None,
-            None, None, None
-        }
+            None, None, None,
+        ]
 
         self.yv = 0 # m/s
         self.image = load_image('char_image.png')
@@ -112,7 +112,10 @@ class Char:
         )
 
     def update(self):
-        print(f'{self.hp}')
+        for i in range(0, 9):
+            if self.item[i] is not None:
+                # print(self.item[i])
+                pass
         self.state_machine.update()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 

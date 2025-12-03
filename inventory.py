@@ -1,11 +1,14 @@
 from pico2d import load_image, load_font
 
 import character
+import character_state
 
 
 class Inventory:
     def __init__(self):
         self.char = character.Char()
+        if character_state.char != None:
+            self.char = character_state.char
         self.image = load_image('inventory.png')
         self.font = load_font('ENCR10B.TTF', 20)
 
@@ -29,6 +32,10 @@ class Inventory:
         self.font.draw(560, 400, f'Dodge:{self.char.dodge:.1f}%', (255, 255, 255))
         self.font.draw(560, 380, f'Crit Chance:{self.char.crit_chance}', (255, 255, 102))
 
+        for i in range(0, 9):
+            if self.char.item[i] is not None:
+                image = load_image(self.char.item[i][8])
+                image.draw(310, 230)
 
     def update(self):
         pass

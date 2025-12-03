@@ -23,6 +23,7 @@ FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 image = None
 frame = 0
 tier = 0
+item = []
 
 def handle_events():
     events = get_events()
@@ -50,7 +51,6 @@ def init():
 
     frame = 0
     set_tier()
-    set_item()
 
     char = Char()
     if character_state.char != None:
@@ -65,11 +65,17 @@ def update():
         frame = (frame + FRAMES_PER_SEC * game_framework.frame_time) % 10
     elif int(frame) == 9 and stage.monster_count == 0:
         stage.monster_count -= 1
+        set_item()
 
 def draw():
     clear_canvas()
     game_world.render()
     image.clip_draw(int(frame) * 120, 0, 120, 100, 400, 300)
+    if stage.monster_count == -1:
+        global item
+        if item[8] is not None:
+            item_image = load_image(item[8])
+            item_image.draw(400, 350)
     update_canvas()
 
 def pause():
@@ -122,7 +128,14 @@ def set_item():
 
     elif tier == 3: # 60% common ~ mythic
         item_rate = randint(1, 100)
-        if item_rate <= 51: # common
+        if item_rate <= 100: # common
+            from item import common
+            global item
+            item = common[randint(0, len(common)-1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
             pass
         elif item_rate <= 81: # unique
             pass
