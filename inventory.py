@@ -35,7 +35,7 @@ class Inventory:
         for i in range(0, 9):
             if self.char.item[i] is not None:
                 image = load_image(self.char.item[i][8])
-                image.draw(310, 230)
+                image.draw(310 + 90 * (i % 3), 230 - 90 * (i // 3))
 
     def update(self):
         pass
