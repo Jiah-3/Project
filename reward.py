@@ -49,7 +49,7 @@ def init():
     global char, image, frame, tier, font
 
     frame = 0
-    set_tier()
+    set_tier(1)
     font = load_font('ENCR10B.TTF', 20)
 
     char = Char()
@@ -77,7 +77,7 @@ def draw():
         if item[8] is not None:
             item_image = load_image(item[8])
             item_image.draw(400, 350)
-            font.draw(350, 380, f'{item[9]}!', (0, 0, 0))
+            # font.draw(350, 380, f'{item[9]}!', (0, 0, 0))
     update_canvas()
 
 def pause():
@@ -86,7 +86,7 @@ def pause():
 def resume():
     pass
 
-def set_tier():
+def set_tier(Tier=0):
     global tier, image
     tier_rate = randint(1, 100)
     if tier_rate <= 60:
@@ -102,10 +102,14 @@ def set_tier():
     if character_state.char.stage == '1_6' or character_state.char.stage == '1_10':
         tier = 1
         image = load_image("tier1.png")
+    if Tier != 0:
+        tier = Tier
+        image = load_image(f"tier{Tier}.png")
 
 def set_item():
+    global item
     if tier == 1: # 10% rare ~ mythic
-        item_rate = randint(1, 19)
+        item_rate = randint(19, 19)
         if item_rate <= 10: # rare
             pass
         elif item_rate <= 15: # legendary
@@ -113,7 +117,12 @@ def set_item():
         elif item_rate <= 18: # fabled
             pass
         elif item_rate == 19: # mythic
-            pass
+            from item import mythic
+            item = mythic[randint(0, len(mythic)-1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
 
     elif tier == 2: # 30% unique ~ mythic
         item_rate = randint(1, 49)
@@ -132,13 +141,11 @@ def set_item():
         item_rate = randint(1, 100)
         if item_rate <= 51: # common
             from item import common
-            global item
             item = common[randint(0, len(common)-1)]
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
                     break
-            pass
         elif item_rate <= 81: # unique
             pass
         elif item_rate <= 91: # rare
