@@ -23,42 +23,25 @@ def handle_events():
                 global inventory
                 if inventory.char.stat_points > 0:
                     if event.y <= 512 and event.y >= 482:
-                        inventory.char.stat_hp += 1
-                        inventory.char.max_hp += 1
-                        inventory.char.hp += 1
-                        inventory.char.stat_points -= 1
                         character_state.char.stat_hp += 1
                         character_state.char.max_hp += 1
                         character_state.char.hp += 1
                         character_state.char.stat_points -= 1
 
                     if event.y <= 462 and event.y >= 432:
-                        inventory.char.stat_attack += 1
-                        inventory.char.damage += 0.05
-                        inventory.char.stat_points -= 1
                         character_state.char.stat_attack += 1
                         character_state.char.damage += 0.05
                         character_state.char.stat_points -= 1
                     if event.y <= 412 and event.y >= 382:
-                        inventory.char.stat_defense += 1
-                        inventory.char.defense += 0.5
-                        inventory.char.stat_points -= 1
                         character_state.char.stat_defense += 1
                         character_state.char.defense += 0.5
                         character_state.char.stat_points -= 1
                     if event.y <= 362 and event.y >= 332:
-                        inventory.char.stat_agility += 1
-                        inventory.char.speed += 1
-                        inventory.char.dodge += 0.1
-                        inventory.char.stat_points -= 1
                         character_state.char.stat_agility += 1
                         character_state.char.speed += 1
                         character_state.char.dodge += 0.1
                         character_state.char.stat_points -= 1
                     if event.y <= 312 and event.y >= 282:
-                        inventory.char.stat_luck += 1
-                        inventory.char.crit_chance += 1
-                        inventory.char.stat_points -= 1
                         character_state.char.stat_luck += 1
                         character_state.char.crit_chance += 1
                         character_state.char.stat_points -= 1
