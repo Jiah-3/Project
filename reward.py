@@ -49,7 +49,7 @@ def init():
     global char, image, frame, tier, font
 
     frame = 0
-    set_tier(1)
+    set_tier()
     font = load_font('ENCR10B.TTF', 20)
 
     char = Char()
@@ -66,7 +66,6 @@ def update():
     elif int(frame) == 9 and stage.monster_count == 0:
         stage.monster_count -= 1
         set_item()
-        character.update_items()
 
 def draw():
     clear_canvas()
@@ -109,13 +108,28 @@ def set_tier(Tier=0):
 def set_item():
     global item
     if tier == 1: # 10% rare ~ mythic
-        item_rate = randint(19, 19)
+        item_rate = randint(1, 19)
         if item_rate <= 10: # rare
-            pass
+            from item import rare
+            item = rare[randint(0, len(rare) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 15: # legendary
-            pass
+            from item import legendary
+            item = legendary[randint(0, len(legendary) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 18: # fabled
-            pass
+            from item import fabled
+            item = fabled[randint(0, len(fabled) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate == 19: # mythic
             from item import mythic
             item = mythic[randint(0, len(mythic)-1)]
@@ -127,15 +141,40 @@ def set_item():
     elif tier == 2: # 30% unique ~ mythic
         item_rate = randint(1, 49)
         if item_rate <= 30: # unique
-            pass
+            from item import unique
+            item = unique[randint(0, len(unique) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 40: # rare
-            pass
+            from item import rare
+            item = rare[randint(0, len(rare) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 45: # legendary
-            pass
+            from item import legendary
+            item = legendary[randint(0, len(legendary) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 48: # fabled
-            pass
+            from item import fabled
+            item = fabled[randint(0, len(fabled) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate == 49: # mythic
-            pass
+            from item import mythic
+            item = mythic[randint(0, len(mythic)-1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
 
     elif tier == 3: # 60% common ~ mythic
         item_rate = randint(1, 100)
@@ -147,12 +186,37 @@ def set_item():
                     character_state.char.item[i] = item
                     break
         elif item_rate <= 81: # unique
-            pass
+            from item import unique
+            item = unique[randint(0, len(unique) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 91: # rare
-            pass
+            from item import rare
+            item = rare[randint(0, len(rare) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 96: # legendary
-            pass
+            from item import legendary
+            item = legendary[randint(0, len(legendary) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate <= 99: # fabled
-            pass
+            from item import fabled
+            item = fabled[randint(0, len(fabled) - 1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break
         elif item_rate == 100: # mythic
-            pass
+            from item import mythic
+            item = mythic[randint(0, len(mythic)-1)]
+            for i in range(0, 9):
+                if character_state.char.item[i] is None:
+                    character_state.char.item[i] = item
+                    break

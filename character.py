@@ -129,6 +129,7 @@ class Char:
 
     def update(self):
         self.state_machine.update()
+        update_items()
         self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
 
         if self.jumping:
@@ -174,26 +175,26 @@ class Char:
             if self.poisoned == 0.0:
                 self.poison_acc = 0.0
 
-            if self.hp <= 0:
-                self.char = character_state.char
+        if self.hp <= 0:
+            self.char = character_state.char
 
-                self.gold = 0
-                self.max_hp = 100 + self.stat_hp * 1
-                self.hp = 100 + self.stat_hp * 1
-                self.damage = 2 + self.stat_attack * 0.05
-                self.attack = 100
-                self.defense = 0 + self.stat_defense * 0.5
-                self.speed = 100 + self.stat_agility * 1
-                self.crit_chance = 0 + self.stat_luck * 1
-                self.item = [
-                    None, None, None,
-                    None, None, None,
-                    None, None, None,
-                ]
-                self.x, self.y = 30, 89
+            self.gold = 0
+            self.max_hp = 100 + self.stat_hp * 1
+            self.hp = 100 + self.stat_hp * 1
+            self.damage = 2 + self.stat_attack * 0.05
+            self.attack = 100
+            self.defense = 0 + self.stat_defense * 0.5
+            self.speed = 100 + self.stat_agility * 1
+            self.crit_chance = 0 + self.stat_luck * 1
+            self.item = [
+                None, None, None,
+                None, None, None,
+                None, None, None,
+            ]
+            self.x, self.y = 30, 89
 
-                import stage1_1
-                game_framework.change_mode(stage1_1)
+            import stage1_1
+            game_framework.change_mode(stage1_1)
 
     def draw(self):
         self.state_machine.draw()
@@ -249,7 +250,10 @@ class Char:
             if self.immune_time == 0:
                 self.immune_time = 0.5
                 #print('player hit')
-                damage = other.attack * ((100 - self.defense) / 100)
+                defence = self.defense
+                if defence > 80:
+                    defence = 80
+                damage = other.attack * ((100 - defence) / 100)
                 if self.dodge >= random.randint(1, 100):
                     #print('dodge')
                     pass
@@ -280,51 +284,47 @@ class Char:
                         self.poisoned = 3.0
 
 def update_items():
-    char = character_state.char
+    if not character_state.char is None:
+        char = character_state.char
 
-    char.item_max_hp = 0
-    char.item_damage = 0
-    char.item_attack = 0
-    char.item_defense = 0
-    char.item_speed = 0
-    char.item_crit_chance = 0
-    char.item_dodge = 0
+        char.item_max_hp = 0
+        char.item_damage = 0
+        char.item_attack = 0
+        char.item_defense = 0
+        char.item_speed = 0
+        char.item_crit_chance = 0
+        char.item_dodge = 0
 
-    for i in range(0, 9):
-        if char.item[i] is not None:
-            char.item_max_hp += char.item[i][1]
-            char.item_damage += char.item[i][2]
-            char.item_attack += char.item[i][3]
-            char.item_defense += char.item[i][4]
-            char.item_speed += char.item[i][5]
-            char.item_dodge += char.item[i][6]
-            char.item_crit_chance += char.item[i][7]
-        if char.item[i][0] == 'Bronze_neko':
-            char.item_max_hp += char.gold * 0.03
-            char.item_attack += char.gold * 0.03
-            char.item_defense += char.gold * 0.03
-            char.item_speed += char.gold * 0.03
-            char.item_dodge += char.gold * 0.03
-        elif char.item[i][0] == 'Silver_neko':
-            char.item_max_hp += char.gold * 0.06
-            char.item_attack += char.gold * 0.06
-            char.item_defense += char.gold * 0.06
-            char.item_speed += char.gold * 0.06
-            char.item_dodge += char.gold * 0.06
-        elif char.item[i][0] == 'Gold_neko':
-            char.item_max_hp += char.gold * 0.1
-            char.item_attack += char.gold * 0.1
-            char.item_defense += char.gold * 0.1
-            char.item_speed += char.gold * 0.1
-            char.item_dodge += char.gold * 0.1
+        for i in range(0, 9):
+            if char.item[i] is not None:
+                char.item_max_hp += char.item[i][1]
+                char.item_damage += char.item[i][2]
+                char.item_attack += char.item[i][3]
+                char.item_defense += char.item[i][4]
+                char.item_speed += char.item[i][5]
+                char.item_dodge += char.item[i][6]
+                char.item_crit_chance += char.item[i][7]
 
-    char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
-    char.damage = 2 + char.stat_attack * 0.05 + char.item_damage
-    char.attack = 100 + char.item_attack
-    char.defense = 0 + char.stat_defense * 0.5 + char.item_defense
-    char.speed = 100 + char.stat_agility * 1 + char.item_speed
-    char.dodge = 0 + char.stat_agility * 0.1 + char.item_dodge
-    char.crit_chance = 0 + char.stat_luck * 1 + char.item_crit_chance
+                if char.item[i][0] == 'Bronze_neko':
+                    char.item_max_hp += char.gold * 0.03
+                    char.item_attack += char.gold * 0.03
+                    char.item_defense += char.gold * 0.03
+                elif char.item[i][0] == 'Silver_neko':
+                    char.item_max_hp += char.gold * 0.06
+                    char.item_attack += char.gold * 0.06
+                    char.item_defense += char.gold * 0.06
+                elif char.item[i][0] == 'Gold_neko':
+                    char.item_max_hp += char.gold * 0.1
+                    char.item_attack += char.gold * 0.1
+                    char.item_defense += char.gold * 0.1
+
+        char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
+        char.damage = 2 + char.stat_attack * 0.05 + char.item_damage
+        char.attack = 100 + char.item_attack
+        char.defense = 0 + char.stat_defense * 0.5 + char.item_defense
+        char.speed = 100 + char.stat_agility * 1 + char.item_speed
+        char.dodge = 0 + char.stat_agility * 0.1 + char.item_dodge
+        char.crit_chance = 0 + char.stat_luck * 1 + char.item_crit_chance
 
 
 class Idle:
