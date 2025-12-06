@@ -29,6 +29,7 @@ legendary = [
     ['Diamond_leggings', 10, 0, 0, 0, 10, 0, 0, 'diamond_leggings.png', '10 increase in health, speed'],
     ['Diamond_boots', 10, 0, 0, 0, 0, 3, 0, 'diamond_boots.png', '10 increase in health, 3% increase in dodge'],
     ['Bronze_neko', 0, 0, 0, 0, 0, 0, 0, 'bronze_neko.png', '0.001 increase in health, attack, defense per gold'],
+    ['Gun', 0, 0, 0, 0, 0, 0, 20, 'gun.png', '20% increase in crit chance'],
 ]
 fabled = [
     ['Netherite_sword', 0, 0, 30, 0, 0, 0, 0, 'netherite_sword.png', '30% increase in attack'],
@@ -42,5 +43,6 @@ fabled = [
 mythic = [
     ['Gold_neko', 0, 0, 0, 0, 0, 0, 0, 'gold_neko.png', '0.01 increase in health, attack, defense per gold'],
     ['Crown', 10, 0, 10, 10, 10, 10, 10, 'crown.png', '10 increase in health, 10% increase in attack, defense, speed, dodge, crit chance'],
-    ['Heavy_hammer', 0, 5, 50, 0, -30, 0, 0, 'heavy_hammer.png', '5 increase in damage, 50% increase in attack, 30% decrease in attack'],
+    ['Heavy_hammer', 0, 5, 50, 0, -30, 0, 0, 'heavy_hammer.png', '5 increase in damage, 50% increase in attack, 30% decrease in speed'],
+    ['Magic_sword', 0, 0, 50, 0, 50, 0, 50, 'magic_sword.png', '50% increase in attack, 50% increase in speed, 50% increase in crit chance'],
 ]

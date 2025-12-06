@@ -97,7 +97,7 @@ class Char:
             self.defense = character_state.char.defense
             self.speed = character_state.char.speed
             self.crit_chance = character_state.char.crit_chance
-            self.dodge = 0 + self.stat_agility * 0.1
+            self.dodge = character_state.char.dodge
 
             self.item_max_hp = 0
             self.item_damage = 0
@@ -186,6 +186,9 @@ class Char:
             self.defense = 0 + self.stat_defense * 0.5
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
+            self.dodge = 0 + self.stat_agility * 0.1
+            self.poison_acc = 0.0
+            self.poisoned = 0.0
             self.item = [
                 None, None, None,
                 None, None, None,
@@ -325,6 +328,8 @@ def update_items():
                     char.item_defense += char.gold * 0.01
                 elif char.item[i][0] == 'Speed_boots':
                     char.item_attack += char.speed * 0.1
+                elif char.item[i][0] == 'Magic_sword':
+                    char.item_damage += char.attack * 0.1
 
         char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
         char.damage = 2 + char.stat_attack * 0.05 + char.item_damage
