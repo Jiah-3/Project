@@ -65,7 +65,7 @@ class Char:
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
             self.dodge = 0 + self.stat_agility * 0.1
-            self.char.gold_bonus = 0
+            self.gold_bonus = 0
 
             self.item_max_hp = 0
             self.item_damage = 0

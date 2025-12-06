@@ -1,5 +1,6 @@
 from pico2d import *
 
+import character
 import character_state
 import game_framework
 import game_world
@@ -17,6 +18,25 @@ def handle_events():
             game_framework.pop_mode()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_e:
             game_framework.pop_mode()
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
+            event.y = 600 + event.y * -1
+            num = -1
+            if event.x >= 270 and event.x <= 350:
+                num += 1
+            elif event.x >= 360 and event.x <= 440:
+                num += 2
+            elif event.x >= 450 and event.x <= 530:
+                num += 3
+            if event.y <= 270 and event.y >= 190:
+                pass
+            elif event.y <= 180 and event.y >= 100:
+                num += 3
+            elif event.y <= 90 and event.y >= 10:
+                num += 6
+            if num != -1:
+                character_state.char.item[num] = None
+                character.update_items()
+
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
             event.y = 600 + event.y * -1
             if event.x >= 20 and event.x <= 170:
