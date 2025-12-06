@@ -330,6 +330,18 @@ def update_items():
                     char.item_attack += char.speed * 0.1
                 elif char.item[i][0] == 'Magic_sword':
                     char.item_damage += char.attack * 0.1
+                elif char.item[i][0] == 'Red_banner':
+                    from stage import monster_count
+                    char.item_attack += monster_count * 4
+                elif char.item[i][0] == 'Yellow_banner':
+                    from stage import monster_count
+                    char.item_crit_chance += monster_count * 2
+                elif char.item[i][0] == 'Blue_banner':
+                    from stage import monster_count
+                    char.item_defense += monster_count * 1
+                elif char.item[i][0] == 'Green_banner':
+                    from stage import monster_count
+                    char.item_max_hp += monster_count * 3
 
         char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
         char.damage = 2 + char.stat_attack * 0.05 + char.item_damage

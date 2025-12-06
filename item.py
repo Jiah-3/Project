@@ -13,6 +13,7 @@ unique = [
     ['Chainmail_chestplate', 5, 0, 0, 2, 0, 0, 0, 'chainmail_chestplate.png', '5 increase in health, 2% increase in defense'],
     ['Chainmail_leggings', 5, 0, 0, 0, 5, 0, 0, 'chainmail_leggings.png', '5 increase in health, speed'],
     ['Chainmail_boots', 5, 0, 0, 0, 0, 1, 0, 'chainmail_boots.png', '5 increase in health, 1% increase in dodge'],
+    ['Punch_gloves', 0, 2, 0, -10, 10, 0, 0, 'punch_gloves.png', '2 increase in damage, 10% increase in speed, 10% decrease in defense'],
 ]
 rare = [
     ['Iron_sword', 0, 0, 15, 0, 0, 0, 0, 'iron_sword.png', '15% increase in attack'],
@@ -30,6 +31,10 @@ legendary = [
     ['Diamond_boots', 10, 0, 0, 0, 0, 3, 0, 'diamond_boots.png', '10 increase in health, 3% increase in dodge'],
     ['Bronze_neko', 0, 0, 0, 0, 0, 0, 0, 'bronze_neko.png', '0.001 increase in health, attack, defense per gold'],
     ['Gun', 0, 0, 0, 0, 0, 0, 20, 'gun.png', '20% increase in crit chance'],
+    ['Red_banner', 0, 0, 0, 0, 0, 0, 0, 'red_banner.png', '4% increase in attack per monster'],
+    ['Yellow_banner', 0, 0, 0, 0, 0, 0, 0, 'yellow_banner.png', '2% increase in crit chance per monster'],
+    ['Blue_banner', 0, 0, 0, 0, 0, 0, 0, 'blue_banner.png', '1% increase in defense per monster'],
+    ['Green_banner', 0, 0, 0, 0, 0, 0, 0, 'green_banner.png', '3 increase in health per monster'],
 ]
 fabled = [
     ['Netherite_sword', 0, 0, 30, 0, 0, 0, 0, 'netherite_sword.png', '30% increase in attack'],
