@@ -22,6 +22,7 @@ rare = [
     ['Iron_leggings', 8, 0, 0, 0, 8, 0, 0, 'iron_leggings.png', '8 increase in health, speed'],
     ['Iron_boots', 8, 0, 0, 0, 0, 1.5, 0, 'iron_boots.png', '8 increase in health, 1.5% increase in dodge'],
     ['Fish_sword', 0, 0, 10, 5, 0, 0, 0, 'fish_sword.png', '10% increase in attack, 5% increase in defense'],
+    ['Gold_ingot', 0, 0, 0, 0, 0, 0, 0, 'gold_ingot.png', '20% increase in gold bonus'],
 ]
 legendary = [
     ['Diamond_sword', 0, 0, 20, 0, 0, 0, 0, 'diamond_sword.png', '20% increase in attack'],

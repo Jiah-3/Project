@@ -180,7 +180,7 @@ class Monster:
 
                 if self.hp <= 0:
                     game_world.remove_object(self)
-                    other.char.gold += self.gold
+                    other.char.gold += self.gold * (100 + other.char.gold_bonus) / 100
                     other.char.exp += self.exp
                     stage.monster_count -= 1
                     drop_chance = random.randint(1, 100)

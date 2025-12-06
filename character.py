@@ -65,6 +65,7 @@ class Char:
             self.speed = 100 + self.stat_agility * 1
             self.crit_chance = 0 + self.stat_luck * 1
             self.dodge = 0 + self.stat_agility * 0.1
+            self.char.gold_bonus = 0
 
             self.item_max_hp = 0
             self.item_damage = 0
@@ -98,6 +99,7 @@ class Char:
             self.speed = character_state.char.speed
             self.crit_chance = character_state.char.crit_chance
             self.dodge = character_state.char.dodge
+            self.char.gold_bonus = character_state.char.gold_bonus
 
             self.item_max_hp = 0
             self.item_damage = 0
@@ -303,6 +305,7 @@ def update_items():
         char.item_speed = 0
         char.item_crit_chance = 0
         char.item_dodge = 0
+        char.item_gold_bonus = 0
 
         for i in range(0, 9):
             if char.item[i] is not None:
@@ -342,6 +345,8 @@ def update_items():
                 elif char.item[i][0] == 'Green_banner':
                     from stage import monster_count
                     char.item_max_hp += monster_count * 3
+                elif char.item[i][0] == 'Gold_ingot':
+                    char.item_gold_bonus += 20
 
         char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
         char.damage = 2 + char.stat_attack * 0.05 + char.item_damage
@@ -350,6 +355,7 @@ def update_items():
         char.speed = 100 + char.stat_agility * 1 + char.item_speed
         char.dodge = 0 + char.stat_agility * 0.1 + char.item_dodge
         char.crit_chance = 0 + char.stat_luck * 1 + char.item_crit_chance
+        char.gold_bonus = char.item_gold_bonus
 
 
 class Idle:
