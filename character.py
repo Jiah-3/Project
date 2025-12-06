@@ -306,17 +306,17 @@ def update_items():
                 char.item_crit_chance += char.item[i][7]
 
                 if char.item[i][0] == 'Bronze_neko':
-                    char.item_max_hp += char.gold * 0.03
-                    char.item_attack += char.gold * 0.03
-                    char.item_defense += char.gold * 0.03
+                    char.item_max_hp += char.gold * 0.001
+                    char.item_attack += char.gold * 0.001
+                    char.item_defense += char.gold * 0.001
                 elif char.item[i][0] == 'Silver_neko':
-                    char.item_max_hp += char.gold * 0.06
-                    char.item_attack += char.gold * 0.06
-                    char.item_defense += char.gold * 0.06
+                    char.item_max_hp += char.gold * 0.005
+                    char.item_attack += char.gold * 0.005
+                    char.item_defense += char.gold * 0.005
                 elif char.item[i][0] == 'Gold_neko':
-                    char.item_max_hp += char.gold * 0.1
-                    char.item_attack += char.gold * 0.1
-                    char.item_defense += char.gold * 0.1
+                    char.item_max_hp += char.gold * 0.01
+                    char.item_attack += char.gold * 0.01
+                    char.item_defense += char.gold * 0.01
 
         char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
         char.damage = 2 + char.stat_attack * 0.05 + char.item_damage
