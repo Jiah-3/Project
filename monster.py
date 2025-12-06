@@ -211,22 +211,27 @@ class Monster:
                             game_world.add_collision_pair('char:monster', None, apple)
                     if self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
                         if other.char.gold >= self.price:
-                            other.char.gold -= self.price
-                            from reward import set_item
-                            if self.name == 'selling_tier3':
-                                game_world.remove_object(self)
-                                set_item(3)
-                            elif self.name == 'selling_tier2':
-                                game_world.remove_object(self)
-                                set_item(2)
-                            elif self.name == 'selling_tier1':
-                                game_world.remove_object(self)
-                                set_item(1)
-                            elif self.name == 'selling_heart':
+                            for i in range(0, 9):
+                                if other.char.item[i] == None:
+                                    other.char.gold -= self.price
+                                    from reward import set_item
+                                    if self.name == 'selling_tier3':
+                                        game_world.remove_object(self)
+                                        set_item(3)
+                                    elif self.name == 'selling_tier2':
+                                        game_world.remove_object(self)
+                                        set_item(2)
+                                    elif self.name == 'selling_tier1':
+                                        game_world.remove_object(self)
+                                        set_item(1)
+                                    break
+                            else:
+                                self.hp = 1
+                            if self.name == 'selling_heart':
                                 game_world.remove_object(self)
                                 other.char.hp += int(other.char.max_hp * 0.1)
-                        else:
-                            self.hp = 1
+
+
                     else:
                         game_world.remove_object(self)
                         other.char.gold += self.gold * (100 + other.char.gold_bonus) / 100
