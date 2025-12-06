@@ -7,7 +7,6 @@ common = [
     ['Leather_leggings', 3, 0, 0, 0, 3, 0, 0, 'leather_leggings.png', '3 increase in health, speed'],
     ['Leather_boots', 3, 0, 0, 0, 0, 0.5, 0, 'leather_boots.png', '3 increase in health, 0.5% increase in dodge'],
 ]
-
 unique = [
     ['Stone_sword', 0, 0, 10, 0, 0, 0, 0, 'stone_sword.png', '10% increase in attack'],
     ['Chainmail_helmet', 5, 0, 0, 0, 0, 0, 3, 'chainmail_helmet.png', '5 increase in health, 3% increase in crit chance'],
@@ -38,12 +37,6 @@ fabled = [
     ['Netherite_boots', 15, 0, 0, 0, 0, 5, 0, 'netherite_boots.png', '15 increase in health, 5% increase in dodge'],
     ['Silver_neko', 0, 0, 0, 0, 0, 0, 0, 'silver_neko.png', '0.005 increase in health, attack, defense per gold'],
 ]
-
 mythic = [
-    ['enchanted_Netherite_sword', 0, 0, 50, 0, 0, 0, 0, 'test.png', '50% increase in attack'],
-    ['enchanted_Netherite_helmet', 30, 0, 0, 0, 0, 0, 20, 'test.png', '30 increase in health, 20% increase in crit chance'],
-    ['enchanted_Netherite_chestplate', 30, 0, 0, 15, 0, 0, 0, 'test.png', '30 increase in health, 15% increase in defense'],
-    ['enchanted_Netherite_leggings', 30, 0, 0, 0, 30, 0, 0, 'test.png', '30 increase in health, speed'],
-    ['enchanted_Netherite_boots', 30, 0, 0, 0, 0, 10, 0, 'test.png', '30 increase in health, 10% increase in dodge'],
     ['Gold_neko', 0, 0, 0, 0, 0, 0, 0, 'gold_neko.png', '0.01 increase in health, attack, defense per gold'],
 ]

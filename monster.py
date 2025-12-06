@@ -107,8 +107,6 @@ class Monster:
             if slime_skill3_active > 0:
                 image = load_image('slime_skill3_effect.png')
                 image.clip_draw(int(slime_skill3_frame) * 200, 0, 200, 200, self.x - 20, self.y - 10, 240, 240)
-
-        if self.name == 'big_slime':
             if self.direction == 1:
                 self.image.clip_draw(int(self.frame) * 200, 0, 200, 200, self.x, self.y)
             else:
@@ -118,6 +116,8 @@ class Monster:
                 self.image.clip_draw(int(self.frame) * 50, 0, 50, 50, self.x, self.y)
             else:
                 self.image.clip_composite_draw(int(self.frame) * 50, 0, 50, 50, 0, 'h', self.x, self.y, 50, 50)
+        elif self.name == 'apple' or self.name == 'golden_apple':
+            self.image.clip_draw(int(self.frame) * 30, 0, 30, 30, self.x, self.y)
         else:
             if self.direction == 1:
                 self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
@@ -126,8 +126,9 @@ class Monster:
 
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
-        draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
-        draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
+        if self.name != 'apple' and self.name != 'golden_apple':
+            draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
+            draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
 
 
 
@@ -186,13 +187,24 @@ class Monster:
                     if drop_chance <= 10:
                         apple = Monster()
                         apple.x = self.x
-                        apple.y = self.y
+                        apple.y = self.y - 35
                         game_world.add_object(apple, 2)
-                        apple.set_size(25, 25, 25, 10)
+                        apple.set_size(10, 15, 10, 10)
                         apple.set_stat(1, 0, 0, 0, 0, 0)
                         apple.set_image('apple.png')
                         apple.set_max_frame(1)
                         apple.set_name('apple')
+                        game_world.add_collision_pair('char:monster', None, apple)
+                    elif drop_chance == 11:
+                        apple = Monster()
+                        apple.x = self.x
+                        apple.y = self.y - 35
+                        game_world.add_object(apple, 2)
+                        apple.set_size(10, 15, 10, 10)
+                        apple.set_stat(1, 0, 0, 0, 0, 0)
+                        apple.set_image('golden_apple.png')
+                        apple.set_max_frame(1)
+                        apple.set_name('golden_apple')
                         game_world.add_collision_pair('char:monster', None, apple)
         if group == 'monster:block':
             self.direction = self.direction * -1
