@@ -1,3 +1,5 @@
+from random import randint
+
 from pico2d import load_image, draw_rectangle
 
 import game_world
@@ -64,6 +66,52 @@ def set_shop():
     bg = Bg()
     bg.set_bg(1)
     game_world.add_object(bg, 0)
+    #상점 소환
+    monster_positions = [(250, 90), (400, 90), (550, 90)]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_stat(1, 0, 0, 0, 0, 0)
+
+        selling = randint(1, 8)
+        if selling <= 3: # 3티어 상자
+            monster.set_size(60, 50, 60, 50)
+            monster.set_image('selling_tier3.png')
+            monster.set_max_frame(1)
+            monster.set_name('selling_tier3')
+            monster.price = 100
+            game_world.add_collision_pair('attack:monster', None, monster)
+            game_world.add_collision_pair('char:monster', None, monster)
+            game_world.add_collision_pair('monster:block', monster, None)
+        elif selling <= 5: # 2티어 상자
+            monster.set_size(60, 50, 60, 50)
+            monster.set_image('selling_tier2.png')
+            monster.set_max_frame(1)
+            monster.set_name('selling_tier2')
+            monster.price = 300
+            game_world.add_collision_pair('attack:monster', None, monster)
+            game_world.add_collision_pair('char:monster', None, monster)
+            game_world.add_collision_pair('monster:block', monster, None)
+        elif selling <= 6: # 1티어 상자
+            monster.set_size(60, 50, 60, 50)
+            monster.set_image('selling_tier1.png')
+            monster.set_max_frame(1)
+            monster.set_name('selling_tier1')
+            monster.price = 500
+            game_world.add_collision_pair('attack:monster', None, monster)
+            game_world.add_collision_pair('char:monster', None, monster)
+            game_world.add_collision_pair('monster:block', monster, None)
+        elif selling <= 8: # 체력 회복 포션
+            monster.set_size(50, 50, 50, 50)
+            monster.set_image('selling_heart.png')
+            monster.set_max_frame(1)
+            monster.set_name('selling_heart')
+            monster.price = 200
+            game_world.add_collision_pair('attack:monster', None, monster)
+            game_world.add_collision_pair('char:monster', None, monster)
+            game_world.add_collision_pair('monster:block', monster, None)
 
 def set_stage1_1():
     global positions

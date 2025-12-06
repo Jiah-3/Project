@@ -21,6 +21,9 @@ def handle_events():
                 elif char.stage == '1_6':
                     import stage1_7
                     game_framework.change_mode(stage1_7)
+                elif char.stage == '1_9':
+                    import stage1_10
+                    game_framework.change_mode(stage1_10)
         else:
             char.handle_event(event)
 

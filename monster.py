@@ -37,6 +37,7 @@ class Monster:
         self.size_x2 = 0
         self.size_y2 = 0
         self.name = None
+        self.price = 0
 
         self.max_hp = 0
         self.hp = 0
@@ -118,6 +119,8 @@ class Monster:
                 self.image.clip_composite_draw(int(self.frame) * 50, 0, 50, 50, 0, 'h', self.x, self.y, 50, 50)
         elif self.name == 'apple' or self.name == 'golden_apple':
             self.image.clip_draw(int(self.frame) * 30, 0, 30, 30, self.x, self.y)
+        elif self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
+            self.image.clip_draw(int(self.frame) * 120, 0, 120, 100, self.x, self.y)
         else:
             if self.direction == 1:
                 self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
@@ -126,7 +129,7 @@ class Monster:
 
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
-        if self.name != 'apple' and self.name != 'golden_apple':
+        if self.name != 'apple' and self.name != 'golden_apple' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
 
@@ -179,12 +182,8 @@ class Monster:
                         game_world.add_collision_pair('monster:block', _monster, None)
 
                 if self.hp <= 0:
-                    game_world.remove_object(self)
-                    other.char.gold += self.gold * (100 + other.char.gold_bonus) / 100
-                    other.char.exp += self.exp
-                    stage.monster_count -= 1
                     drop_chance = random.randint(1, 100)
-                    if self.name != 'small_slime':
+                    if self.name != 'small_slime' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
                         if drop_chance <= 10:
                             apple = Monster()
                             apple.x = self.x
@@ -207,6 +206,29 @@ class Monster:
                             apple.set_max_frame(1)
                             apple.set_name('golden_apple')
                             game_world.add_collision_pair('char:monster', None, apple)
+                    if self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
+                        if other.char.gold >= self.price:
+                            other.char.gold -= self.price
+                            from reward import set_item
+                            if self.name == 'selling_tier3':
+                                game_world.remove_object(self)
+                                set_item(3)
+                            elif self.name == 'selling_tier2':
+                                game_world.remove_object(self)
+                                set_item(2)
+                            elif self.name == 'selling_tier1':
+                                game_world.remove_object(self)
+                                set_item(1)
+                            elif self.name == 'selling_heart':
+                                game_world.remove_object(self)
+                                other.char.hp += int(other.char.max_hp * 0.1)
+                        else:
+                            self.hp = 1
+                    else:
+                        game_world.remove_object(self)
+                        other.char.gold += self.gold * (100 + other.char.gold_bonus) / 100
+                        other.char.exp += self.exp
+                        stage.monster_count -= 1
         if group == 'monster:block':
             self.direction = self.direction * -1
             self.move = self.move * -1

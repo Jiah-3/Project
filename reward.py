@@ -2,7 +2,6 @@ from random import randint
 
 from pico2d import *
 
-import character
 import character_state
 import game_framework
 import game_world
@@ -105,8 +104,10 @@ def set_tier(Tier=0):
         tier = Tier
         image = load_image(f"tier{Tier}.png")
 
-def set_item():
-    global item
+def set_item(Tier = 0):
+    global item, tier
+    if Tier != 0:
+        tier = Tier
     if tier == 1: # 10% rare ~ mythic
         item_rate = randint(1, 19)
         if item_rate <= 10: # rare
