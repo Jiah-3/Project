@@ -1,6 +1,6 @@
 import random
 
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_font
 
 import game_framework
 import game_world
@@ -38,6 +38,7 @@ class Monster:
         self.size_y2 = 0
         self.name = None
         self.price = 0
+        self.font = load_font('ENCR10B.TTF', 20)
 
         self.max_hp = 0
         self.hp = 0
@@ -132,6 +133,8 @@ class Monster:
         if self.name != 'apple' and self.name != 'golden_apple' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
+        if self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
+            self.font.draw(self.x - 50, self.y + 65, f'Price: {self.price}G', (255, 255, 0))
 
 
 

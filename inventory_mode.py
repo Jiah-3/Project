@@ -34,6 +34,19 @@ def handle_events():
             elif event.y <= 90 and event.y >= 10:
                 num += 6
             if num != -1:
+                if character_state.char.item[num][10] == 6:
+                    character_state.char.gold += 100
+                elif character_state.char.item[num][10] == 5:
+                    character_state.char.gold += 300
+                elif character_state.char.item[num][10] == 4:
+                    character_state.char.gold += 500
+                elif character_state.char.item[num][10] == 3:
+                    character_state.char.gold += 800
+                elif character_state.char.item[num][10] == 2:
+                    character_state.char.gold += 1000
+                elif character_state.char.item[num][10] == 1:
+                    character_state.char.gold += 1500
+
                 character_state.char.item[num] = None
                 character.update_items()
 
