@@ -283,6 +283,12 @@ class Char:
                     if chance <= 25 and self.poisoned == 0:
                         self.poisoned = 3.0
 
+            if other.name == 'apple':
+                self.hp += 10
+
+            if other.name == 'golden_apple':
+                self.hp += 50
+
 def update_items():
     if not character_state.char is None:
         char = character_state.char

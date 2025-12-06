@@ -182,10 +182,27 @@ class Monster:
                     other.char.gold += self.gold
                     other.char.exp += self.exp
                     stage.monster_count -= 1
+                    drop_chance = random.randint(1, 100)
+                    if drop_chance <= 10:
+                        apple = Monster()
+                        apple.x = self.x
+                        apple.y = self.y
+                        game_world.add_object(apple, 2)
+                        apple.set_size(25, 25, 25, 10)
+                        apple.set_stat(1, 0, 0, 0, 0, 0)
+                        apple.set_image('apple.png')
+                        apple.set_max_frame(1)
+                        apple.set_name('apple')
+                        game_world.add_collision_pair('char:monster', None, apple)
         if group == 'monster:block':
             self.direction = self.direction * -1
             self.move = self.move * -1
             self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
+
+        if group == 'char:monster':
+            if self.name == 'apple' or self.name == 'golden_apple':
+                game_world.remove_object(self)
+
 
     def set_size(self, size_x1, size_y1, size_x2, size_y2):
         self.size_x1 = size_x1
