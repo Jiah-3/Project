@@ -323,6 +323,8 @@ def update_items():
                     char.item_max_hp += char.gold * 0.01
                     char.item_attack += char.gold * 0.01
                     char.item_defense += char.gold * 0.01
+                elif char.item[i][0] == 'Speed_boots':
+                    char.item_attack += char.speed * 0.1
 
         char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
         char.damage = 2 + char.stat_attack * 0.05 + char.item_damage

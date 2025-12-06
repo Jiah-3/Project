@@ -184,28 +184,29 @@ class Monster:
                     other.char.exp += self.exp
                     stage.monster_count -= 1
                     drop_chance = random.randint(1, 100)
-                    if drop_chance <= 10:
-                        apple = Monster()
-                        apple.x = self.x
-                        apple.y = self.y - 35
-                        game_world.add_object(apple, 2)
-                        apple.set_size(10, 15, 10, 10)
-                        apple.set_stat(1, 0, 0, 0, 0, 0)
-                        apple.set_image('apple.png')
-                        apple.set_max_frame(1)
-                        apple.set_name('apple')
-                        game_world.add_collision_pair('char:monster', None, apple)
-                    elif drop_chance == 11:
-                        apple = Monster()
-                        apple.x = self.x
-                        apple.y = self.y - 35
-                        game_world.add_object(apple, 2)
-                        apple.set_size(10, 15, 10, 10)
-                        apple.set_stat(1, 0, 0, 0, 0, 0)
-                        apple.set_image('golden_apple.png')
-                        apple.set_max_frame(1)
-                        apple.set_name('golden_apple')
-                        game_world.add_collision_pair('char:monster', None, apple)
+                    if self.name != 'small_slime':
+                        if drop_chance <= 10:
+                            apple = Monster()
+                            apple.x = self.x
+                            apple.y = self.y - 35
+                            game_world.add_object(apple, 2)
+                            apple.set_size(10, 15, 10, 10)
+                            apple.set_stat(1, 0, 0, 0, 0, 0)
+                            apple.set_image('apple.png')
+                            apple.set_max_frame(1)
+                            apple.set_name('apple')
+                            game_world.add_collision_pair('char:monster', None, apple)
+                        elif drop_chance == 11:
+                            apple = Monster()
+                            apple.x = self.x
+                            apple.y = self.y - 35
+                            game_world.add_object(apple, 2)
+                            apple.set_size(10, 15, 10, 10)
+                            apple.set_stat(1, 0, 0, 0, 0, 0)
+                            apple.set_image('golden_apple.png')
+                            apple.set_max_frame(1)
+                            apple.set_name('golden_apple')
+                            game_world.add_collision_pair('char:monster', None, apple)
         if group == 'monster:block':
             self.direction = self.direction * -1
             self.move = self.move * -1
