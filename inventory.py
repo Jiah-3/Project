@@ -22,7 +22,7 @@ class Inventory:
         self.font.draw(30, 350, f'AGI:{self.char.stat_agility}', (255, 255, 255))
         self.font.draw(30, 300, f'LUK:{self.char.stat_luck}', (255, 255, 102))
         self.font.draw(30, 200, f'SP:{self.char.stat_points}', (0, 0, 0))
-        self.font.draw(30, 150, f'Gold:{self.char.gold}', (255, 200, 0))
+        self.font.draw(30, 150, f'Gold:{self.char.gold:.0f}', (255, 200, 0))
 
         self.font.draw(560, 500, f'Health:{self.char.hp:.1f}/{self.char.max_hp:.1f}', (102, 255, 102))
         self.font.draw(560, 480, f'Damage:{self.char.damage:.2f}', (255, 70, 70))
