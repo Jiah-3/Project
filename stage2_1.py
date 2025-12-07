@@ -47,8 +47,8 @@ def update():
     game_world.update()
     game_world.handle_collisions()
     if stage.monster_count == -1:
-        import stage1_2
-        game_framework.change_mode(stage1_2)
+        import stage2_2
+        game_framework.change_mode(stage2_2)
 
 
 def draw():

@@ -604,18 +604,16 @@ def set_stage2_1():
     game_world.add_object(bg, 0)
 
     # 미라 소환
-    monster_positions = [(600, 90), ]
+    monster_positions = [(400, 90), (500, 90), (600, 90), (300, 90), (700, 90)]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
-        monster.set_size(100, 100, 100, 30)
+        monster.set_size(35, 50, 35, 50)
         monster.set_stat(80, 7, 10, 60, 20, 2)
-        monster.set_image('spider.png')
-        monster.set_max_frame(4)
-        monster.set_name('spider')
-        monster.y += 50
+        monster.set_image('mirra.png')
+        monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)
