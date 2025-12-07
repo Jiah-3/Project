@@ -2,6 +2,7 @@ from random import randint
 
 from pico2d import load_image, draw_rectangle
 
+import character_state
 import game_world
 from background import Bg
 import drawing_bb
@@ -67,10 +68,15 @@ def set_shop():
     for ground, (x, y) in zip(grounds, positions):
         ground.x = x
         ground.y = y
+        if character_state.char.stage == '2_3' or character_state.char.stage == '2_6' or character_state.char.stage == '2_9' or character_state.char.stage == '2_10':
+            ground.set_ground(2)
         game_world.add_object(ground, 1)
         game_world.add_collision_pair('char:ground', None, ground)
     bg = Bg()
-    bg.set_bg(1)
+    if character_state.char.stage == '2_3' or character_state.char.stage == '2_6' or character_state.char.stage == '2_9' or character_state.char.stage == '2_10':
+        bg.set_bg(2)
+    else:
+        bg.set_bg(1)
     game_world.add_object(bg, 0)
     #상점 소환
     monster_positions = [(250, 90), (400, 90), (550, 90)]
@@ -610,12 +616,67 @@ def set_stage2_1():
         monster.x = x
         monster.y = y
         game_world.add_object(monster, 2)
-        monster.set_size(35, 50, 35, 50)
+        monster.set_size(35, 50, 35, 40)
         monster.set_stat(80, 7, 10, 60, 20, 2)
         monster.set_image('mirra.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)
+def set_stage2_2():
+    global positions
+    positions = [(0, 30), (100, 30), (200, 30),
+                 (300, 30), (400, 30), (500, 30),
+                 (600, 30), (700, 30), (800, 30),
+
+                 (300, 130), (400, 130), (500, 130), (600, 130),
+                 ]
+    grounds = [Ground() for _ in positions]
+    for ground, (x, y) in zip(grounds, positions):
+        ground.x = x
+        ground.y = y
+        ground.set_ground(2)
+        game_world.add_object(ground, 1)
+        game_world.add_collision_pair('char:ground', None, ground)
+    bg = Bg()
+    bg.set_bg(2)
+    game_world.add_object(bg, 0)
+
+    # 미라 소환
+    monster_positions = [(400, 90), (500, 90), (600, 90), (300, 90),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(35, 50, 35, 40)
+        monster.set_stat(80, 7, 10, 60, 20, 2)
+        monster.set_image('mirra.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    # 트롤 소환
+    monster_positions = [(400, 190), (500, 190),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(50, 50, 50, 20)
+        monster.set_stat(200, 10, 5, 40, 25, 4)
+        monster.set_image('troll.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    #벽 생성
+    block_position = [(220, 190), (680, 190),]
+    blocks = [Block() for _ in block_position]
+    for block, (x, y) in zip(blocks, block_position):
+        block.x = x
+        block.y = y
+        game_world.add_object(block, 0)
+        game_world.add_collision_pair('monster:block', None, block)
 def get_ground_positions():
     return positions
