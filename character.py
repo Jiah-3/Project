@@ -1,7 +1,8 @@
 import random
 
 from pico2d import load_image, draw_rectangle, load_font, get_time
-from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e, SDLK_s
+from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e, \
+    SDLK_s, SDLK_l
 
 import character_state
 import inventory_mode
@@ -124,8 +125,8 @@ class Char:
         self.state_machine = StateMachine(
             self.IDLE,
             {
-                self.IDLE : {s_down: self.IDLE, e_down: self.IDLE, mouse_L_down: self.IDLE, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
-                self.MOVE: {s_down: self.MOVE, e_down: self.MOVE, mouse_L_down: self.MOVE, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
+                self.IDLE : {l_down: self.IDLE, s_down: self.IDLE, e_down: self.IDLE, mouse_L_down: self.IDLE, space_down: self.IDLE, left_down: self.MOVE, right_down: self.MOVE, right_up: self.MOVE, left_up: self.MOVE},
+                self.MOVE: {l_down: self.MOVE, s_down: self.MOVE, e_down: self.MOVE, mouse_L_down: self.MOVE, space_down: self.MOVE, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE},
             }
         )
 
@@ -369,7 +370,7 @@ class Idle:
                 if self.char.yv == 0:
                     #self.char.jumping = False
                     self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
-        if mouse_L_down(e) and not self.char.attacking:
+        if mouse_L_down(e) and not self.char.attacking or l_down(e) and not self.char.attacking:
             self.char.flame = 0
             self.char.attacking = True
             global attack
@@ -419,7 +420,7 @@ class Move:
                 if self.char.yv == 0:
                     #self.char.jumping = False
                     self.char.yv = abs(self.char.falling_speed * math.sin(math.radians(45.0)))
-        if mouse_L_down(e) and not self.char.attacking:
+        if mouse_L_down(e) and not self.char.attacking or l_down(e) and not self.char.attacking:
             self.char.flame = 0
             self.char.attacking = True
             global attack
@@ -504,6 +505,9 @@ def e_down(e):
 
 def s_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_s
+
+def l_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_l
 
 def mouse_L_down(e):
     if e[0] != 'INPUT' or e[1].type != SDL_MOUSEBUTTONDOWN:
