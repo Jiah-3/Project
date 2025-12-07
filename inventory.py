@@ -30,7 +30,7 @@ class Inventory:
         self.font.draw(560, 440, f'Defense:{self.char.defense:.1f}%', (51, 153, 255))
         self.font.draw(560, 420, f'Speed:{self.char.speed:.1f}%', (255, 255, 255))
         self.font.draw(560, 400, f'Dodge:{self.char.dodge:.1f}%', (255, 255, 255))
-        self.font.draw(560, 380, f'Crit Chance:{self.char.crit_chance}', (255, 255, 102))
+        self.font.draw(560, 380, f'Crit Chance:{self.char.crit_chance}%', (255, 255, 102))
 
         for i in range(0, 9):
             if self.char.item[i] is not None:
