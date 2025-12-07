@@ -957,5 +957,79 @@ def set_stage2_8():
         block.y = y
         game_world.add_object(block, 0)
         game_world.add_collision_pair('monster:block', None, block)
+def set_stage2_9():
+    global positions
+    positions = [
+        (0, 30), (100, 30), (300, 30), (400, 30), (600, 30), (700, 30),
+        (100, 130), (200, 130), (400, 130), (500, 130), (700, 130), (800, 130),
+        (20, 230), (120, 230), (320, 230), (420, 230), (620, 230), (720, 230),
+        (80, 330), (180, 330), (380, 330), (480, 330), (680, 330), (780, 330),
+                 ]
+    grounds = [Ground() for _ in positions]
+    for ground, (x, y) in zip(grounds, positions):
+        ground.x = x
+        ground.y = y
+        ground.set_ground(2)
+        game_world.add_object(ground, 1)
+        game_world.add_collision_pair('char:ground', None, ground)
+    bg = Bg()
+    bg.set_bg(2)
+    game_world.add_object(bg, 0)
+
+    # 트롤 소환
+    monster_positions = [(330, 90), (680, 290),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(50, 50, 50, 20)
+        monster.set_stat(200, 10, 5, 40, 25, 4)
+        monster.set_image('troll.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    # 골렘 소환
+    monster_positions = [(70, 290), (400, 390),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(50, 50, 50, 20)
+        monster.set_stat(150, 8, 30, 30, 30, 6)
+        monster.set_image('golem.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    # 미노타우르스 소환
+    monster_positions = [(100, 390), (650, 90), (450, 190),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(50, 50, 50, 20)
+        monster.set_stat(100, 15, 8, 80, 50, 8)
+        monster.set_image('minotaurs.png')
+        monster.set_max_frame(2)
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+    #벽 생성
+    block_position = [
+        (180, 90), (220, 90), (480, 90), (520, 90), (780, 90),
+        (280, 190), (320, 190), (580, 190), (620, 190),
+        (200, 290), (240, 290), (500, 290), (540, 290),
+        (260, 390), (300, 390), (560, 390), (600, 390),
+    ]
+    blocks = [Block() for _ in block_position]
+    for block, (x, y) in zip(blocks, block_position):
+        block.x = x
+        block.y = y
+        game_world.add_object(block, 0)
+        game_world.add_collision_pair('monster:block', None, block)
 def get_ground_positions():
     return positions
