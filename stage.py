@@ -26,6 +26,12 @@ class Ground:
     def get_bb(self):
         return self.x - 50, self.y + 9, self.x + 50, self.y + 10
 
+    def set_ground(self, stage):
+        if stage == 1:
+            self.image = load_image('ground.png')
+        elif stage == 2:
+            self.image = load_image('ground2.png')
+
     def handle_collision(self, group, other):
         if group == 'char:ground':
             pass
@@ -137,7 +143,7 @@ def set_stage1_1():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(35, 50, 35, 16)
-        monster.set_stat(20, 3, 0, 60, 10, 0.1)
+        monster.set_stat(20, 3, 0, 60, 10, 0.25)
         monster.set_image('snake.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -151,9 +157,6 @@ def set_stage1_1():
         block.y = y
         game_world.add_object(block, 0)
         game_world.add_collision_pair('monster:block', None, block)
-
-
-
 def set_stage1_2():
     global positions
     positions = [(0, 30), (100, 30), (200, 30),
@@ -181,7 +184,7 @@ def set_stage1_2():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(35, 50, 35, 16)
-        monster.set_stat(20, 3, 0, 60, 10, 0.1)
+        monster.set_stat(20, 3, 0, 60, 10, 0.25)
         monster.set_image('snake.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -223,7 +226,7 @@ def set_stage1_3():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(35, 50, 35, 16)
-        monster.set_stat(20, 3, 0, 60, 10, 0.1)
+        monster.set_stat(20, 3, 0, 60, 10, 0.25)
         monster.set_image('snake.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -237,7 +240,7 @@ def set_stage1_3():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 16)
-        monster.set_stat(25, 5, 2, 70, 15, 0.25)
+        monster.set_stat(25, 5, 2, 70, 15, 0.5)
         monster.set_image('wolf.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -283,7 +286,7 @@ def set_stage1_4():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 16)
-        monster.set_stat(25, 5, 2, 70, 15, 0.25)
+        monster.set_stat(25, 5, 2, 70, 15, 0.5)
         monster.set_image('wolf.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -324,7 +327,7 @@ def set_stage1_5():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 16)
-        monster.set_stat(25, 5, 2, 70, 15, 0.25)
+        monster.set_stat(25, 5, 2, 70, 15, 0.5)
         monster.set_image('wolf.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -338,7 +341,7 @@ def set_stage1_5():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 36)
-        monster.set_stat(50, 4, 5, 30, 18, 0.3)
+        monster.set_stat(50, 4, 5, 30, 18, 0.8)
         monster.set_image('ent.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -380,7 +383,7 @@ def set_stage1_6():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 40)
-        monster.set_stat(300, 10, 10, 70, 300, 5)
+        monster.set_stat(300, 10, 10, 70, 300, 10)
         monster.set_image('grey_bear.png')
         monster.set_max_frame(2)
         monster.set_name('grey_bear')
@@ -412,7 +415,7 @@ def set_stage1_7():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 36)
-        monster.set_stat(50, 4, 5, 30, 18, 0.3)
+        monster.set_stat(50, 4, 5, 30, 18, 0.8)
         monster.set_image('ent.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -426,7 +429,7 @@ def set_stage1_7():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 30)
-        monster.set_stat(40, 5, 3, 80, 20, 0.35)
+        monster.set_stat(40, 5, 3, 80, 20, 1)
         monster.set_image('slime.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -469,7 +472,7 @@ def set_stage1_8():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 16)
-        monster.set_stat(25, 5, 2, 70, 15, 0.25)
+        monster.set_stat(25, 5, 2, 70, 15, 0.5)
         monster.set_image('wolf.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -483,7 +486,7 @@ def set_stage1_8():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 36)
-        monster.set_stat(50, 4, 5, 30, 18, 0.3)
+        monster.set_stat(50, 4, 5, 30, 18, 0.8)
         monster.set_image('ent.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -497,7 +500,7 @@ def set_stage1_8():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 30)
-        monster.set_stat(40, 5, 3, 80, 20, 0.35)
+        monster.set_stat(40, 5, 3, 80, 20, 1)
         monster.set_image('slime.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -537,7 +540,7 @@ def set_stage1_9():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(45, 50, 45, 30)
-        monster.set_stat(40, 5, 3, 80, 20, 0.35)
+        monster.set_stat(40, 5, 3, 80, 20, 1)
         monster.set_image('slime.png')
         monster.set_max_frame(2)
         game_world.add_collision_pair('attack:monster', None, monster)
@@ -551,7 +554,6 @@ def set_stage1_9():
         block.y = y
         game_world.add_object(block, 0)
         game_world.add_collision_pair('monster:block', None, block)
-
 def set_stage1_10():
     global positions
     positions = [(0, 30), (100, 30), (200, 30),
@@ -576,10 +578,43 @@ def set_stage1_10():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(100, 100, 100, 30)
-        monster.set_stat(500, 3, 15, 85, 500, 10)
+        monster.set_stat(500, 3, 15, 85, 500, 20)
         monster.set_image('big_slime.png')
         monster.set_max_frame(3)
         monster.set_name('big_slime')
+        monster.y += 50
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+def set_stage2_1():
+    global positions
+    positions = [(0, 30), (100, 30), (200, 30),
+                 (300, 30), (400, 30), (500, 30),
+                 (600, 30), (700, 30), (800, 30),
+                 ]
+    grounds = [Ground() for _ in positions]
+    for ground, (x, y) in zip(grounds, positions):
+        ground.x = x
+        ground.y = y
+        ground.set_ground(2)
+        game_world.add_object(ground, 1)
+        game_world.add_collision_pair('char:ground', None, ground)
+    bg = Bg()
+    bg.set_bg(2)
+    game_world.add_object(bg, 0)
+
+    # 미라 소환
+    monster_positions = [(600, 90), ]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(100, 100, 100, 30)
+        monster.set_stat(80, 7, 10, 60, 20, 2)
+        monster.set_image('spider.png')
+        monster.set_max_frame(4)
+        monster.set_name('spider')
         monster.y += 50
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)

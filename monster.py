@@ -229,7 +229,7 @@ class Monster:
                                 self.hp = 1
                             if self.name == 'selling_heart':
                                 game_world.remove_object(self)
-                                other.char.hp += int(other.char.max_hp * 0.1)
+                                other.char.hp += int(other.char.max_hp * 0.2)
 
 
                     else:

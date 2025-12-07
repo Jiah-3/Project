@@ -15,5 +15,7 @@ class Bg():
 
     def set_bg(self, stage):
         if stage == 1:
-            self.image = load_image('background.png')
+            self.image = load_image('background1.png')
+        elif stage == 2:
+            self.image = load_image('background2.png')
 
