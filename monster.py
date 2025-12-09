@@ -6,6 +6,7 @@ import game_framework
 import game_world
 import stage
 import drawing_bb
+import character
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -19,7 +20,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 
-slime_skill3_cooldown = 150.0
+slime_skill3_cooldown = 60.0
 slime_skill3_active = 0.0
 slime_skill3_frame = 0
 
@@ -39,6 +40,7 @@ class Monster:
         self.name = None
         self.price = 0
         self.font = load_font('ENCR10B.TTF', 20)
+        self.healed = 0
 
         self.max_hp = 0
         self.hp = 0
@@ -99,9 +101,9 @@ class Monster:
                     slime_skill3_frame = (slime_skill3_frame + FRAMES_PER_SEC * game_framework.frame_time / 3) % 3
 
                 if slime_skill3_cooldown < 0.0:
-                    self.hp += (self.max_hp - self. hp) * 0.2
+                    self.hp += (self.max_hp - self. hp) * 0.1
                     slime_skill3_active = 1.0
-                    slime_skill3_cooldown = 150.0
+                    slime_skill3_cooldown = 60.0
 
     def draw(self):
         if self.name == 'big_slime':
@@ -132,6 +134,11 @@ class Monster:
                 self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
             else:
                 self.image.clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
+
+        if self.name == 'scorpion':
+            if character.scorpion_skill3 > 0:
+                image3 = load_image('scorpion_skill3_effect.png')
+                image3.clip_draw(0, 0, 100, 100, self.x, self.y - 10)
 
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
@@ -189,6 +196,20 @@ class Monster:
                         game_world.add_collision_pair('char:monster', None, _monster)
                         game_world.add_collision_pair('monster:block', _monster, None)
 
+                if self.name == 'scorpion':
+                    drop_chance = random.randint(1, 100)
+                    if drop_chance <= 5:
+                        apple = Monster()
+                        apple.x = self.x
+                        apple.y = self.y - 35
+                        game_world.add_object(apple, 2)
+                        apple.set_size(10, 15, 10, 10)
+                        apple.set_stat(1, 0, 0, 0, 0, 0)
+                        apple.set_image('apple.png')
+                        apple.set_max_frame(1)
+                        apple.set_name('apple')
+                        game_world.add_collision_pair('char:monster', None, apple)
+
                 if self.hp <= 0:
                     drop_chance = random.randint(1, 100)
                     if self.name != 'small_slime' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
@@ -203,7 +224,7 @@ class Monster:
                             apple.set_max_frame(1)
                             apple.set_name('apple')
                             game_world.add_collision_pair('char:monster', None, apple)
-                        elif drop_chance == 11:
+                        elif drop_chance == 11 or self.name == 'grey_bear' or self.name == 'big_slime' or self.name == 'scorpion' or self.name == 'spider':
                             apple = Monster()
                             apple.x = self.x
                             apple.y = self.y - 35

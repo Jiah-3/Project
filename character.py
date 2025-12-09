@@ -27,6 +27,8 @@ FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 grey_bear_skill1 = 0
 grey_bear_skill2 = 0
 
+scorpion_skill3 = 0
+
 current_time = 0
 past_time = 0
 
@@ -38,6 +40,7 @@ class Char:
         self.face_dir = 1
         self.falling_speed = 12
         self.poisoned = 0.0
+        self.slowed = 0
         self.poison_acc = 0.0
         self.jumping = True
         self.attacking = False
@@ -47,7 +50,7 @@ class Char:
             self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 10000
+            self.stat_attack = 10
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -165,6 +168,10 @@ class Char:
         if grey_bear_skill2 != 0 and get_time() - grey_bear_skill2 >= 0.25:
             grey_bear_skill2 = 0
 
+        global scorpion_skill3
+        if scorpion_skill3 != 0 and get_time() - scorpion_skill3 >= 1.0:
+            scorpion_skill3 = 0
+
         if self.poisoned > 0.0:
             self.poisoned -= game_framework.frame_time
             if self.poisoned < 0.0:
@@ -177,6 +184,12 @@ class Char:
 
             if self.poisoned == 0.0:
                 self.poison_acc = 0.0
+
+        if self.slowed > 0.0:
+            self.slowed -= game_framework.frame_time
+            self.speed = self.speed * 0.7
+            if self.slowed < 0.0:
+                self.slowed = 0.0
 
         if self.hp <= 0:
             self.char = character_state.char
@@ -192,6 +205,7 @@ class Char:
             self.dodge = 0 + self.stat_agility * 0.1
             self.poison_acc = 0.0
             self.poisoned = 0.0
+            self.slowed = 0.0
             self.item = [
                 None, None, None,
                 None, None, None,
@@ -289,6 +303,16 @@ class Char:
                     if chance <= 25 and self.poisoned == 0:
                         self.poisoned = 3.0
 
+                if other.name == 'scorpion':
+                    other.hp += 1
+                    other.healed += 1
+                    if other.healed >= 10:
+                        other.healed -= 10
+                        other.attack += 1
+                        global scorpion_skill3
+                        scorpion_skill3 = get_time()
+
+
             if other.name == 'apple':
                 self.hp += 10
 
@@ -332,8 +356,6 @@ def update_items():
                     char.item_defense += char.gold * 0.01
                 elif char.item[i][0] == 'Speed_boots':
                     char.item_attack += char.speed * 0.1
-                elif char.item[i][0] == 'Magic_sword':
-                    char.item_damage += char.attack * 0.1
                 elif char.item[i][0] == 'Red_banner':
                     from stage import monster_count
                     char.item_attack += monster_count * 4

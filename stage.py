@@ -859,7 +859,7 @@ def set_stage2_6():
         monster.y = y
         game_world.add_object(monster, 2)
         monster.set_size(47, 50, 47, 40)
-        monster.set_stat(700, 20, 15, 90, 400, 50)
+        monster.set_stat(300, 2, 10, 80, 400, 50)
         monster.set_image('scorpion.png')
         monster.set_max_frame(2)
         monster.set_name('scorpion')
