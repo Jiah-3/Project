@@ -116,13 +116,28 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
+            else:
+                if item[10] == 6:
+                    character_state.char.gold += 100
+                elif item[10] == 5:
+                    character_state.char.gold += 300
+                elif item[10] == 4:
+                    character_state.char.gold += 500
+                elif item[10] == 3:
+                    character_state.char.gold += 800
+                elif item[10] == 2:
+                    character_state.char.gold += 1000
+                elif item[10] == 1:
+                    character_state.char.gold += 1500
         elif item_rate <= 15: # legendary
             from item import legendary
             item = legendary[randint(0, len(legendary) - 1)]
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 18: # fabled
             from item import fabled
@@ -130,6 +145,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate == 19: # mythic
             from item import mythic
@@ -137,6 +153,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
 
     elif tier == 2: # 30% unique ~ mythic
@@ -147,6 +164,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 40: # rare
             from item import rare
@@ -154,6 +172,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 45: # legendary
             from item import legendary
@@ -161,6 +180,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 48: # fabled
             from item import fabled
@@ -168,6 +188,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate == 49: # mythic
             from item import mythic
@@ -175,6 +196,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
 
     elif tier == 3: # 60% common ~ mythic
@@ -185,6 +207,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 81: # unique
             from item import unique
@@ -192,6 +215,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 91: # rare
             from item import rare
@@ -199,6 +223,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 96: # legendary
             from item import legendary
@@ -206,6 +231,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate <= 99: # fabled
             from item import fabled
@@ -213,6 +239,7 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break
         elif item_rate == 100: # mythic
             from item import mythic
@@ -220,4 +247,5 @@ def set_item(Tier = 0):
             for i in range(0, 9):
                 if character_state.char.item[i] is None:
                     character_state.char.item[i] = item
+                    character_state.char.hp += item[1]
                     break

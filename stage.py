@@ -81,7 +81,7 @@ def set_shop():
         bg.set_bg(1)
     game_world.add_object(bg, 0)
     #상점 소환
-    monster_positions = [(250, 90), (400, 90), (550, 90)]
+    monster_positions = [(100, 90), (250, 90), (400, 90), (550, 90), (700, 90),]
     monsters = [Monster() for _ in monster_positions]
     for monster, (x, y) in zip(monsters, monster_positions):
         monster.x = x
@@ -95,7 +95,7 @@ def set_shop():
             monster.set_image('selling_tier3.png')
             monster.set_max_frame(1)
             monster.set_name('selling_tier3')
-            monster.price = 100
+            monster.price = 300
             game_world.add_collision_pair('attack:monster', None, monster)
             game_world.add_collision_pair('char:monster', None, monster)
             game_world.add_collision_pair('monster:block', monster, None)
@@ -104,7 +104,7 @@ def set_shop():
             monster.set_image('selling_tier2.png')
             monster.set_max_frame(1)
             monster.set_name('selling_tier2')
-            monster.price = 300
+            monster.price = 500
             game_world.add_collision_pair('attack:monster', None, monster)
             game_world.add_collision_pair('char:monster', None, monster)
             game_world.add_collision_pair('monster:block', monster, None)
@@ -113,7 +113,7 @@ def set_shop():
             monster.set_image('selling_tier1.png')
             monster.set_max_frame(1)
             monster.set_name('selling_tier1')
-            monster.price = 500
+            monster.price = 800
             game_world.add_collision_pair('attack:monster', None, monster)
             game_world.add_collision_pair('char:monster', None, monster)
             game_world.add_collision_pair('monster:block', monster, None)
@@ -122,7 +122,7 @@ def set_shop():
             monster.set_image('selling_heart.png')
             monster.set_max_frame(1)
             monster.set_name('selling_heart')
-            monster.price = 200
+            monster.price = 100
             game_world.add_collision_pair('attack:monster', None, monster)
             game_world.add_collision_pair('char:monster', None, monster)
             game_world.add_collision_pair('monster:block', monster, None)
