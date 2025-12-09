@@ -23,10 +23,11 @@ FRAMES_PER_SEC = FRAMES_PER_ACTION * ACTION_PER_TIME
 slime_skill3_cooldown = 60.0
 slime_skill3_active = 0.0
 slime_skill3_frame = 0
+spider_skill1_cooldown = 7.0
 
 class Monster:
     def __init__(self):
-        self.moving = 300
+        self.moving = 1.5
         self.image = load_image('test.png')
         self.x, self.y = 0, 0
         self.frame = 0
@@ -59,20 +60,27 @@ class Monster:
                 self.immune_time = 0.0
 
         self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time / 3) % self.max_frame
-        if self.moving == 0:
-            self.move = random.randint(-1, 1)
-            self.moving = 300
+        if self.name != 'spider_skill1':
+            if self.moving <= 0:
+                self.move = random.randint(-1, 1)
+                self.moving = 1.5
 
-        if self.move == 1:
-            self.direction = 1
-            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
-            self.moving -= 1
-        elif self.move == -1:
-            self.direction = -1
-            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
-            self.moving -= 1
+            if self.move == 1:
+                self.direction = 1
+                self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
+                self.moving -= game_framework.frame_time
+            elif self.move == -1:
+                self.direction = -1
+                self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
+                self.moving -= game_framework.frame_time
+            else:
+                self.moving -= game_framework.frame_time
         else:
-            self.moving -= 1
+            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
+            if self.x - self.size_x1 < 0:
+                game_world.remove_object(self)
+            elif self.x + self.size_x2 > 800:
+                game_world.remove_object(self)
 
         if self.x - self.size_x1 < 0:
             self.x = self.size_x1 + 20
@@ -91,6 +99,35 @@ class Monster:
                 else:
                     self.direction = 1
                     self.move = 1
+
+        if self.name == 'spider':
+            global spider_skill1_cooldown
+            if spider_skill1_cooldown > 0.0:
+                spider_skill1_cooldown -= game_framework.frame_time
+            if spider_skill1_cooldown < 0.0:
+                import character_state
+                if not character_state.char == None:
+                    char = character_state.char
+                    if char.x < self.x:
+                        self.direction = -1
+                    else:
+                        self.direction = 1
+                # 스킬 내용
+                _monster = Monster()
+                _monster.x = self.x
+                _monster.y = self.y - 10
+                game_world.add_object(_monster, 2)
+                _monster.set_size(40, 40, 40, 20)
+                _monster.set_stat(1, 5, 0, 150, 0, 0)
+                _monster.set_image('spider_skill1_effect.png')
+                _monster.set_max_frame(1)
+                _monster.set_name('spider_skill1')
+                _monster.direction = self.direction
+                game_world.add_collision_pair('attack:monster', None, _monster)
+                game_world.add_collision_pair('char:monster', None, _monster)
+                game_world.add_collision_pair('monster:block', _monster, None)
+
+                spider_skill1_cooldown = 7.0
 
         if self.name == 'big_slime':
             global slime_skill3_cooldown, slime_skill3_active, slime_skill3_frame
@@ -142,7 +179,7 @@ class Monster:
 
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
-        if self.name != 'apple' and self.name != 'golden_apple' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
+        if self.name != 'apple' and self.name != 'golden_apple' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart' and self.name != 'spider_skill1':
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
         if self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':

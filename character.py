@@ -274,6 +274,9 @@ class Char:
                 if defence > 80:
                     defence = 80
                 damage = other.attack * ((100 - defence) / 100)
+                if other.name == 'spider':
+                    if self.slowed > 0:
+                        damage += 10 * ((100 - defence) / 100)
                 if self.dodge >= random.randint(1, 100):
                     #print('dodge')
                     pass
@@ -311,6 +314,14 @@ class Char:
                         other.attack += 1
                         global scorpion_skill3
                         scorpion_skill3 = get_time()
+
+                if other.name =='spider':
+                        chance = random.randint(1, 100)
+                        if chance <= 20 or self.slowed > 0:
+                            self.poisoned = 4.0
+                if other.name == 'spider_skill1':
+                    self.slowed = 5.0
+                    game_world.remove_object(other)
 
 
             if other.name == 'apple':
