@@ -18,4 +18,5 @@ class Bg():
             self.image = load_image('background1.png')
         elif stage == 2:
             self.image = load_image('background2.png')
-
+        elif stage == 3:
+            self.image = load_image('background3.png')

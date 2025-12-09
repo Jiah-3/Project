@@ -32,6 +32,8 @@ class Ground:
             self.image = load_image('ground.png')
         elif stage == 2:
             self.image = load_image('ground2.png')
+        elif stage == 3:
+            self.image = load_image('ground3.png')
 
     def handle_collision(self, group, other):
         if group == 'char:ground':
@@ -1060,6 +1062,38 @@ def set_stage2_10():
         monster.set_image('spider.png')
         monster.set_max_frame(4)
         monster.set_name('spider')
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
+def set_stage3_1():
+    global positions
+    positions = [(0, 30), (100, 30), (200, 30),
+                 (300, 30), (400, 30), (500, 30),
+                 (600, 30), (700, 30), (800, 30),
+                 ]
+    grounds = [Ground() for _ in positions]
+    for ground, (x, y) in zip(grounds, positions):
+        ground.x = x
+        ground.y = y
+        ground.set_ground(2)
+        game_world.add_object(ground, 1)
+        game_world.add_collision_pair('char:ground', None, ground)
+    bg = Bg()
+    bg.set_bg(3)
+    game_world.add_object(bg, 0)
+
+    # 불의 신 소환
+    monster_positions = [(300, 90),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y + 150
+        game_world.add_object(monster, 2)
+        monster.set_size(60, 60, 60, 55)
+        monster.set_stat(2000, 0, 30, 120, 0, 0)
+        monster.set_image('flame_god.png')
+        monster.set_max_frame(4)
+        monster.set_name('flame_god')
         game_world.add_collision_pair('attack:monster', None, monster)
         game_world.add_collision_pair('char:monster', None, monster)
         game_world.add_collision_pair('monster:block', monster, None)

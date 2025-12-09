@@ -47,7 +47,7 @@ class Char:
             self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 1000
+            self.stat_attack = 10000
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0

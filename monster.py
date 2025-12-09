@@ -118,6 +118,11 @@ class Monster:
                 self.image.clip_draw(int(self.frame) * 50, 0, 50, 50, self.x, self.y)
             else:
                 self.image.clip_composite_draw(int(self.frame) * 50, 0, 50, 50, 0, 'h', self.x, self.y, 50, 50)
+        elif self.name == 'flame_god':
+            if self.direction == 1:
+                self.image.clip_draw(int(self.frame) * 120, 0, 120, 120, self.x, self.y)
+            else:
+                self.image.clip_composite_draw(int(self.frame) * 120, 0, 120, 120, 0, 'h', self.x, self.y, 120, 120)
         elif self.name == 'apple' or self.name == 'golden_apple':
             self.image.clip_draw(int(self.frame) * 30, 0, 30, 30, self.x, self.y)
         elif self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
