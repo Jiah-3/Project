@@ -1031,5 +1031,37 @@ def set_stage2_9():
         block.y = y
         game_world.add_object(block, 0)
         game_world.add_collision_pair('monster:block', None, block)
+def set_stage2_10():
+    global positions
+    positions = [(0, 30), (100, 30), (200, 30),
+                 (300, 30), (400, 30), (500, 30),
+                 (600, 30), (700, 30), (800, 30),
+                 ]
+    grounds = [Ground() for _ in positions]
+    for ground, (x, y) in zip(grounds, positions):
+        ground.x = x
+        ground.y = y
+        ground.set_ground(2)
+        game_world.add_object(ground, 1)
+        game_world.add_collision_pair('char:ground', None, ground)
+    bg = Bg()
+    bg.set_bg(2)
+    game_world.add_object(bg, 0)
+
+    # 거미 소환
+    monster_positions = [(300, 90),]
+    monsters = [Monster() for _ in monster_positions]
+    for monster, (x, y) in zip(monsters, monster_positions):
+        monster.x = x
+        monster.y = y
+        game_world.add_object(monster, 2)
+        monster.set_size(47, 50, 47, 20)
+        monster.set_stat(1000, 20, 15, 90, 600, 100)
+        monster.set_image('spider.png')
+        monster.set_max_frame(4)
+        monster.set_name('spider')
+        game_world.add_collision_pair('attack:monster', None, monster)
+        game_world.add_collision_pair('char:monster', None, monster)
+        game_world.add_collision_pair('monster:block', monster, None)
 def get_ground_positions():
     return positions

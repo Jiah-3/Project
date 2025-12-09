@@ -97,7 +97,7 @@ def set_tier(Tier=0):
         tier = 1
         image = load_image("tier1.png")
 
-    if character_state.char.stage == '1_6' or character_state.char.stage == '1_10':
+    if character_state.char.stage == '1_6' or character_state.char.stage == '1_10' or character_state.char.stage == '2_6' or character_state.char.stage == '2_10':
         tier = 1
         image = load_image("tier1.png")
     if Tier != 0:
