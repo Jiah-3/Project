@@ -50,7 +50,7 @@ class Char:
             self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 10
+            self.stat_attack = 0
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -61,14 +61,14 @@ class Char:
             self.next_level_exp = 1
             self.level = 0
 
-            self.max_hp = 100 + self.stat_hp * 1
-            self.hp = 100 + self.stat_hp * 1
-            self.damage = 2 + self.stat_attack * 0.05
+            self.max_hp = 100 + self.stat_hp * 2.5
+            self.hp = 100 + self.stat_hp * 2.5
+            self.damage = 2 + self.stat_attack * 0.1
             self.attack = 100
             self.defense = 0 + self.stat_defense * 0.5
-            self.speed = 100 + self.stat_agility * 1
-            self.crit_chance = 0 + self.stat_luck * 1
-            self.dodge = 0 + self.stat_agility * 0.1
+            self.speed = 100 + self.stat_agility * 2
+            self.dodge = 0 + self.stat_agility * 0.25
+            self.crit_chance = 0 + self.stat_luck * 1.5
             self.gold_bonus = 0
 
             self.item_max_hp = 0
@@ -195,14 +195,14 @@ class Char:
             self.char = character_state.char
 
             self.gold = 0
-            self.max_hp = 100 + self.stat_hp * 1
-            self.hp = 100 + self.stat_hp * 1
-            self.damage = 2 + self.stat_attack * 0.05
+            self.max_hp = 100 + self.stat_hp * 2.5
+            self.hp = 100 + self.stat_hp * 2.5
+            self.damage = 2 + self.stat_attack * 0.1
             self.attack = 100
             self.defense = 0 + self.stat_defense * 0.5
-            self.speed = 100 + self.stat_agility * 1
-            self.crit_chance = 0 + self.stat_luck * 1
-            self.dodge = 0 + self.stat_agility * 0.1
+            self.speed = 100 + self.stat_agility * 2
+            self.dodge = 0 + self.stat_agility * 0.25
+            self.crit_chance = 0 + self.stat_luck * 1.5
             self.poison_acc = 0.0
             self.poisoned = 0.0
             self.slowed = 0.0
@@ -277,8 +277,16 @@ class Char:
                 if other.name == 'spider':
                     if self.slowed > 0:
                         damage += 10 * ((100 - defence) / 100)
-                if self.dodge >= random.randint(1, 100):
-                    #print('dodge')
+                if self.dodge >= 90:
+                    dodge = 90
+                    if dodge >= random.randint(1, 100):
+                        #print('dodge')
+                        pass
+                    else:
+                        self.hp -= damage
+                        # print(f'player hp: {self.hp}/{self.max_hp}')
+                elif self.dodge >= random.randint(1, 100):
+                    # print('dodge')
                     pass
                 else:
                     self.hp -= damage
@@ -382,13 +390,13 @@ def update_items():
                 elif char.item[i][0] == 'Gold_ingot':
                     char.item_gold_bonus += 20
 
-        char.max_hp = 100 + char.stat_hp * 1 + char.item_max_hp
-        char.damage = 2 + char.stat_attack * 0.05 + char.item_damage
+        char.max_hp = 100 + char.stat_hp * 2.5 + char.item_max_hp
+        char.damage = 2 + char.stat_attack * 0.1 + char.item_damage
         char.attack = 100 + char.item_attack
         char.defense = 0 + char.stat_defense * 0.5 + char.item_defense
-        char.speed = 100 + char.stat_agility * 1 + char.item_speed
-        char.dodge = 0 + char.stat_agility * 0.1 + char.item_dodge
-        char.crit_chance = 0 + char.stat_luck * 1 + char.item_crit_chance
+        char.speed = 100 + char.stat_agility * 2 + char.item_speed
+        char.dodge = 0 + char.stat_agility * 0.25 + char.item_dodge
+        char.crit_chance = 0 + char.stat_luck * 1.5 + char.item_crit_chance
         char.gold_bonus = char.item_gold_bonus
 
 
