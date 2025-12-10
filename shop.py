@@ -13,7 +13,7 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_w or event.type == SDL_KEYDOWN and event.key == SDLK_p:
             if stage.monster_count == 0:
                 if char.stage == '1_3':
                     import stage1_4

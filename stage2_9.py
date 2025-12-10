@@ -18,6 +18,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
             if stage.monster_count == 0:
                 game_framework.push_mode(reward)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
+            stage.monster_count = -1
         else:
             char.handle_event(event)
 

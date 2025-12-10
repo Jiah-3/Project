@@ -2,7 +2,7 @@ import random
 
 from pico2d import load_image, draw_rectangle, load_font, get_time
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e, \
-    SDLK_s, SDLK_l
+    SDLK_s, SDLK_l, SDLK_p
 
 import character_state
 import inventory_mode
@@ -578,6 +578,9 @@ def s_down(e):
 
 def l_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_l
+
+def p_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_p
 
 def mouse_L_down(e):
     if e[0] != 'INPUT' or e[1].type != SDL_MOUSEBUTTONDOWN:
