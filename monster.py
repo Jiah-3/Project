@@ -216,7 +216,7 @@ class Monster:
             elif flame_god_skill1_cooldown <= 0.0 :
                 flame_god_skill1_cooldown = 10.0
 
-                i = random.randint(2, 2)
+                i = random.randint(1, 3)
                 if i == 1:
                     flame_god_skill1_1_active = 3.0
                     monster_positions = []

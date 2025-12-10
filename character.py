@@ -7,6 +7,7 @@ from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBU
 import character_state
 import inventory_mode
 import drawing_bb
+from play_music import play_death
 from state_machine import StateMachine
 import game_world
 import game_framework
@@ -49,8 +50,8 @@ class Char:
         if character_state.char is None:
             self.stage = '1_1'
             self.stat_points = 0
-            self.stat_hp = 1000
-            self.stat_attack = 10000
+            self.stat_hp = 0
+            self.stat_attack = 0
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -215,6 +216,7 @@ class Char:
 
             import stage1_1
             game_framework.change_mode(stage1_1)
+            play_death()
 
     def draw(self):
         self.state_machine.draw()
@@ -423,8 +425,8 @@ class Idle:
             game_world.add_collision_pair('attack:monster', attack, None)
         if e_down(e):
                game_framework.push_mode(inventory_mode)
-        if s_down(e):
-            drawing_bb.draw_bb = not drawing_bb.draw_bb
+        # if s_down(e):
+        #     drawing_bb.draw_bb = not drawing_bb.draw_bb
 
     def exit(self, event):
         pass
@@ -473,8 +475,8 @@ class Move:
             game_world.add_collision_pair('attack:monster', attack, None)
         if e_down(e):
             game_framework.push_mode(inventory_mode)
-        if s_down(e):
-            drawing_bb.draw_bb = not drawing_bb.draw_bb
+        # if s_down(e):
+        #     drawing_bb.draw_bb = not drawing_bb.draw_bb
 
     def exit(self, e):
         pass

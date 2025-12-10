@@ -96,7 +96,7 @@ def handle_events():
                 num += 3
             elif event.y <= 90 and event.y >= 10:
                 num += 6
-            print(f"Left click at: ({event.x}, {event.y})")
+            # print(f"Left click at: ({event.x}, {event.y})")
 
 def finish():
     global inventory

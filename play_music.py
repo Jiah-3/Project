@@ -7,6 +7,7 @@ _music4 = None
 _music5 = None
 _music6 = None
 _music7 = None
+_music8 = None
 
 def play_stage1():
     global _music1
@@ -56,6 +57,13 @@ def play_boom():
         _music7 = load_wav('boom.wav')   # 파일명은 프로젝트에 맞게
         _music7.set_volume(100)               # 볼륨 조정(0~100)
     _music7.play()
+
+def play_death():
+    global _music8
+    if _music8 is None:
+        _music8 = load_wav('death.wav')   # 파일명은 프로젝트에 맞게
+        _music8.set_volume(20)               # 볼륨 조정(0~100)
+    _music8.play()
 
 def stop_music():
     global _music1, _music2, _music3
