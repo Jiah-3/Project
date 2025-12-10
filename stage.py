@@ -1090,7 +1090,7 @@ def set_stage3_1():
         monster.y = y + 150
         game_world.add_object(monster, 2)
         monster.set_size(60, 60, 60, 55)
-        monster.set_stat(2000, 0, 30, 120, 0, 0)
+        monster.set_stat(2000, 0, 30, 150, 0, 0)
         monster.set_image('flame_god.png')
         monster.set_max_frame(4)
         monster.set_name('flame_god')

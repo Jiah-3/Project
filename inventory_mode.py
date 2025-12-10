@@ -57,13 +57,12 @@ def handle_events():
                 if inventory.char.stat_points > 0:
                     if event.y <= 512 and event.y >= 482:
                         character_state.char.stat_hp += 1
-                        character_state.char.max_hp += 1
-                        character_state.char.hp += 1
+                        character_state.char.max_hp += 2.5
+                        character_state.char.hp += 2.5
                         character_state.char.stat_points -= 1
-
                     if event.y <= 462 and event.y >= 432:
                         character_state.char.stat_attack += 1
-                        character_state.char.damage += 0.05
+                        character_state.char.damage += 0.1
                         character_state.char.stat_points -= 1
                     if event.y <= 412 and event.y >= 382:
                         character_state.char.stat_defense += 1
@@ -71,12 +70,12 @@ def handle_events():
                         character_state.char.stat_points -= 1
                     if event.y <= 362 and event.y >= 332:
                         character_state.char.stat_agility += 1
-                        character_state.char.speed += 1
-                        character_state.char.dodge += 0.1
+                        character_state.char.speed += 2
+                        character_state.char.dodge += 0.25
                         character_state.char.stat_points -= 1
                     if event.y <= 312 and event.y >= 282:
                         character_state.char.stat_luck += 1
-                        character_state.char.crit_chance += 1
+                        character_state.char.crit_chance += 1.5
                         character_state.char.stat_points -= 1
 
             print(f"Left click at: ({event.x}, {event.y})")

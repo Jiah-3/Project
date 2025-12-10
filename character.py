@@ -49,8 +49,8 @@ class Char:
         if character_state.char is None:
             self.stage = '1_1'
             self.stat_points = 0
-            self.stat_hp = 0
-            self.stat_attack = 0
+            self.stat_hp = 1000
+            self.stat_attack = 10000
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -330,7 +330,10 @@ class Char:
                 if other.name == 'spider_skill1':
                     self.slowed = 5.0
                     game_world.remove_object(other)
-
+                if other.name == 'flame_god_skill1_1':
+                    if other.attack > 0:
+                        self.hp -= other.attack * ((100 - self.defense) / 100)
+                        other.attack = 0
 
             if other.name == 'apple':
                 self.hp += 10

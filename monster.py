@@ -1,6 +1,6 @@
 import random
 
-from pico2d import load_image, draw_rectangle, load_font
+from pico2d import load_image, draw_rectangle, load_font, get_time
 
 import game_framework
 import game_world
@@ -24,6 +24,13 @@ slime_skill3_cooldown = 60.0
 slime_skill3_active = 0.0
 slime_skill3_frame = 0
 spider_skill1_cooldown = 7.0
+
+flame_god_skill1_cooldown = 10.0
+flame_god_skill1_1_active = 0.0
+flame_god_skill1_2_active = 0.0
+flame_god_skill1_3_active = 0.0
+flame_god_skill2_active = 0.0
+flame_god_skill2_timer = 1.0
 
 class Monster:
     def __init__(self):
@@ -60,11 +67,24 @@ class Monster:
                 self.immune_time = 0.0
 
         self.frame = (self.frame + FRAMES_PER_SEC * game_framework.frame_time / 3) % self.max_frame
-        if self.name != 'spider_skill1':
-            if self.moving <= 0:
-                self.move = random.randint(-1, 1)
-                self.moving = 1.5
+        if self.moving <= 0:
+            self.move = random.randint(-1, 1)
+            self.moving = 1.5
+            if self.name == 'flame_god':
+                self.moving = 3.0
 
+        if self.name == 'spider_skill1':
+            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
+            if self.x - self.size_x1 < 0:
+                game_world.remove_object(self)
+            elif self.x + self.size_x2 > 800:
+                game_world.remove_object(self)
+
+        elif self.name == 'flame_god_skill1_2':
+            self.y -= RUN_SPEED_PPS * game_framework.frame_time * 2
+            if self.y - self.size_y1 < 0:
+                game_world.remove_object(self)
+        else:
             if self.move == 1:
                 self.direction = 1
                 self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
@@ -75,12 +95,8 @@ class Monster:
                 self.moving -= game_framework.frame_time
             else:
                 self.moving -= game_framework.frame_time
-        else:
-            self.x += self.direction * RUN_SPEED_PPS * game_framework.frame_time * self.speed / 100
-            if self.x - self.size_x1 < 0:
-                game_world.remove_object(self)
-            elif self.x + self.size_x2 > 800:
-                game_world.remove_object(self)
+
+
 
         if self.x - self.size_x1 < 0:
             self.x = self.size_x1 + 20
@@ -141,6 +157,134 @@ class Monster:
                     self.hp += (self.max_hp - self. hp) * 0.1
                     slime_skill3_active = 1.0
                     slime_skill3_cooldown = 60.0
+        if self.name == 'flame_god':
+            global flame_god_skill2_active
+            if flame_god_skill2_active == -1.0:
+                game_world.remove_object(self)
+                stage.monster_count -= 1
+            global flame_god_skill1_cooldown, flame_god_skill2_timer
+            if flame_god_skill1_cooldown > 0.0:
+                flame_god_skill1_cooldown -= game_framework.frame_time
+            if flame_god_skill2_active > 0.0:
+                flame_god_skill2_active -= game_framework.frame_time
+                flame_god_skill2_timer -= game_framework.frame_time
+            elif flame_god_skill2_active < 0.0:
+                flame_god_skill2_active = -1.0
+            if (flame_god_skill2_active > 0.0 and flame_god_skill2_timer <= 0.0):
+                flame_god_skill2_timer = 1.0
+                global flame_god_skill1_1_active
+                flame_god_skill1_1_active = 3.0
+                monster_positions = []
+                for _ in range(8):
+                    x, y = random.randint(60, 740), random.randint(90, 150)
+                    monster_positions.append((x, y))
+
+                monsters = [Monster() for _ in monster_positions]
+                for monster, (x, y) in zip(monsters, monster_positions):
+                    monster.x = x
+                    monster.y = y
+                    game_world.add_object(monster, 2)
+                    monster.set_size(40, 40, 40, 40)
+                    monster.set_stat(1, 0, 0, 0, 0, 0)
+                    monster.set_image('flame_god_skill1_1_effect.png')
+                    monster.set_max_frame(6)
+                    monster.set_name('flame_god_skill1_1')
+                    game_world.add_collision_pair('attack:monster', None, monster)
+                    game_world.add_collision_pair('char:monster', None, monster)
+                    game_world.add_collision_pair('monster:block', monster, None)
+
+                monster_positions = []
+                for _ in range(30):
+                    x, y = random.randint(20, 780), random.randint(800, 1200)
+                    monster_positions.append((x, y))
+
+                monsters = [Monster() for _ in monster_positions]
+                for monster, (x, y) in zip(monsters, monster_positions):
+                    monster.x = x
+                    monster.y = y
+                    game_world.add_object(monster, 2)
+                    monster.set_size(8, 8, 8, 8)
+                    monster.set_stat(1, 10, 0, 100, 0, 0)
+                    monster.set_image('flame_god_skill1_2_effect.png')
+                    monster.set_max_frame(2)
+                    monster.set_name('flame_god_skill1_2')
+                    game_world.add_collision_pair('attack:monster', None, monster)
+                    game_world.add_collision_pair('char:monster', None, monster)
+                    game_world.add_collision_pair('monster:block', monster, None)
+
+            elif flame_god_skill1_cooldown <= 0.0 :
+                flame_god_skill1_cooldown = 10.0
+
+                i = random.randint(1, 3)
+                if i == 1:
+                    flame_god_skill1_1_active = 3.0
+                    monster_positions = []
+                    for _ in range(8):
+                        x, y = random.randint(60, 740), random.randint(90, 150)
+                        monster_positions.append((x, y))
+
+                    monsters = [Monster() for _ in monster_positions]
+                    for monster, (x, y) in zip(monsters, monster_positions):
+                        monster.x = x
+                        monster.y = y
+                        game_world.add_object(monster, 2)
+                        monster.set_size(40, 40, 40, 40)
+                        monster.set_stat(1, 0, 0, 0, 0, 0)
+                        monster.set_image('flame_god_skill1_1_effect.png')
+                        monster.set_max_frame(6)
+                        monster.set_name('flame_god_skill1_1')
+                        game_world.add_collision_pair('attack:monster', None, monster)
+                        game_world.add_collision_pair('char:monster', None, monster)
+                        game_world.add_collision_pair('monster:block', monster, None)
+                elif i == 2:
+                    monster_positions = []
+                    for _ in range(30):
+                        x, y = random.randint(20, 780), random.randint(800, 1200)
+                        monster_positions.append((x, y))
+
+                    monsters = [Monster() for _ in monster_positions]
+                    for monster, (x, y) in zip(monsters, monster_positions):
+                        monster.x = x
+                        monster.y = y
+                        game_world.add_object(monster, 2)
+                        monster.set_size(8, 8, 8, 8)
+                        monster.set_stat(1, 10, 0, 100, 0, 0)
+                        monster.set_image('flame_god_skill1_2_effect.png')
+                        monster.set_max_frame(2)
+                        monster.set_name('flame_god_skill1_2')
+                        game_world.add_collision_pair('attack:monster', None, monster)
+                        game_world.add_collision_pair('char:monster', None, monster)
+                        game_world.add_collision_pair('monster:block', monster, None)
+                elif i == 3:
+                    flame_god_skill1_3_active = 3.0
+                    if flame_god_skill2_active == 0.0:
+                        self.immune_time = 3.0
+                    monster = Monster()
+                    monster.x = self.x
+                    monster.y = self.y - 10
+                    game_world.add_object(monster, 1)
+                    monster.set_size(0, 0, 0, 0)
+                    monster.set_stat(1, 0, 0, 0, 0, 0)
+                    monster.set_image('flame_god_skill1_3_effect.png')
+                    monster.set_max_frame(5)
+                    monster.set_name('flame_god_skill1_3')
+                    game_world.add_collision_pair('attack:monster', None, monster)
+                    game_world.add_collision_pair('char:monster', None, monster)
+                    game_world.add_collision_pair('monster:block', monster, None)
+        if self.name == 'flame_god_skill1_1':
+            if int(self.frame) == 4:
+                if self.attack == 0:
+                    self.attack = 10
+            if flame_god_skill1_1_active > 0.0:
+                flame_god_skill1_1_active -= game_framework.frame_time
+            else:
+                flame_god_skill1_1_active = 0.0
+            if self.frame >= 5.5:
+                game_world.remove_object(self)
+        if self.name == 'flame_god_skill1_3':
+            flame_god_skill1_3_active -= game_framework.frame_time
+            if flame_god_skill1_3_active <= 0.0:
+                game_world.remove_object(self)
 
     def draw(self):
         if self.name == 'big_slime':
@@ -166,6 +310,12 @@ class Monster:
             self.image.clip_draw(int(self.frame) * 30, 0, 30, 30, self.x, self.y)
         elif self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
             self.image.clip_draw(int(self.frame) * 120, 0, 120, 100, self.x, self.y)
+        elif self.name == 'flame_god_skill1_1':
+            self.image.clip_draw(int(self.frame) * 80, 0, 80, 80, self.x, self.y)
+        elif self.name == 'flame_god_skill1_2':
+            self.image.clip_draw(int(self.frame) * 10, 0, 10, 10, self.x, self.y)
+        elif self.name == 'flame_god_skill1_3':
+            self.image.clip_draw(int(self.frame) * 120, 0, 120, 120, self.x, self.y)
         else:
             if self.direction == 1:
                 self.image.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
@@ -179,7 +329,7 @@ class Monster:
 
         if drawing_bb.draw_bb:
             draw_rectangle(*self.get_bb())
-        if self.name != 'apple' and self.name != 'golden_apple' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart' and self.name != 'spider_skill1':
+        if self.name != 'flame_god_skill1_3' and self.name != 'apple' and self.name != 'golden_apple' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart' and self.name != 'spider_skill1' and self.name != 'flame_god_skill1_1' and self.name != 'flame_god_skill1_2':
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100 * self.hp / self.max_hp, self.y + self.size_y2 + 10, 255, 0, 0, filled=True)
             draw_rectangle(self.x - self.size_x1, self.y + self.size_y2, self.x - self.size_x1 + 100, self.y + self.size_y2 + 10, 0, 0, 0)
         if self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
@@ -196,6 +346,10 @@ class Monster:
     def handle_collision(self, group, other):
         if group == 'attack:monster':
             #game_world.remove_object(self)
+            if self.name == 'flame_god' and other.char.immune_time == 0.0:
+                if flame_god_skill1_3_active > 0:
+                    other.char.hp -= 15
+                    other.char.immune_time = 0.5
             if self.immune_time == 0:
                 self.immune_time = 0.5
                 #print('monster hit')
@@ -210,6 +364,8 @@ class Monster:
                     damage = other.char.damage * (other.char.attack / 100) * ((100 - self.defense) / 100)
                 if self.name == 'small_slime':
                     damage = 1
+                if self.name == 'flame_god_skill1_1' or self.name == 'flame_god_skill1_2':
+                    damage = 0
                 self.hp -= damage
                 #print(f'monster hp: {self.hp}/{self.max_hp}')
 
@@ -248,8 +404,13 @@ class Monster:
                         game_world.add_collision_pair('char:monster', None, apple)
 
                 if self.hp <= 0:
-                    drop_chance = random.randint(1, 100)
-                    if self.name != 'small_slime' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
+                    global flame_god_skill2_active
+                    if self.name == 'flame_god' and flame_god_skill2_active == 0.0:
+                        flame_god_skill2_active = 10.0
+                        self.immune_time = 10.0
+                        self.hp = 1
+                    elif self.name != 'small_slime' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
+                        drop_chance = random.randint(1, 100)
                         if drop_chance <= 10:
                             apple = Monster()
                             apple.x = self.x
@@ -272,7 +433,7 @@ class Monster:
                             apple.set_max_frame(1)
                             apple.set_name('golden_apple')
                             game_world.add_collision_pair('char:monster', None, apple)
-                    if self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
+                    elif self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
                         if other.char.gold >= self.price:
                             for i in range(0, 9):
                                 if other.char.item[i] == None:

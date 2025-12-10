@@ -1,6 +1,7 @@
 from pico2d import *
 
 import character_state
+import ending
 import game_framework
 import game_world
 import reward
@@ -17,7 +18,7 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
             if stage.monster_count == 0:
-                game_framework.push_mode(reward)
+                game_framework.push_mode(ending)
         else:
             char.handle_event(event)
 
