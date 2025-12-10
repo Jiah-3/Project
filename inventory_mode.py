@@ -112,7 +112,7 @@ def draw():
     game_world.render()
     if num != -1 and character_state.char.item[num] != None:
         font = load_font('ENCR10B.TTF', 12)
-        font.draw(270, 280, f'{character_state.char.item[num][9]}', (0, 0, 0))
+        font.draw(240, 280, f'{character_state.char.item[num][9]}', (0, 0, 0))
     update_canvas()
 
 def pause():
