@@ -374,6 +374,7 @@ class Monster:
                 if self.name == 'flame_god_skill1_1' or self.name == 'flame_god_skill1_2':
                     damage = 0
                 self.hp -= damage
+                other.char.hp += damage * (other.char.life_steal / 100)
                 #print(f'monster hp: {self.hp}/{self.max_hp}')
 
                 if self.name == 'grey_bear':
@@ -465,7 +466,7 @@ class Monster:
                                 game_world.add_collision_pair('char:monster', None, apple)
                         game_world.remove_object(self)
                         other.char.gold += self.gold * (100 + other.char.gold_bonus) / 100
-                        other.char.exp += self.exp
+                        other.char.exp += self.exp * (100 + other.char.exp_bonus) / 100
                         stage.monster_count -= 1
 
         if group == 'monster:block':

@@ -7,6 +7,7 @@ from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBU
 import character_state
 import inventory_mode
 import drawing_bb
+from item import rare, legendary, fabled
 from play_music import play_death
 from state_machine import StateMachine
 import game_world
@@ -51,7 +52,7 @@ class Char:
             self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 0
+            self.stat_attack = 1000
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -71,6 +72,7 @@ class Char:
             self.dodge = 0 + self.stat_agility * 0.25
             self.crit_chance = 0 + self.stat_luck * 1.5
             self.gold_bonus = 0
+            self.exp_bonus = 0
 
             self.item_max_hp = 0
             self.item_damage = 0
@@ -79,6 +81,7 @@ class Char:
             self.item_speed = 0
             self.item_crit_chance = 0
             self.item_dodge = 0
+            self.life_steal = 0
         else:
             self.char = character_state.char
             self.stage = character_state.char.stage
@@ -105,6 +108,8 @@ class Char:
             self.crit_chance = character_state.char.crit_chance
             self.dodge = character_state.char.dodge
             self.char.gold_bonus = character_state.char.gold_bonus
+            self.char.exp_bonus = character_state.char.exp_bonus
+            self.char.life_steal = character_state.char.life_steal
 
             self.item_max_hp = 0
             self.item_damage = 0
@@ -355,6 +360,8 @@ def update_items():
         char.item_crit_chance = 0
         char.item_dodge = 0
         char.item_gold_bonus = 0
+        char.item_exp_bonus = 0
+        char.item_life_steal = 0
 
         for i in range(0, 9):
             if char.item[i] is not None:
@@ -394,6 +401,22 @@ def update_items():
                     char.item_max_hp += monster_count * 3
                 elif char.item[i][0] == 'Gold_ingot':
                     char.item_gold_bonus += 20
+                elif char.item[i][0] == 'Xp_potion':
+                    char.item_exp_bonus += 25
+                elif char.item[i][0] == 'Super_xp_potion':
+                    char.item_exp_bonus += 50
+                elif char.item[i][0] == 'Hyper_xp_potion':
+                    char.item_exp_bonus += 75
+                elif char.item[i][0] == 'Ultra_xp_potion':
+                    char.item_exp_bonus += 100
+                elif char.item[i][0] == 'Champion_crown':
+                    char.item_attack += char.max_hp * 0.1
+                elif char.item[i][0] == 'Red_ring_1':
+                    char.item_life_steal += 10
+                elif char.item[i][0] == 'Red_ring_2':
+                    char.item_life_steal += 20
+                elif char.item[i][0] == 'Red_ring_3':
+                    char.item_life_steal += 30
 
         char.max_hp = 100 + char.stat_hp * 2.5 + char.item_max_hp
         char.damage = 2 + char.stat_attack * 0.1 + char.item_damage
@@ -403,7 +426,8 @@ def update_items():
         char.dodge = 0 + char.stat_agility * 0.25 + char.item_dodge
         char.crit_chance = 0 + char.stat_luck * 1.5 + char.item_crit_chance
         char.gold_bonus = char.item_gold_bonus
-
+        char.exp_bonus = char.item_exp_bonus
+        char.life_steal = char.item_life_steal
 
 class Idle:
     def __init__(self, char):
