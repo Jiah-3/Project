@@ -415,30 +415,7 @@ class Monster:
                         flame_god_skill2_active = 10.0
                         self.immune_time = 10.0
                         self.hp = 1
-                    elif self.name != 'small_slime' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
-                        drop_chance = random.randint(1, 100)
-                        if drop_chance <= 10:
-                            apple = Monster()
-                            apple.x = self.x
-                            apple.y = self.y - 35
-                            game_world.add_object(apple, 2)
-                            apple.set_size(10, 15, 10, 10)
-                            apple.set_stat(1, 0, 0, 0, 0, 0)
-                            apple.set_image('apple.png')
-                            apple.set_max_frame(1)
-                            apple.set_name('apple')
-                            game_world.add_collision_pair('char:monster', None, apple)
-                        elif drop_chance == 11 or self.name == 'grey_bear' or self.name == 'big_slime' or self.name == 'scorpion' or self.name == 'spider':
-                            apple = Monster()
-                            apple.x = self.x
-                            apple.y = self.y - 35
-                            game_world.add_object(apple, 2)
-                            apple.set_size(10, 15, 10, 10)
-                            apple.set_stat(1, 0, 0, 0, 0, 0)
-                            apple.set_image('golden_apple.png')
-                            apple.set_max_frame(1)
-                            apple.set_name('golden_apple')
-                            game_world.add_collision_pair('char:monster', None, apple)
+
                     elif self.name == 'selling_tier3' or self.name == 'selling_tier2' or self.name == 'selling_tier1' or self.name == 'selling_heart':
                         if other.char.gold >= self.price:
                             for i in range(0, 9):
@@ -460,13 +437,36 @@ class Monster:
                             if self.name == 'selling_heart':
                                 game_world.remove_object(self)
                                 other.char.hp += int(other.char.max_hp * 0.2)
-
-
                     else:
+                        if self.name != 'small_slime' and self.name != 'selling_tier3' and self.name != 'selling_tier2' and self.name != 'selling_tier1' and self.name != 'selling_heart':
+                            drop_chance = random.randint(1, 100)
+                            if drop_chance <= 10:
+                                apple = Monster()
+                                apple.x = self.x
+                                apple.y = self.y - 35
+                                game_world.add_object(apple, 2)
+                                apple.set_size(10, 15, 10, 10)
+                                apple.set_stat(1, 0, 0, 0, 0, 0)
+                                apple.set_image('apple.png')
+                                apple.set_max_frame(1)
+                                apple.set_name('apple')
+                                game_world.add_collision_pair('char:monster', None, apple)
+                            elif drop_chance == 11 or self.name == 'grey_bear' or self.name == 'big_slime' or self.name == 'scorpion' or self.name == 'spider':
+                                apple = Monster()
+                                apple.x = self.x
+                                apple.y = self.y - 35
+                                game_world.add_object(apple, 2)
+                                apple.set_size(10, 15, 10, 10)
+                                apple.set_stat(1, 0, 0, 0, 0, 0)
+                                apple.set_image('golden_apple.png')
+                                apple.set_max_frame(1)
+                                apple.set_name('golden_apple')
+                                game_world.add_collision_pair('char:monster', None, apple)
                         game_world.remove_object(self)
                         other.char.gold += self.gold * (100 + other.char.gold_bonus) / 100
                         other.char.exp += self.exp
                         stage.monster_count -= 1
+
         if group == 'monster:block':
             self.direction = self.direction * -1
             self.move = self.move * -1

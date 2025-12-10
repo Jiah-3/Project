@@ -6,8 +6,11 @@ import game_framework
 import game_world
 from inventory import Inventory
 
+num = -1
+
 def init():
-    global inventory
+    global inventory, num
+    num = -1
     inventory = Inventory()
     game_world.add_object(inventory, 2)
 
@@ -20,6 +23,7 @@ def handle_events():
             game_framework.pop_mode()
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
             event.y = 600 + event.y * -1
+            global num
             num = -1
             if event.x >= 270 and event.x <= 350:
                 num += 1
@@ -34,18 +38,19 @@ def handle_events():
             elif event.y <= 90 and event.y >= 10:
                 num += 6
             if num != -1:
-                if character_state.char.item[num][10] == 6:
-                    character_state.char.gold += 100
-                elif character_state.char.item[num][10] == 5:
-                    character_state.char.gold += 300
-                elif character_state.char.item[num][10] == 4:
-                    character_state.char.gold += 500
-                elif character_state.char.item[num][10] == 3:
-                    character_state.char.gold += 800
-                elif character_state.char.item[num][10] == 2:
-                    character_state.char.gold += 1000
-                elif character_state.char.item[num][10] == 1:
-                    character_state.char.gold += 1500
+                if character_state.char.item[num] != None:
+                    if character_state.char.item[num][10] == 6:
+                        character_state.char.gold += 100
+                    elif character_state.char.item[num][10] == 5:
+                        character_state.char.gold += 300
+                    elif character_state.char.item[num][10] == 4:
+                        character_state.char.gold += 500
+                    elif character_state.char.item[num][10] == 3:
+                        character_state.char.gold += 800
+                    elif character_state.char.item[num][10] == 2:
+                        character_state.char.gold += 1000
+                    elif character_state.char.item[num][10] == 1:
+                        character_state.char.gold += 1500
 
                 character_state.char.item[num] = None
                 character.update_items()
@@ -78,6 +83,19 @@ def handle_events():
                         character_state.char.crit_chance += 1.5
                         character_state.char.stat_points -= 1
 
+            num = -1
+            if event.x >= 270 and event.x <= 350:
+                num += 1
+            elif event.x >= 360 and event.x <= 440:
+                num += 2
+            elif event.x >= 450 and event.x <= 530:
+                num += 3
+            if event.y <= 270 and event.y >= 190:
+                pass
+            elif event.y <= 180 and event.y >= 100:
+                num += 3
+            elif event.y <= 90 and event.y >= 10:
+                num += 6
             print(f"Left click at: ({event.x}, {event.y})")
 
 def finish():
@@ -92,6 +110,9 @@ def update():
 def draw():
     clear_canvas()
     game_world.render()
+    if num != -1 and character_state.char.item[num] != None:
+        font = load_font('ENCR10B.TTF', 12)
+        font.draw(270, 280, f'{character_state.char.item[num][9]}', (0, 0, 0))
     update_canvas()
 
 def pause():
