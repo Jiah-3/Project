@@ -4,7 +4,7 @@ common = [
     ['Wooden_sword', 0, 0, 5, 0, 0, 0, 0, 'wooden_sword.png', '5% increase in attack', 6],
     ['Leather_helmet', 3, 0, 0, 0, 0, 0, 2, 'leather_helmet.png', '3 increase in health, 2% increase in crit chance', 6],
     ['Leather_chestplate', 3, 0, 0, 1, 0, 0, 0, 'leather_chestplate.png', '3 increase in health, 1% increase in defense', 6],
-    ['Leather_leggings', 3, 0, 0, 0, 3, 0, 0, 'leather_leggings.png', '3 increase in health, speed', 6],
+    ['Leather_leggings', 3, 0, 0, 0, 3, 0, 0, 'leather_leggings.png', '3 increase in health, 3% increase in speed', 6],
     ['Leather_boots', 3, 0, 0, 0, 0, 0.5, 0, 'leather_boots.png', '3 increase in health, 0.5% increase in dodge', 6],
 ]
 unique = [

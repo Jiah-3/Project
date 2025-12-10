@@ -1,5 +1,6 @@
 from pico2d import *
 import game_framework
+from play_music import stop_music, play_stage3, play_ending
 
 image = None
 font = None
@@ -9,11 +10,13 @@ def init():
     global font
     image = load_image('background1.png')
     font = load_font('ENCR10B.TTF', 60)
+    stop_music()
+    play_ending()
 
 def finish():
     global image, font
     del image, font
-
+    stop_music()
 
 def update():
     pass

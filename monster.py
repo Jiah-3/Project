@@ -7,6 +7,7 @@ import game_world
 import stage
 import drawing_bb
 import character
+from play_music import play_fireball, play_boom
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -178,7 +179,7 @@ class Monster:
                 for _ in range(8):
                     x, y = random.randint(60, 740), random.randint(90, 150)
                     monster_positions.append((x, y))
-
+                play_boom()
                 monsters = [Monster() for _ in monster_positions]
                 for monster, (x, y) in zip(monsters, monster_positions):
                     monster.x = x
@@ -197,7 +198,7 @@ class Monster:
                 for _ in range(30):
                     x, y = random.randint(20, 780), random.randint(800, 1200)
                     monster_positions.append((x, y))
-
+                play_fireball()
                 monsters = [Monster() for _ in monster_positions]
                 for monster, (x, y) in zip(monsters, monster_positions):
                     monster.x = x
@@ -215,14 +216,14 @@ class Monster:
             elif flame_god_skill1_cooldown <= 0.0 :
                 flame_god_skill1_cooldown = 10.0
 
-                i = random.randint(3, 3)
+                i = random.randint(2, 2)
                 if i == 1:
                     flame_god_skill1_1_active = 3.0
                     monster_positions = []
                     for _ in range(8):
                         x, y = random.randint(60, 740), random.randint(90, 150)
                         monster_positions.append((x, y))
-
+                    play_boom()
                     monsters = [Monster() for _ in monster_positions]
                     for monster, (x, y) in zip(monsters, monster_positions):
                         monster.x = x
@@ -241,7 +242,7 @@ class Monster:
                     for _ in range(30):
                         x, y = random.randint(20, 780), random.randint(800, 1200)
                         monster_positions.append((x, y))
-
+                    play_fireball()
                     monsters = [Monster() for _ in monster_positions]
                     for monster, (x, y) in zip(monsters, monster_positions):
                         monster.x = x

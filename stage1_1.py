@@ -6,6 +6,7 @@ import game_world
 import reward
 import stage
 from character import Char
+from play_music import play_stage1, stop_music
 
 
 def handle_events():
@@ -25,6 +26,7 @@ def finish():
     character_state.char = char
     game_world.collision_pairs.clear()
     game_world.clear()
+    # stop_music()
 
 def init():
     global char
@@ -42,6 +44,8 @@ def init():
     game_world.add_object(char, 2)
     game_world.add_collision_pair('char:ground', char, None)
     game_world.add_collision_pair('char:monster', char, None)
+    stop_music()
+    play_stage1()
 
 def update():
     game_world.update()

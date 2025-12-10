@@ -7,6 +7,7 @@ import game_framework
 import game_world
 import stage
 from character import Char
+from play_music import play_reward
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -65,6 +66,7 @@ def update():
     elif int(frame) == 9 and stage.monster_count == 0:
         stage.monster_count -= 1
         set_item()
+        play_reward()
 
 def draw():
     clear_canvas()
