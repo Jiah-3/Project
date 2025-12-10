@@ -21,6 +21,17 @@ def handle_events():
             game_framework.pop_mode()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_e:
             game_framework.pop_mode()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_1:
+            character_state.char.stat_hp += 10
+            character_state.char.hp += 25
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_2:
+            character_state.char.stat_attack += 10
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_3:
+            character_state.char.stat_defense += 10
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_4:
+            character_state.char.stat_agility += 10
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_5:
+            character_state.char.stat_luck += 10
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
             event.y = 600 + event.y * -1
             global num

@@ -2,7 +2,7 @@ import random
 
 from pico2d import load_image, draw_rectangle, load_font, get_time
 from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_d, SDLK_a, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, SDLK_e, \
-    SDLK_s, SDLK_l, SDLK_p
+    SDLK_s, SDLK_l, SDLK_p, SDLK_2, SDLK_1, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7
 
 import character_state
 import inventory_mode
@@ -52,7 +52,7 @@ class Char:
             self.stage = '1_1'
             self.stat_points = 0
             self.stat_hp = 0
-            self.stat_attack = 1000
+            self.stat_attack = 0
             self.stat_defense = 0
             self.stat_agility = 0
             self.stat_luck = 0
@@ -581,6 +581,21 @@ def l_down(e):
 
 def p_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_p
+
+def one_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_1
+def two_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_2
+def three_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_3
+def four_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_4
+def five_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_5
+def six_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_6
+def seven_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_7
 
 def mouse_L_down(e):
     if e[0] != 'INPUT' or e[1].type != SDL_MOUSEBUTTONDOWN:
