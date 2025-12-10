@@ -215,7 +215,7 @@ class Monster:
             elif flame_god_skill1_cooldown <= 0.0 :
                 flame_god_skill1_cooldown = 10.0
 
-                i = random.randint(1, 3)
+                i = random.randint(3, 3)
                 if i == 1:
                     flame_god_skill1_1_active = 3.0
                     monster_positions = []
@@ -256,9 +256,9 @@ class Monster:
                         game_world.add_collision_pair('char:monster', None, monster)
                         game_world.add_collision_pair('monster:block', monster, None)
                 elif i == 3:
+                    global flame_god_skill1_3_active
                     flame_god_skill1_3_active = 3.0
-                    if flame_god_skill2_active == 0.0:
-                        self.immune_time = 3.0
+                    self.immune_time = 3.0
                     monster = Monster()
                     monster.x = self.x
                     monster.y = self.y - 10
@@ -283,6 +283,12 @@ class Monster:
                 game_world.remove_object(self)
         if self.name == 'flame_god_skill1_3':
             flame_god_skill1_3_active -= game_framework.frame_time
+            for i in game_world.world[2]:
+                if i.name == 'flame_god':
+                    self.x = i.x
+                    self.y = i.y - 10
+                    break
+
             if flame_god_skill1_3_active <= 0.0:
                 game_world.remove_object(self)
 
